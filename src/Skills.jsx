@@ -14,13 +14,15 @@ function Skills(){
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               "JavaScript",
-              "React",
+              "React.js",
               "Node.js",
               "HTML5",
               "CSS3",
               "Tailwind CSS",
               "Git",
-              "API Integration"
+              "API Integration",
+              "Responsive Design",
+              "vibe coding"
             ].map((skill, index) => (
               <div
                 key={index}

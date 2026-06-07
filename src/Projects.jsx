@@ -38,7 +38,7 @@ function Projects() {
                 key={index}
                 className="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-400 transition duration-300"
               >
-                <div className="h-52 bg-gradient-to-br from-cyan-500/30 to-purple-500/30 flex items-center justify-center text-2xl font-bold text-white">
+                <div className="h-52 bg-linear-to-br from-cyan-500/30 to-purple-500/30 flex items-center justify-center text-2xl font-bold text-white">
                   {project.title}
                 </div>
 

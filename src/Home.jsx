@@ -4,7 +4,7 @@ function Home() {
         id="home"
         className="min-h-screen flex items-center justify-center px-6 relative"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-transparent to-purple-500/20 blur-3xl"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-cyan-500/20 via-transparent to-purple-500/20 blur-3xl"></div>
         <div className="relative z-10 max-w-4xl text-center">
           <div className="inline-block px-4 py-2 rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-300 text-sm mb-6">
             Front-End React Developer

@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+:root {
+  color: rgba(255, 255, 255, 0.95);
+  background-color: #020617;
+  font-family: Inter, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #020617;
+}
+
+* { box-sizing: border-box; }
+
+::selection { background: rgba(34, 211, 238, 0.18); color: white; }
