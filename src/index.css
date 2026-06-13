@@ -1,27 +1,29 @@
+/* Import Tailwind CSS framework - provides utility classes for styling. */
 @import "tailwindcss";
 
+/* Root variables: Default text color, dark background, and font settings for the entire app. */
 :root {
-  color: rgba(255, 255, 255, 0.95);
-  background-color: #020617;
-  font-family: Inter, 'Segoe UI', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: rgba(255, 255, 255, 0.95);       /* Default text color - near-white for dark theme. */
+  background-color: #020617;               /* Very dark navy blue background (site-wide). */
+  font-family: Inter, 'Segoe UI', sans-serif; /* Primary font stack. */
+  line-height: 1.5;                        /* Comfortable line spacing for readability. */
+  font-weight: 400;                        /* Normal font weight. */
+  font-synthesis: none;                    /* Prevents browser from synthesizing missing fonts. */
+  text-rendering: optimizeLegibility;      /* Improves text rendering quality. */
+  -webkit-font-smoothing: antialiased;     /* Smooths fonts on WebKit browsers. */
+  -moz-osx-font-smoothing: grayscale;      /* Smooths fonts on Firefox macOS. */
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth;                 /* Enables smooth scrolling for anchor links. */
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  background: #020617;
+  margin: 0;                               /* Remove default browser margin. */
+  min-width: 320px;                        /* Minimum width for mobile support. */
+  background: #020617;                     /* Fallback dark background color. */
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; }              /* Include padding/border in element width/height. */
 
-::selection { background: rgba(34, 211, 238, 0.18); color: white; }
+::selection { background: rgba(34, 211, 238, 0.18); color: white; } /* Cyan highlight color for selected text. */

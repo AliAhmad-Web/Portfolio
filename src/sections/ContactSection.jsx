@@ -1,16 +1,24 @@
-import { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
-import { motion } from 'framer-motion';
-import { FaEnvelope, FaGithub, FaLinkedin } from 'react-icons/fa';
+// ContactSection: A two-column layout with contact info (left) and a working contact form (right).
+// Left side: Email, GitHub, LinkedIn, and WhatsApp contact links.
+// Right side: A form with name, email, and message fields that sends emails via EmailJS.
+// Uses Framer Motion for entrance animations.
 
-const initialForm = { name: '', email: '', message: '' };
+import { useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';   // Library for sending emails directly from the browser.
+import { motion } from 'framer-motion';
+// Social media icons for contact links.
+import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+
+const initialForm = { name: '', email: '', message: '' }; // Form field initial values.
 
 export default function ContactSection({ showToast }) {
-  const formRef = useRef(null);
-  const [form, setForm] = useState(initialForm);
-  const [errors, setErrors] = useState({});
-  const [submitting, setSubmitting] = useState(false);
+  const formRef = useRef(null);                        // Ref to access form DOM element for EmailJS.
+  const [form, setForm] = useState(initialForm);        // Controlled form state.
+  const [errors, setErrors] = useState({});             // Validation error messages per field.
+  const [submitting, setSubmitting] = useState(false);   // Whether the form is currently being sent.
 
+  // --- Form Validation ---
+  // Returns true if valid, false otherwise. Sets error messages for invalid fields.
   const validate = () => {
     const nextErrors = {};
     if (!form.name.trim()) nextErrors.name = 'Name is required.';
@@ -20,6 +28,8 @@ export default function ContactSection({ showToast }) {
     return Object.keys(nextErrors).length === 0;
   };
 
+  // --- Form Submission ---
+  // Sends the form data via EmailJS when valid. Shows success/error toast.
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!validate()) return;
@@ -27,6 +37,7 @@ export default function ContactSection({ showToast }) {
     setSubmitting(true);
 
     try {
+      // EmailJS configuration - uses the service, template, and public key from the EmailJS dashboard.
       const serviceId = 'service_91voyhu';
       const templateId = 'template_go8vwsh';
       const publicKey = 'sAcGLdIrcLGOLyYIj';
@@ -35,9 +46,10 @@ export default function ContactSection({ showToast }) {
         throw new Error('EmailJS environment variables are not configured.');
       }
 
+      // Send the form via EmailJS.
       await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey);
-      setForm(initialForm);
-      setErrors({});
+      setForm(initialForm);    // Reset form fields.
+      setErrors({});            // Clear validation errors.
       showToast('Message sent successfully. I will reply soon!', 'success');
     } catch (error) {
       showToast(error.message || 'Unable to send message right now. Please try again.', 'error');
@@ -49,18 +61,22 @@ export default function ContactSection({ showToast }) {
   return (
     <section id="contact" className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        {/* Left column: Contact info and social links */}
         <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.35 }}>
           <p className="text-sm uppercase tracking-[0.35em] text-cyan-300">Contact</p>
-          <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Let’s build something memorable together.</h2>
-          <p className="mt-4 text-slate-300">Have a project in mind or want to discuss your next website? Send a quick note and I’ll get back to you with next steps.</p>
+          <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">Let's build something memorable together.</h2>
+          <p className="mt-4 text-slate-300">Have a project in mind or want to discuss your next website? Send a quick note and I'll get back to you with next steps.</p>
 
+          {/* Contact links: Email, GitHub, LinkedIn, WhatsApp */}
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="mailto:alikhan234ali@gmail.com" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-100 hover:border-cyan-400 hover:text-cyan-100"><FaEnvelope /> alikhan234ali@gmail.com</a>
-            <a href="https://github.com/alikhan234ali" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-100 hover:border-cyan-400 hover:text-cyan-100"><FaGithub /> GitHub</a>
+            <a href="https://github.com/AliAhmad-Web" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-100 hover:border-cyan-400 hover:text-cyan-100"><FaGithub /> GitHub</a>
             <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-100 hover:border-cyan-400 hover:text-cyan-100"><FaLinkedin /> LinkedIn</a>
+            <a href="https://wa.me/923064382254" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-100 hover:border-cyan-400 hover:text-cyan-100"><FaWhatsapp /> WhatsApp</a>
           </div>
         </motion.div>
 
+        {/* Right column: Contact form */}
         <motion.form
           ref={formRef}
           onSubmit={handleSubmit}
@@ -71,6 +87,7 @@ export default function ContactSection({ showToast }) {
           className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-cyan-950/10 backdrop-blur-xl"
           noValidate
         >
+          {/* Name and Email side by side on larger screens */}
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="text-sm text-slate-200">Name
               <input type="text" name="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400" placeholder="Your name" />
@@ -81,10 +98,14 @@ export default function ContactSection({ showToast }) {
               {errors.email && <p className="mt-1 text-xs text-rose-300">{errors.email}</p>}
             </label>
           </div>
+
+          {/* Message textarea */}
           <label className="mt-4 block text-sm text-slate-200">Message
             <textarea name="message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows="6" className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400" placeholder="Tell me about your project..." />
             {errors.message && <p className="mt-1 text-xs text-rose-300">{errors.message}</p>}
           </label>
+
+          {/* Submit button */}
           <button type="submit" disabled={submitting} className="mt-6 inline-flex rounded-full bg-cyan-400 px-6 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70">{submitting ? 'Sending...' : 'Send Message'}</button>
         </motion.form>
       </div>
