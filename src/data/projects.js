@@ -23,7 +23,7 @@ export const projects = [
     description: 'A modern and responsive restaurant website designed to showcase delicious food items, featured menus, special offers, and restaurant services. Provides an engaging user experience with an attractive layout, smooth navigation, and mobile-friendly design with modern UI and visual presentation.',
     technologies: ['HTML5', 'CSS3', 'JavaScript'],
     github: 'https://github.com/alikhan234ali/Portfolio',
-    live: 'https://fresh-bite-food-website.vercel.app/',
+    live: 'https://fresh-bite-food-website-91gg.vercel.app/index.html',
     image: '/project-fresh-bite.jpg',
     category: 'Restaurant & Food Landing Page'
   },
