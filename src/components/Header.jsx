@@ -58,13 +58,14 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile navigation menu - animated slide-down */}
+      {/* Mobile navigation menu - AnimatePresence for smooth open/close */}
       <AnimatePresence>
         {menuOpen && (
           <motion.nav
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15 }}
             className="border-t border-white/10 bg-slate-950/95 p-4 md:hidden"
           >
             {navItems.map((item) => (

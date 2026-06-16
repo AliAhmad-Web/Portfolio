@@ -10,8 +10,8 @@ import heroImage from '../assets/ailAhmad.png';  // Profile photo from assets.
 export default function HeroSection() {
   return (
     <section id="home" className="relative overflow-hidden px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-      {/* Background gradient effects - radial gradients in cyan and purple for a modern glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.12),transparent_25%)]" />
+      {/* Background gradient effects - single gradient for better performance */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(34,211,238,0.10),transparent_40%)]" />
       <div className="mx-auto flex min-h-[60vh] max-w-7xl items-center">
         <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 lg:flex-row lg:justify-between">
           {/* Text Content */}
@@ -60,7 +60,7 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Hero Image */}
+          {/* Hero Image - optimized with fetchpriority for above-the-fold */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -75,6 +75,9 @@ export default function HeroSection() {
               <img
                 src={heroImage}
                 alt="Ali Ahmad - Frontend Developer"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
                 className="relative z-10 h-64 w-64 rounded-full border-4 border-cyan-400/40 object-cover shadow-2xl shadow-cyan-500/20 sm:h-72 sm:w-72 md:h-80 md:w-80"
               />
             </div>

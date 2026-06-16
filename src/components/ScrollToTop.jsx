@@ -3,20 +3,35 @@
 // Uses the FaArrowUp icon from react-icons.
 // Visibility is controlled by tracking the current scroll position.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
 
 export default function ScrollToTop() {
-  const [visible, setVisible] = useState(false); // Whether the button is shown.
+  const [visible, setVisible] = useState(false);
+  const rafRef = useRef(null);
 
-  // Show button after scrolling past 400px from the top; hide otherwise.
+  // Throttled scroll handler to avoid excessive state updates
   useEffect(() => {
-    const handleScroll = () => setVisible(window.scrollY > 400);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const shouldShow = window.scrollY > 400;
+      setVisible((prev) => (prev !== shouldShow ? shouldShow : prev));
+    };
+
+    const throttledScroll = () => {
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        handleScroll();
+        rafRef.current = null;
+      });
+    };
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', throttledScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
-  // Scroll to the home section smoothly.
   const scrollToTop = () => {
     document.getElementById('home')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };

@@ -9,71 +9,90 @@
    - Uses react-helmet-async for dynamic SEO meta tags.
    ============================================ */
 
-import { useEffect, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useState, useCallback, lazy, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-// ---- Components ----
-import LoadingScreen from './components/LoadingScreen';  // Full-screen loading spinner on initial load.
-import Toast from './components/Toast';                    // Bottom-right notification toast.
-import ScrollToTop from './components/ScrollToTop';        // Button to scroll back to top.
-import Header from './components/Header';                  // Sticky navigation bar.
-
-// ---- Page Sections ----
+// ---- Critical Components (loaded eagerly above the fold) ----
+import Header from './components/Header';
 import HeroSection from './sections/HeroSection';
-import AboutSection from './sections/AboutSection';
-import SkillsSection from './sections/SkillsSection';
-import GitHubStatsSection from './sections/GitHubStatsSection';
-import ServicesSection from './sections/ServicesSection';
-import ProjectsSection from './sections/ProjectsSection';
-import ContactSection from './sections/ContactSection';
-import FooterSection from './sections/FooterSection';
+
+// ---- Below-fold Sections (lazy loaded for faster initial render) ----
+const AboutSection = lazy(() => import('./sections/AboutSection'));
+const SkillsSection = lazy(() => import('./sections/SkillsSection'));
+const GitHubStatsSection = lazy(() => import('./sections/GitHubStatsSection'));
+const ServicesSection = lazy(() => import('./sections/ServicesSection'));
+const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
+const ContactSection = lazy(() => import('./sections/ContactSection'));
+const FooterSection = lazy(() => import('./sections/FooterSection'));
+const ScrollToTop = lazy(() => import('./components/ScrollToTop'));
+const Toast = lazy(() => import('./components/Toast'));
+
+// Simple fallback with no animation overhead
+const SectionFallback = () => <div className="h-32" />;
 
 export default function App() {
-  const [loading, setLoading] = useState(true);  // Controls the loading screen visibility.
-  const [toast, setToast] = useState(null);       // Stores the current toast message (null = hidden).
+  const [toast, setToast] = useState(null);
 
-  // Show loading screen for 700ms on initial page load, then fade out.
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 700);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // showToast: Called by ContactSection after form submission.
-  // Displays a success or error message at the bottom-right for 3.2 seconds.
-  const showToast = (message, type = 'success') => {
+  // Memoized toast handler - prevents unnecessary re-creations
+  const showToast = useCallback((message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3200);
-  };
+  }, []);
+
+  const closeToast = useCallback(() => setToast(null), []);
 
   return (
     <>
-      {/* SEO Meta Tags - Injected into <head> by react-helmet-async */}
       <Helmet>
         <title>Ali Ahmad | React Portfolio</title>
         <meta name="description" content="Modern, responsive React portfolio website with projects, skills, and a working contact form." />
         <meta name="theme-color" content="#020617" />
+        {/* Preconnect to origins we'll need */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Helmet>
 
-      {/* Loading screen: visible while loading === true, exits with fade animation */}
-      <AnimatePresence>{loading && <LoadingScreen />}</AnimatePresence>
-
-      {/* Main app wrapper with dark gradient background */}
-      <div className="min-h-screen bg-[linear-gradient(135deg,#020617_0%,#111827_45%,#020617_100%)] text-white antialiased">
+      {/* Main app wrapper - simplified gradient to reduce paint cost */}
+      <div className="min-h-screen bg-slate-950 text-white antialiased">
         <Header />
+
+        {/* Hero loads immediately - it's above the fold */}
+        <HeroSection />
+
+        {/* Below-fold sections load lazily so they don't block initial paint */}
         <main>
-          <HeroSection />
-          <AboutSection />
-          <SkillsSection />
-          <GitHubStatsSection />
-          <ServicesSection />
-          <ProjectsSection />
-          <ContactSection showToast={showToast} />
+          <Suspense fallback={<SectionFallback />}>
+            <AboutSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <SkillsSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <GitHubStatsSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <ServicesSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <ProjectsSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <ContactSection showToast={showToast} />
+          </Suspense>
         </main>
-        <FooterSection />
-        <ScrollToTop />
-        {/* Show toast notification if one exists */}
-        {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
+        <Suspense fallback={null}>
+          <FooterSection />
+        </Suspense>
+        <Suspense fallback={null}>
+          <ScrollToTop />
+        </Suspense>
+
+        {toast && (
+          <Suspense fallback={null}>
+            <Toast message={toast.message} type={toast.type} onClose={closeToast} />
+          </Suspense>
+        )}
       </div>
     </>
   );

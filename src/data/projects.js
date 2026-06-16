@@ -6,17 +6,42 @@
    Each project object contains: id, title, description, technologies, github link, live link, image path, and category.
    ============================================ */
 
-export const projects = [
+// Projects sorted by priority:
+// 1. React-based projects (React.js or React in technologies)
+// 2. HTML/JavaScript/CSS projects (no React)
+const projectData = [
+  // --- React-based projects (Group 1) ---
   {
-    id: 1,                                                          // Unique identifier for the project (used as React key).
-    title: 'Student Course Registration System',                    // Display title of the project.
+    id: 1,
+    title: 'Student Course Registration System',
     description: 'A modern and responsive student course registration system built with frontend technologies. Allows students to browse available courses, register, manage selections, and navigate through a clean user-friendly interface with responsive design across all devices.',
-    technologies: ['HTML5', 'JavaScript', 'React.js', 'Tailwind CSS'], // Tech stack tags shown on the card.
-    github: 'https://github.com/alikhan234ali/Portfolio',          // Link to GitHub repository.
-    live: 'https://student-course-registration-gules.vercel.app/login', // Live demo URL.
-    image: '/project-scrs.png',                                     // Path to project screenshot image in /public.
-    category: 'Frontend Web Application'                            // Category badge displayed on the card.
+    technologies: ['HTML5', 'JavaScript', 'React.js', 'Tailwind CSS'],
+    github: 'https://github.com/alikhan234ali/Portfolio',
+    live: 'https://student-course-registration-gules.vercel.app/login',
+    image: '/project-scrs.png',
+    category: 'Frontend Web Application'
   },
+  {
+    id: 4,
+    title: 'Quiz App',
+    description: 'An interactive quiz application where users answer multiple-choice questions and get their final score at the end.',
+    technologies: ['HTML', 'Tailwind CSS', 'JavaScript', 'React'],
+    github: 'https://github.com/alikhan234ali/Portfolio',
+    live: 'https://quiz-app-six-iota-27.vercel.app/',
+    image: '/quizApp.png',
+    category: 'Interactive Quiz Application'
+  },
+  {
+    id: 8,
+    title: 'SaaS Tool App',
+    description: 'A modern and responsive SaaS-based web application designed to provide scalable online tools with a clean and intuitive user experience. It focuses on performance, usability, and modern UI design.',
+    technologies: ['HTML', 'Tailwind CSS', 'JavaScript', 'React.js'],
+    github: 'https://github.com/alikhan234ali/Portfolio',
+    live: 'https://saa-s-tool-app.vercel.app/',
+    image: '/project-saas.jpg',
+    category: 'SaaS Web Application'
+  },
+  // --- HTML / JavaScript / CSS projects (Group 2) ---
   {
     id: 2,
     title: 'Fresh Bite Food Website',
@@ -38,14 +63,14 @@ export const projects = [
     category: 'Restaurant & Food Ordering Website'
   },
   {
-    id: 4,
-    title: 'Quiz App',
-    description: 'An interactive quiz application where users answer multiple-choice questions and get their final score at the end.',
-    technologies: ['HTML', 'CSS', 'JavaScript', 'React'],
+    id: 7,
+    title: 'Tic Tac Toe Game',
+    description: 'A classic interactive Tic Tac Toe game where two players can play against each other. The game includes win detection, draw detection, and smooth user interactions with a clean UI.',
+    technologies: ['HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/alikhan234ali/Portfolio',
-    live: 'https://quizapp-vert-omega.vercel.app/',
-    image: '/project-quizapp.jpg',
-    category: 'Interactive Quiz Application'
+    live: 'https://tic-tac-toe-game-seven-jade.vercel.app/',
+    image: '/project-tictactoe.jpg',
+    category: 'Interactive Game'
   },
   {
     id: 5,
@@ -66,28 +91,10 @@ export const projects = [
     live: 'https://rate-list-web-app.vercel.app/',
     image: '/project-ratelist.jpg',
     category: 'Rate Management Application'
-  },
-  {
-    id: 7,
-    title: 'Tic Tac Toe Game',
-    description: 'A classic interactive Tic Tac Toe game where two players can play against each other. The game includes win detection, draw detection, and smooth user interactions with a clean UI.',
-    technologies: ['HTML', 'CSS', 'JavaScript', 'React'],
-    github: 'https://github.com/alikhan234ali/Portfolio',
-    live: 'https://tic-tac-toe-game-seven-jade.vercel.app/',
-    image: '/project-tictactoe.jpg',
-    category: 'Interactive Game'
-  },
-  {
-    id: 8,
-    title: 'SaaS Tool App',
-    description: 'A modern and responsive SaaS-based web application designed to provide scalable online tools with a clean and intuitive user experience. It focuses on performance, usability, and modern UI design.',
-    technologies: ['HTML', 'Tailwind CSS', 'JavaScript', 'React.js'],
-    github: 'https://github.com/alikhan234ali/Portfolio',
-    live: 'https://saa-s-tool-app.vercel.app/',
-    image: '/project-saas.jpg',
-    category: 'SaaS Web Application'
   }
 ];
+
+export const projects = projectData;
 
 // Extract unique technologies from all projects and sort them in a preferred order for filter buttons.
 const uniqueTechs = [...new Set(projects.flatMap((project) => project.technologies))];

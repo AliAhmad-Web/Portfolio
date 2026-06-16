@@ -13,7 +13,7 @@ import { scrollToSection } from '../utils/scrollToSection';
 
 export default function FooterSection() {
   return (
-    <footer className="relative border-t border-white/10 bg-[linear-gradient(135deg,#020617_0%,#111827_45%,#020617_100%)] px-4 py-12 text-slate-300 sm:px-6 lg:px-8">
+    <footer className="relative border-t border-white/10 bg-slate-950 px-4 py-12 text-slate-300 sm:px-6 lg:px-8">
       {/* Subtle cyan glow line at the top of the footer */}
       <div className="absolute inset-x-0 -top-px h-px 'bg-gradient-to-r' from-transparent via-cyan-400/30 to-transparent" />
 
