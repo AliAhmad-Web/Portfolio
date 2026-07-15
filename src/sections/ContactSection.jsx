@@ -4,7 +4,6 @@
 // Uses Framer Motion for entrance animations.
 
 import { useCallback, useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 
@@ -32,15 +31,18 @@ export default function ContactSection({ showToast }) {
     setSubmitting(true);
 
     try {
-      const serviceId = 'service_91voyhu';
-      const templateId = 'template_go8vwsh';
-      const publicKey = 'sAcGLdIrcLGOLyYIj';
+      const response = await fetch('http://localhost:5000/api/v1/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
 
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS environment variables are not configured.');
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to submit form');
       }
 
-      await emailjs.sendForm(serviceId, templateId, formRef.current, publicKey);
       setForm(initialForm);
       setErrors({});
       showToast('Message sent successfully. I will reply soon!', 'success');
