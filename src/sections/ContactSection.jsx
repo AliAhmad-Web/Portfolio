@@ -31,7 +31,7 @@ export default function ContactSection({ showToast }) {
     setSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/v1/contact', {
+      const response = await fetch('/api/v1/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
