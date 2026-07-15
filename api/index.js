@@ -77,10 +77,13 @@ export default async function handler(req, res) {
   };
 
   try {
+    // Vercel may pass the original URL or the rewrite destination URL
+    // Handle both cases by checking the path suffix
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const path = url.pathname;
 
-    // Health check
-    if (url.pathname === '/api' || url.pathname === '/api/') {
+    // Health check — matches /api, /api/ or any path ending with /api or /api/
+    if (path === '/api' || path === '/api/' || path.endsWith('/api') || path.endsWith('/api/')) {
       res.writeHead(200, headers);
       res.end(JSON.stringify({
         success: true,
@@ -90,8 +93,8 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Contact form endpoint
-    if (url.pathname === '/api/v1/contact' && req.method === 'POST') {
+    // Contact form endpoint — matches /api/v1/contact or /v1/contact
+    if ((path.endsWith('/v1/contact') || path === '/v1/contact') && req.method === 'POST') {
       // Read request body
       let body = '';
       for await (const chunk of req) {
