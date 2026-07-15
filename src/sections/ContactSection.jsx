@@ -37,7 +37,15 @@ export default function ContactSection({ showToast }) {
         body: JSON.stringify(form),
       });
 
-      const result = await response.json();
+      let result;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        // Server returned non-JSON (likely HTML error page)
+        const text = await response.text();
+        throw new Error('Server error. Please ensure environment variables are set in Vercel dashboard.');
+      }
 
       if (!response.ok) {
         throw new Error(result.message || 'Failed to submit form');
