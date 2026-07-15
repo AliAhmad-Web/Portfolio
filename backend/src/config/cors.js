@@ -1,6 +1,8 @@
 import { env } from './env.js';
 
-const allowedOrigins = env.clientUrl.split(',').map((origin) => origin.trim());
+const allowedOrigins = env.clientUrl
+  ? env.clientUrl.split(',').map((origin) => origin.trim())
+  : ['http://localhost:5173', 'http://localhost:5000'];
 
 export const corsOptions = {
   origin(origin, callback) {
