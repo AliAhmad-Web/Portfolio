@@ -1,10 +1,16 @@
 import { env } from '../config/env.js';
 
+/**
+ * Auth cookie options.
+ * In production the SPA (Vercel) and API (Render/Railway) are on different
+ * origins, so cookies must use SameSite=None + Secure to be accepted cross-site.
+ * Primary auth still uses Bearer tokens in sessionStorage; cookies are a fallback.
+ */
 function buildCookieOptions(maxAgeSeconds) {
   return {
     httpOnly: true,
     secure: env.isProduction,
-    sameSite: env.isProduction ? 'strict' : 'lax',
+    sameSite: env.isProduction ? 'none' : 'lax',
     path: '/',
     maxAge: maxAgeSeconds * 1000,
   };
@@ -31,7 +37,7 @@ export function clearAuthCookies(res) {
   const clearOptions = {
     httpOnly: true,
     secure: env.isProduction,
-    sameSite: env.isProduction ? 'strict' : 'lax',
+    sameSite: env.isProduction ? 'none' : 'lax',
     path: '/',
   };
 

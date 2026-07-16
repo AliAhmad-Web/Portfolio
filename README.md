@@ -2,7 +2,7 @@
 
 A full-stack developer portfolio built for professional presentation and internship submission. It showcases projects and skills on a public site, and includes authentication, an admin dashboard, contact form storage, email notifications, and bot protection.
 
-**Live stack:** React (Vite) + Express + Supabase + Vercel (frontend + contact API)
+**Live stack:** React (Vite) + Express + Supabase · Frontend on Vercel · API on Render/Railway
 
 ---
 
@@ -27,7 +27,7 @@ A full-stack developer portfolio built for professional presentation and interns
 | Database / Auth | Supabase (PostgreSQL + Auth) |
 | Email | Resend |
 | Security | Helmet, CORS, reCAPTCHA v3, express-rate-limit |
-| Deploy | Vercel (frontend + contact serverless function); Express API on a Node host |
+| Deploy | Vercel (SPA) + Render/Railway (Express API) |
 
 ---
 
@@ -35,9 +35,10 @@ A full-stack developer portfolio built for professional presentation and interns
 
 ```text
 Portfolio/
-├── api/                 # Vercel serverless contact API (production)
-├── backend/             # Full Express API (auth, admin, contact, health)
-├── docs/                # Setup guides (auth, reCAPTCHA, rate limiting)
+├── api/                 # Legacy Vercel contact shim (unused when VITE_API_BASE_URL is set)
+├── backend/             # Express API (auth, admin, contact, health) — deploy to Render
+├── docs/                # Setup + deployment guides
+├── render.yaml          # Render Blueprint for the API
 ├── public/              # Static assets
 ├── src/                 # React frontend
 │   ├── components/
@@ -81,6 +82,7 @@ cd backend && npm install && cd ..
 
 ```env
 VITE_RECAPTCHA_SITE_KEY=your-recaptcha-v3-site-key
+# Leave VITE_API_BASE_URL unset locally (Vite proxies /api → localhost:5000)
 ```
 
 **Backend** — copy `backend/.env.example` to `backend/.env.local` and fill in all values (Supabase, cookies, admin seed, reCAPTCHA, Resend). See comments in the example file.
@@ -141,45 +143,42 @@ Open [http://localhost:5173](http://localhost:5173). Vite proxies `/api` to the 
 
 ## Deployment Architecture
 
-### What Vercel hosts today
+**Recommended (this repo):** Frontend + **full Express API on Vercel**
 
-With the current `vercel.json` setup:
+| Piece | Host | Role |
+|-------|------|------|
+| React SPA | Vercel | Public site + auth UI |
+| Express API | Vercel `api/index.js` | Auth, admin, contact, health under `/api/v1` |
 
-| Surface | On Vercel? | Notes |
-|---------|------------|--------|
-| React SPA (`dist/`) | Yes | Built with `npm run build` |
-| Public contact API | Yes | `api/index.js` (reCAPTCHA → Supabase → Resend) |
-| Auth APIs (`/api/v1/auth/*`) | **No** | Require the Express `backend/` |
-| Admin APIs (`/api/v1/admin/*`) | **No** | Require the Express `backend/` |
-| Health / full contact controller | **No** | Require the Express `backend/` |
+Same origin means the SPA calls `/api/v1/...` (no `VITE_API_BASE_URL` required on Vercel).
 
-All `/api/*` traffic on Vercel is rewritten to the serverless function in `api/`, which only implements the **contact** flow. Login, signup, session refresh, and the admin dashboard **will not work** on a Vercel-only deploy until the Express API is hosted separately and the frontend points at it.
+### Production checklist (Vercel)
 
-### Recommended production layout
+1. Connect the GitHub repo to the Vercel project and deploy.
+2. In **Settings → Environment Variables**, set at least:
 
-1. **Frontend + contact form** → Vercel  
-   - Set env vars used by `api/index.js` and the client:
-     - `VITE_RECAPTCHA_SITE_KEY`
-     - `SUPABASE_URL`, `SUPABASE_ANON_KEY`
-     - `RECAPTCHA_SECRET_KEY`, `RECAPTCHA_MIN_SCORE`, `RECAPTCHA_ENABLED`
-     - `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL`, `RESEND_ENABLED`
-   - Add your Vercel domain to reCAPTCHA allowed domains and Supabase redirect URLs.
+| Name | Notes |
+|------|--------|
+| `NODE_ENV` | `production` |
+| `CLIENT_URL` | `https://your-app.vercel.app` |
+| `COOKIE_SECRET` | long random string |
+| `SUPABASE_URL` | from Supabase |
+| `SUPABASE_ANON_KEY` | anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | service_role key |
+| `SUPABASE_JWT_SECRET` | JWT secret (or leave placeholder; auth uses Supabase fallback) |
+| `AUTH_VERIFY_EMAIL_URL` | `https://your-app.vercel.app/auth/verify-email` |
+| `AUTH_RESET_PASSWORD_URL` | `https://your-app.vercel.app/auth/reset-password` |
+| `VITE_RECAPTCHA_SITE_KEY` | optional site key |
+| `RECAPTCHA_SECRET_KEY` | optional; verification skips if empty |
+| `RESEND_*` | optional email notify |
 
-2. **Full API (auth + admin)** → any Node host (Railway, Render, Fly.io, VPS, etc.)  
-   - Deploy the `backend/` folder (`npm start`).
-   - Set the full `backend/.env.example` variables for production.
-   - Set `CLIENT_URL` to your Vercel URL (comma-separated if multiple origins).
-   - Update Supabase redirect URLs to the production frontend paths.
+3. Redeploy after adding env vars.
+4. Update Supabase redirect URLs for the Vercel domain.
+5. Test `/auth/login` and `/api/v1/health` on the live site.
 
-3. **Wiring auth in production**  
-   - Locally, Vite proxies `/api` → `http://localhost:5000`.  
-   - In production, either:
-     - Proxy `/api/v1/auth` and `/api/v1/admin` from Vercel to the Express host, **or**
-     - Point the frontend API base URL at the Express host (requires a small config change when you are ready to ship auth live).
+**Optional alternative:** host Express on Render (`render.yaml`) and set `VITE_API_BASE_URL` — see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
-Until step 2–3 are done, use **local Express** for auth/dashboard demos (e.g. Loom), and Vercel for the public site + contact form.
-
-More detail: `docs/AUTH_SETUP.md`, `docs/RECAPTCHA_SETUP.md`, `docs/RATE_LIMITING.md`.
+Related: `docs/AUTH_SETUP.md`, `docs/RECAPTCHA_SETUP.md`, `docs/RATE_LIMITING.md`.
 
 ---
 
@@ -187,7 +186,7 @@ More detail: `docs/AUTH_SETUP.md`, `docs/RECAPTCHA_SETUP.md`, `docs/RATE_LIMITIN
 
 - Secrets live only in environment files / host dashboards (never hardcoded).
 - `SUPABASE_SERVICE_ROLE_KEY` is server-only; never expose it to the browser.
-- reCAPTCHA **site** key is public; **secret** key stays on the server / Vercel env.
+- reCAPTCHA **site** key is public; **secret** key stays on the API host.
 - Login rate limit applies to **failed** attempts only (configurable via env).
 - Admin routes require a valid JWT and `admin` role.
 

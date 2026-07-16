@@ -1,0 +1,70 @@
+# Render Blueprint — deploy the Express API as a Web Service
+# https://render.com/docs/blueprint-spec
+#
+# After connecting this repo in Render Dashboard → New → Blueprint:
+# 1. Fill in all sync:false env vars in the Render dashboard
+# 2. Copy the service URL (https://….onrender.com)
+# 3. Set VITE_API_BASE_URL=https://….onrender.com/api/v1 on Vercel and redeploy
+
+services:
+  - type: web
+    name: portfolio-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        sync: false
+      - key: COOKIE_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_COOKIE
+        value: access_token
+      - key: JWT_REFRESH_COOKIE
+        value: refresh_token
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: AUTH_VERIFY_EMAIL_URL
+        sync: false
+      - key: AUTH_RESET_PASSWORD_URL
+        sync: false
+      - key: REQUIRE_EMAIL_VERIFICATION
+        value: "true"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_FULL_NAME
+        value: Portfolio Admin
+      - key: RECAPTCHA_SECRET_KEY
+        sync: false
+      - key: RECAPTCHA_MIN_SCORE
+        value: "0.5"
+      - key: RECAPTCHA_ENABLED
+        value: "true"
+      - key: LOGIN_RATE_LIMIT_MAX
+        value: "5"
+      - key: LOGIN_RATE_LIMIT_WINDOW_MS
+        value: "900000"
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false
+      - key: RESEND_TO_EMAIL
+        sync: false
+      - key: RESEND_ENABLED
+        value: "true"

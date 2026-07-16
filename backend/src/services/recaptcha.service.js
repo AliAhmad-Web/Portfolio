@@ -37,13 +37,7 @@ export const recaptchaService = {
     remoteIp,
   } = {}) {
     if (!this.isEnabled()) {
-      if (env.isProduction) {
-        throw new ApiError(
-          500,
-          'reCAPTCHA is not configured. Set RECAPTCHA_SECRET_KEY.',
-        );
-      }
-
+      // Match contact shim behavior: skip when secret is missing (dev or prod).
       console.warn(
         '[recaptcha] Verification skipped — RECAPTCHA_SECRET_KEY is not set.',
       );

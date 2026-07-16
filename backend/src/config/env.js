@@ -7,7 +7,9 @@
 
 import dotenv from 'dotenv';
 
+// Prefer local files in development; platform hosts inject process.env directly.
 dotenv.config({ path: '.env.local' });
+dotenv.config();
 
 const requiredEnvVars = [
   'NODE_ENV',

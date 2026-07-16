@@ -1,41 +1,37 @@
-import { env } from './env.js';
+/**
+ * CORS configuration for the Express API.
+ * Purpose: Allow the Vite/Vercel frontend (and local dev) to call the API with credentials.
+ * Used by: app.js
+ */
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5000',
-  ...(env.clientUrl
-    ? env.clientUrl.split(',').map((origin) => origin.trim())
-    : []),
-];
+const staticOrigins = ['http://localhost:5173', 'http://localhost:5000'];
 
-// Vercel preview deployments and custom domains
-// We also allow any origin in production for convenience
-const isVercelDeployment =
-  process.env.VERCEL === '1' ||
-  process.env.VERCEL_ENV === 'production' ||
-  process.env.VERCEL_ENV === 'preview' ||
-  process.env.VERCEL_URL;
+function getConfiguredOrigins() {
+  return String(process.env.CLIENT_URL || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+
+  const allowed = new Set([...staticOrigins, ...getConfiguredOrigins()]);
+  if (allowed.has(origin)) return true;
+
+  // Vercel production + preview deployments
+  if (origin.endsWith('.vercel.app')) return true;
+
+  return false;
+}
 
 export const corsOptions = {
   origin(origin, callback) {
-    // Allow requests with no origin (server-to-server, curl, etc.)
-    // Also allow all origins on Vercel since the deployment domain is dynamic
-    if (
-      !origin ||
-      allowedOrigins.includes(origin) ||
-      isVercelDeployment
-    ) {
+    if (isAllowedOrigin(origin)) {
       callback(null, true);
       return;
     }
 
-    // Check if origin ends with vercel.app (for preview deployments)
-    if (typeof origin === 'string' && origin.includes('vercel.app')) {
-      callback(null, true);
-      return;
-    }
-
-    // For production, log the rejected origin for debugging
     console.warn(`CORS blocked origin: ${origin}`);
     callback(new Error(`Origin ${origin} is not allowed by CORS`));
   },
