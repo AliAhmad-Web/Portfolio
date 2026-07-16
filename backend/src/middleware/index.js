@@ -6,6 +6,8 @@ export {
   requireAuth,
   requireVerifiedEmail,
 } from './auth.js';
+export { verifyRecaptcha } from './recaptcha.js';
+export { loginRateLimiter } from './rateLimit.js';
 export { notFoundHandler } from './notFound.js';
 export { errorHandler } from './errorHandler.js';
 export { requestLogger } from './logger.js';

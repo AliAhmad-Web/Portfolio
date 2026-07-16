@@ -1,14 +1,10 @@
-/* ============================================
-   Portfolio Projects Data
-   ============================================
-   This is the single source of truth for all project entries.
-   To add/edit/remove a project, modify the array below.
-   Each project object contains: id, title, description, technologies, github link, live link, image path, and category.
-   ============================================ */
+/**
+ * Portfolio projects catalog.
+ * Purpose: Single source of truth for project cards and detail pages.
+ * Used by: ProjectsSection, ProjectCard, projectSlug helpers.
+ */
 
-// Projects sorted by priority:
-// 1. React-based projects (React.js or React in technologies)
-// 2. HTML/JavaScript/CSS projects (no React)
+// Priority: React projects first, then HTML/JS/CSS projects.
 const projectData = [
   // --- React-based projects (Group 1) ---
   {

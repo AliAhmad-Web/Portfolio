@@ -1,18 +1,15 @@
-// Stats configuration for the GitHub Stats & Development Journey section.
-// To update any statistic, simply change the value, label, suffix, or description below.
-// Each stat object includes:
-//   label       - Display title for the stat card.
-//   value       - The numeric value to display.
-//   suffix      - Text appended after the number (e.g. "+").
-//   icon        - React icon component from react-icons/fa.
-//   description - Brief explanation of what this stat represents.
+/**
+ * Stats data for the GitHub Stats section.
+ * Purpose: Single source of truth for development journey metrics.
+ * Used by: GitHubStatsSection.
+ */
 
 import {
-  FaCode,          // Used for: Total Commits
-  FaFolderOpen,    // Used for: Projects Completed
-  FaGitAlt,        // Used for: GitHub Repositories
-  FaLaptopCode,    // Used for: Technologies Used
-  FaGraduationCap, // Used for: Years of Learning & Development
+  FaCode,
+  FaFolderOpen,
+  FaGitAlt,
+  FaLaptopCode,
+  FaGraduationCap,
 } from 'react-icons/fa';
 
 const stats = [

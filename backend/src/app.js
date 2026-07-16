@@ -1,3 +1,9 @@
+/**
+ * Express application for the portfolio API.
+ * Purpose: Security middleware, JSON parsing, and `/api` route mounting.
+ * Used by: server.js (local development / Node hosts).
+ */
+
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';

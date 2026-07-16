@@ -1,3 +1,10 @@
+/**
+ * Environment configuration for the Express backend.
+ * Purpose: Load `.env.local`, warn on missing vars, and expose typed `env` object.
+ * Used by: all backend services, middleware, and config modules.
+ * Secrets must stay in environment files — never hardcode keys here.
+ */
+
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });
@@ -49,6 +56,35 @@ export const env = {
       process.env.AUTH_VERIFY_EMAIL_URL ?? `${clientUrl}/auth/verify-email`,
     resetPasswordRedirectUrl:
       process.env.AUTH_RESET_PASSWORD_URL ?? `${clientUrl}/auth/reset-password`,
+  },
+  recaptcha: {
+    secretKey: process.env.RECAPTCHA_SECRET_KEY || '',
+    minScore: Number(process.env.RECAPTCHA_MIN_SCORE || 0.5),
+    // Explicit false disables verification even if a secret is present
+    enabled: process.env.RECAPTCHA_ENABLED !== 'false',
+  },
+  rateLimit: {
+    login: {
+      max: Number(process.env.LOGIN_RATE_LIMIT_MAX || 5),
+      windowMs: Number(
+        process.env.LOGIN_RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000,
+      ),
+    },
+  },
+  resend: {
+    apiKey: process.env.RESEND_API_KEY || '',
+    fromEmail:
+      process.env.RESEND_FROM_EMAIL || 'Portfolio <onboarding@resend.dev>',
+    toEmail:
+      process.env.RESEND_TO_EMAIL ||
+      process.env.ADMIN_EMAIL ||
+      '',
+    enabled: process.env.RESEND_ENABLED !== 'false',
+  },
+  admin: {
+    email: process.env.ADMIN_EMAIL ?? '',
+    password: process.env.ADMIN_PASSWORD ?? '',
+    fullName: process.env.ADMIN_FULL_NAME ?? 'Portfolio Admin',
   },
   isProduction: process.env.NODE_ENV === 'production',
   isDevelopment: process.env.NODE_ENV !== 'production',

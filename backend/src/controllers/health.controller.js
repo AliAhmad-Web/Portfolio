@@ -33,6 +33,13 @@ export const getApiInfo = asyncHandler(async (_req, res) => {
         resendVerification: 'POST /api/v1/auth/resend-verification',
         verifyEmail: 'GET /api/v1/auth/verify-email',
       },
+      admin: {
+        me: 'GET /api/v1/admin/me',
+        dashboard: 'GET /api/v1/admin/dashboard',
+        contacts: 'GET /api/v1/admin/contacts',
+        contactById: 'GET /api/v1/admin/contacts/:id',
+        updateContactStatus: 'PATCH /api/v1/admin/contacts/:id/status',
+      },
     },
   });
 

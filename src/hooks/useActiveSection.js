@@ -1,20 +1,20 @@
+/**
+ * useActiveSection — Tracks which landing-page section is currently in view.
+ * Purpose: Drive active nav highlighting in the Header.
+ * Used by: Header.
+ */
+
 import { useEffect, useRef, useState } from 'react';
+import { siteConfig } from '../data/site';
 
-// Custom hook: Tracks which section is currently visible based on scroll position.
-// Uses requestAnimationFrame throttling to avoid excessive re-renders on scroll.
-// Used by the Header to highlight the active navigation link.
-// @param sectionIds - Array of section IDs to track. Default covers all sections.
-// @returns The ID of the currently active (visible) section.
-
-export function useActiveSection(sectionIds = ['home', 'about', 'skills', 'projects', 'contact']) {
+export function useActiveSection(sectionIds = siteConfig.navSections) {
   const [activeSection, setActiveSection] = useState('home');
   const rafRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 180; // Offset for header height.
+      const scrollPosition = window.scrollY + 180;
 
-      // Find the last section that has scrolled past the top.
       let current = sectionIds[0];
       for (const id of sectionIds) {
         const section = document.getElementById(id);
@@ -22,20 +22,18 @@ export function useActiveSection(sectionIds = ['home', 'about', 'skills', 'proje
           current = id;
         }
       }
-      // Only update state if section actually changed (avoids useless re-renders)
       setActiveSection((prev) => (prev !== current ? current : prev));
     };
 
-    // Throttled scroll handler using requestAnimationFrame
     const throttledScroll = () => {
-      if (rafRef.current) return; // Skip if a frame is already pending
+      if (rafRef.current) return;
       rafRef.current = requestAnimationFrame(() => {
         handleScroll();
         rafRef.current = null;
       });
     };
 
-    handleScroll(); // Run on mount to set initial active section.
+    handleScroll();
     window.addEventListener('scroll', throttledScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', throttledScroll);

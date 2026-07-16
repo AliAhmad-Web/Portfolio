@@ -10,3 +10,10 @@ export {
   resendVerification,
   verifyEmailStatus,
 } from './auth.controller.js';
+export {
+  submitContactForm,
+  listContacts,
+  getContactById,
+  updateContactStatus,
+  getDashboardOverview,
+} from './contact.controller.js';

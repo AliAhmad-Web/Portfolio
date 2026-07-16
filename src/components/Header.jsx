@@ -1,53 +1,93 @@
-// Header: Sticky navigation bar at the top of the page.
-// Shows the brand logo (AliAhmad-Web) and navigation links.
-// Highlights the currently visible section using the useActiveSection hook.
-// On mobile (< md breakpoint), shows a hamburger menu toggle.
-//
-// Navigation items: home, about, skills, stats, services, projects, contact.
-// Each item scrolls smoothly to its corresponding section on click.
+/**
+ * Header — Sticky public navigation for the portfolio landing page.
+ * Purpose: Section links + auth actions; highlights the active section while scrolling.
+ * Used by: HomePage.
+ */
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { scrollToSection } from '../utils/scrollToSection';
+import { useAuth } from '../context/AuthContext';
+import { siteConfig } from '../data/site';
+import BrandMark from './ui/BrandMark';
 
-// Ordered navigation items matching section IDs in order of appearance.
-const navItems = ['home', 'about', 'skills', 'stats', 'services', 'projects', 'contact'];
+const navItems = siteConfig.navSections;
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);       // Mobile menu toggle state.
-  const activeSection = useActiveSection();               // Tracks which section is visible.
+  const [menuOpen, setMenuOpen] = useState(false);
+  const activeSection = useActiveSection();
+  const { user, isAdmin, logout } = useAuth();
 
-  // Scroll to section and close mobile menu.
   const handleNavigate = (id) => {
     scrollToSection(id);
     setMenuOpen(false);
   };
 
+  const authActions = (
+    <>
+      {user ? (
+        <>
+          {isAdmin ? (
+            <Link
+              to="/dashboard"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-200 transition hover:border-cyan-300 hover:text-cyan-100"
+            >
+              Dashboard
+            </Link>
+          ) : null}
+          <button
+            type="button"
+            onClick={async () => {
+              setMenuOpen(false);
+              await logout();
+            }}
+            className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-cyan-400 hover:text-cyan-100"
+          >
+            Log out
+          </button>
+        </>
+      ) : (
+        <Link
+          to="/auth/login"
+          onClick={() => setMenuOpen(false)}
+          className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-200 transition hover:border-cyan-300 hover:text-cyan-100"
+        >
+          Login
+        </Link>
+      )}
+    </>
+  );
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Brand / Logo - clicking scrolls to home */}
-        <button type="button" onClick={() => handleNavigate('home')} className="text-xl font-black tracking-[0.25em] text-white md:text-2xl" aria-label="Go to home section">
-          AliAhmad<span className="text-cyan-400">-Web</span>
-        </button>
+        <BrandMark
+          onClick={() => handleNavigate('home')}
+          className="text-xl font-black tracking-[0.25em] text-white md:text-2xl"
+        />
 
-        {/* Desktop navigation - hidden on mobile */}
         <nav className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => (
             <button
               key={item}
               type="button"
               onClick={() => handleNavigate(item)}
-              className={`capitalize transition ${activeSection === item ? 'text-cyan-300' : 'text-slate-300 hover:text-cyan-200'}`}
+              className={`capitalize transition ${
+                activeSection === item
+                  ? 'text-cyan-300'
+                  : 'text-slate-300 hover:text-cyan-200'
+              }`}
             >
               {item}
             </button>
           ))}
+          <div className="ml-2 flex items-center gap-2">{authActions}</div>
         </nav>
 
-        {/* Mobile hamburger / close toggle button */}
         <button
           type="button"
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -58,7 +98,6 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile navigation menu - AnimatePresence for smooth open/close */}
       <AnimatePresence>
         {menuOpen && (
           <motion.nav
@@ -73,11 +112,16 @@ export default function Header() {
                 key={item}
                 type="button"
                 onClick={() => handleNavigate(item)}
-                className={`mb-2 block w-full rounded-2xl px-4 py-3 text-left text-base capitalize transition ${activeSection === item ? 'bg-cyan-400/10 text-cyan-200' : 'text-slate-200 hover:bg-white/5'}`}
+                className={`mb-2 block w-full rounded-2xl px-4 py-3 text-left text-base capitalize transition ${
+                  activeSection === item
+                    ? 'bg-cyan-400/10 text-cyan-200'
+                    : 'text-slate-200 hover:bg-white/5'
+                }`}
               >
                 {item}
               </button>
             ))}
+            <div className="mt-3 flex flex-col gap-2">{authActions}</div>
           </motion.nav>
         )}
       </AnimatePresence>

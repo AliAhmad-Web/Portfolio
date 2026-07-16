@@ -32,6 +32,12 @@ export const authValidations = {
       .isString()
       .notEmpty()
       .withMessage('Password is required'),
+    body('recaptchaToken')
+      .optional({ values: 'falsy' })
+      .isString()
+      .withMessage('reCAPTCHA token must be a string')
+      .isLength({ min: 20, max: 4000 })
+      .withMessage('reCAPTCHA token is invalid'),
   ],
 
   forgotPassword: [

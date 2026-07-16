@@ -12,6 +12,7 @@ import {
   BadRequestError,
 } from '../utils/ApiError.js';
 import { sanitizeUser, formatSession } from '../utils/user.js';
+import { profileService } from './profile.service.js';
 
 function mapSupabaseAuthError(error) {
   const message = error.message ?? 'Authentication failed';
@@ -52,9 +53,18 @@ function mapSupabaseAuthError(error) {
   return new ApiError(error.status ?? 400, message);
 }
 
-function buildAuthPayload(user, session) {
+async function buildAuthPayload(user, session) {
+  let profile = null;
+
+  try {
+    profile = await profileService.ensureProfile(user);
+  } catch (error) {
+    // Profiles table may not exist yet during initial setup
+    console.warn('[auth] profile sync skipped:', error.message);
+  }
+
   return {
-    user: sanitizeUser(user),
+    user: sanitizeUser(user, profile),
     session: session ? formatSession(session) : null,
   };
 }
@@ -85,7 +95,7 @@ export const authService = {
     const needsEmailVerification = !data.session;
 
     return {
-      ...buildAuthPayload(data.user, data.session),
+      ...(await buildAuthPayload(data.user, data.session)),
       needsEmailVerification,
     };
   },
@@ -107,6 +117,11 @@ export const authService = {
 
   async signOut(accessToken) {
     const client = createSupabaseUserClient(accessToken);
+
+    if (!client) {
+      return { signedOut: true };
+    }
+
     const { error } = await client.auth.signOut();
 
     if (error) {
@@ -130,6 +145,11 @@ export const authService = {
 
   async resetPassword(accessToken, password) {
     const client = createSupabaseUserClient(accessToken);
+
+    if (!client) {
+      throw new ApiError(500, 'Supabase is not configured');
+    }
+
     const { data, error } = await client.auth.updateUser({ password });
 
     if (error) {
@@ -140,7 +160,15 @@ export const authService = {
   },
 
   async getUserFromToken(accessToken) {
-    const { data, error } = await supabaseAdmin.auth.getUser(accessToken);
+    if (supabaseAdmin) {
+      const { data, error } = await supabaseAdmin.auth.getUser(accessToken);
+
+      if (!error && data.user) {
+        return data.user;
+      }
+    }
+
+    const { data, error } = await supabaseAnon.auth.getUser(accessToken);
 
     if (error || !data.user) {
       throw new UnauthorizedError('Invalid or expired session');
@@ -151,7 +179,8 @@ export const authService = {
 
   async getCurrentUser(accessToken) {
     const user = await this.getUserFromToken(accessToken);
-    return sanitizeUser(user);
+    const profile = await profileService.ensureProfile(user);
+    return sanitizeUser(user, profile);
   },
 
   async refreshSession(refreshToken) {
@@ -191,6 +220,7 @@ export const authService = {
       throw new ForbiddenError('Email address is not verified yet');
     }
 
-    return sanitizeUser(user);
+    const profile = await profileService.ensureProfile(user);
+    return sanitizeUser(user, profile);
   },
 };

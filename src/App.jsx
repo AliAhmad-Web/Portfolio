@@ -1,99 +1,53 @@
-/* ============================================
-   Root Application Component
-   ============================================
-   This is the main App component that:
-   - Manages global state (loading screen, toast notifications).
-   - Renders all sections in order: Hero → About → Skills → Stats → Services → Projects → Contact.
-   - Wraps content with Header (sticky nav) and Footer.
-   - Uses Framer Motion's AnimatePresence for the loading screen exit animation.
-   - Uses react-helmet-async for dynamic SEO meta tags.
-   ============================================ */
+/**
+ * App — Root React router for the portfolio SPA.
+ * Purpose: Declare public, auth, and admin routes; wrap with AuthProvider.
+ * Used by: main.jsx entry point.
+ */
 
-import { useState, useCallback, lazy, Suspense } from 'react';
-import { Helmet } from 'react-helmet-async';
-
-// ---- Critical Components (loaded eagerly above the fold) ----
-import Header from './components/Header';
-import HeroSection from './sections/HeroSection';
-
-// ---- Below-fold Sections (lazy loaded for faster initial render) ----
-const AboutSection = lazy(() => import('./sections/AboutSection'));
-const SkillsSection = lazy(() => import('./sections/SkillsSection'));
-const GitHubStatsSection = lazy(() => import('./sections/GitHubStatsSection'));
-const ServicesSection = lazy(() => import('./sections/ServicesSection'));
-const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
-const ContactSection = lazy(() => import('./sections/ContactSection'));
-const FooterSection = lazy(() => import('./sections/FooterSection'));
-const ScrollToTop = lazy(() => import('./components/ScrollToTop'));
-const Toast = lazy(() => import('./components/Toast'));
-
-// Simple fallback with no animation overhead
-const SectionFallback = () => <div className="h-32" />;
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import AdminLayout from './components/admin/AdminLayout';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignupPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage';
+import VerifyEmailPage from './pages/auth/VerifyEmailPage';
+import DashboardHomePage from './pages/admin/DashboardHomePage';
+import ContactsPage from './pages/admin/ContactsPage';
+import ProfilePage from './pages/admin/ProfilePage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 
 export default function App() {
-  const [toast, setToast] = useState(null);
-
-  // Memoized toast handler - prevents unnecessary re-creations
-  const showToast = useCallback((message, type = 'success') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3200);
-  }, []);
-
-  const closeToast = useCallback(() => setToast(null), []);
-
   return (
-    <>
-      <Helmet>
-        <title>Ali Ahmad | React Portfolio</title>
-        <meta name="description" content="Modern, responsive React portfolio website with projects, skills, and a working contact form." />
-        <meta name="theme-color" content="#020617" />
-        {/* Preconnect to origins we'll need */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </Helmet>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+          <Route path="/auth/login" element={<LoginPage />} />
+          <Route path="/auth/signup" element={<SignupPage />} />
+          <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/auth/verify-email" element={<VerifyEmailPage />} />
 
-      {/* Main app wrapper - simplified gradient to reduce paint cost */}
-      <div className="min-h-screen bg-slate-950 text-white antialiased">
-        <Header />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute requireAdmin>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<DashboardHomePage />} />
+            <Route path="contacts" element={<ContactsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
 
-        {/* Hero loads immediately - it's above the fold */}
-        <HeroSection />
-
-        {/* Below-fold sections load lazily so they don't block initial paint */}
-        <main>
-          <Suspense fallback={<SectionFallback />}>
-            <AboutSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <SkillsSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <GitHubStatsSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ServicesSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ProjectsSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ContactSection showToast={showToast} />
-          </Suspense>
-        </main>
-
-        <Suspense fallback={null}>
-          <FooterSection />
-        </Suspense>
-        <Suspense fallback={null}>
-          <ScrollToTop />
-        </Suspense>
-
-        {toast && (
-          <Suspense fallback={null}>
-            <Toast message={toast.message} type={toast.type} onClose={closeToast} />
-          </Suspense>
-        )}
-      </div>
-    </>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

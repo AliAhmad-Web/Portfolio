@@ -1,11 +1,14 @@
-// Application entry point. Renders the React app inside StrictMode with HelmetProvider for SEO meta tags.
+/**
+ * main — Vite/React application bootstrap.
+ * Purpose: Mount the app with StrictMode and HelmetProvider for document head SEO.
+ */
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
-import './index.css'; // Global Tailwind styles and custom CSS.
-import App from './App.jsx'; // Root component containing all sections.
+import './index.css';
+import App from './App.jsx';
 
-// Mount the app to the root div in index.html.
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>

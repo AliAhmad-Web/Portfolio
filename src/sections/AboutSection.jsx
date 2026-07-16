@@ -1,6 +1,8 @@
-// AboutSection: A brief "About Me" section that introduces Ali Ahmad, his expertise,
-// and key strengths as a developer. Uses Framer Motion for entrance animations.
-// Layout: Two columns on desktop (text left, highlights right), stacked on mobile.
+/**
+ * AboutSection — Short bio and highlight stats for the landing page.
+ * Purpose: Introduce the developer and key strengths.
+ * Used by: HomePage.
+ */
 
 import { motion } from 'framer-motion';
 

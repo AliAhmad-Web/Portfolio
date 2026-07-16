@@ -18,8 +18,8 @@ export class UnauthorizedError extends ApiError {
 }
 
 export class ForbiddenError extends ApiError {
-  constructor(message = 'Forbidden') {
-    super(403, message);
+  constructor(message = 'Forbidden', errors = null) {
+    super(403, message, errors);
     this.name = 'ForbiddenError';
   }
 }

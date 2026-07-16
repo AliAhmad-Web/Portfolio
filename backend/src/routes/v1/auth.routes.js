@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { validate } from '../../middleware/validate.js';
 import { authenticate } from '../../middleware/auth.js';
+import { verifyRecaptcha } from '../../middleware/recaptcha.js';
+import { loginRateLimiter } from '../../middleware/rateLimit.js';
 import { authValidations } from '../../validations/auth.validation.js';
 import {
   signUp,
@@ -17,7 +19,13 @@ import {
 const router = Router();
 
 router.post('/signup', validate(authValidations.signup), signUp);
-router.post('/login', validate(authValidations.login), login);
+router.post(
+  '/login',
+  loginRateLimiter,
+  validate(authValidations.login),
+  verifyRecaptcha('login'),
+  login,
+);
 router.post('/logout', authenticate, logout);
 router.post(
   '/forgot-password',
@@ -43,3 +51,4 @@ router.get('/verify-email', authenticate, verifyEmailStatus);
 router.get('/me', authenticate, getMe);
 
 export default router;
+
