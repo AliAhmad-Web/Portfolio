@@ -8,7 +8,36 @@ import {
 } from '../utils/cookies.js';
 import { extractBearerToken } from '../utils/jwt.js';
 import { UnauthorizedError } from '../utils/ApiError.js';
+import { env } from '../config/env.js';
 
+/**
+ * Prefer the browser Origin (Vercel / local) for auth email redirects so
+ * password-reset and verify links never fall back to a stale localhost URL.
+ */
+function resolveAuthRedirectBase(req) {
+  const originHeader = req.get('origin');
+  if (originHeader) {
+    try {
+      const origin = new URL(originHeader).origin;
+      const allowed = new Set([
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        ...String(process.env.CLIENT_URL || '')
+          .split(',')
+          .map((value) => value.trim())
+          .filter(Boolean),
+      ]);
+
+      if (allowed.has(origin) || origin.endsWith('.vercel.app')) {
+        return origin;
+      }
+    } catch {
+      // ignore invalid Origin
+    }
+  }
+
+  return env.clientUrl;
+}
 function respondWithAuth(res, message, payload, statusCode = 200) {
   if (payload.session) {
     setAuthCookies(res, {
@@ -74,7 +103,10 @@ export const logout = asyncHandler(async (req, res) => {
 });
 
 export const forgotPassword = asyncHandler(async (req, res) => {
-  await authService.forgotPassword(req.body.email);
+  const base = resolveAuthRedirectBase(req);
+  await authService.forgotPassword(req.body.email, {
+    redirectTo: `${base}/auth/reset-password`,
+  });
 
   sendResponse(
     res,

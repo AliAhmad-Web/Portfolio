@@ -131,9 +131,9 @@ export const authService = {
     return { signedOut: true };
   },
 
-  async forgotPassword(email) {
+  async forgotPassword(email, { redirectTo } = {}) {
     const { error } = await supabaseAnon.auth.resetPasswordForEmail(email, {
-      redirectTo: env.auth.resetPasswordRedirectUrl,
+      redirectTo: redirectTo || env.auth.resetPasswordRedirectUrl,
     });
 
     if (error) {
