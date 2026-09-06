@@ -26,10 +26,7 @@ export const siteConfig = {
   navSections: ['home', 'about', 'skills', 'stats', 'services', 'projects', 'contact'],
 };
 
-/** API prefix for the Express backend (`/api/v1` locally via Vite proxy). */
-export const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || '/api/v1'
-).replace(/\/$/, '');
+export const API_BASE_URL = '/api/v1';
 
 export function getMailtoHref() {
   return `mailto:${siteConfig.contact.email}`;
