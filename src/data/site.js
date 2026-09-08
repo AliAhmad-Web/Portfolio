@@ -29,22 +29,22 @@ export const siteConfig = {
   navItems: [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
-    { id: 'services', label: 'Solutions' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'stats', label: 'Stats' },
+    { id: 'services', label: 'Services' },
     { id: 'projects', label: 'Projects' },
-    { id: 'skills', label: 'Process' },
-    { id: 'stats', label: 'Testimonials' },
     { id: 'contact', label: 'Contact' },
   ],
   /**
-   * Footer quick links (display names match the restored footer copy).
+   * Footer quick links — same labels and order as the header.
    */
   footerLinks: [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
-    { id: 'services', label: 'Services' },
-    { id: 'projects', label: 'Projects' },
     { id: 'skills', label: 'Skills' },
     { id: 'stats', label: 'Stats' },
+    { id: 'services', label: 'Services' },
+    { id: 'projects', label: 'Projects' },
     { id: 'contact', label: 'Contact' },
   ],
   /** Public landing-page section IDs in page order (used by useActiveSection). */

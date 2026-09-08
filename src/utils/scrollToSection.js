@@ -3,16 +3,23 @@
  * Used by Header navigation links, Footer links, and "Back to Top" button.
  *
  * @param {string} id - The DOM element ID of the target section (e.g. "home", "projects").
- *
- * How it works:
- * 1. Finds the DOM element with the given ID using document.getElementById().
- * 2. Scrolls the page so that element is at the top of the viewport.
- * 3. The scrolling animation is smooth (CSS scroll-behavior or JS behavior option).
  */
 
 export function scrollToSection(id) {
-  const section = document.getElementById(id); // Locate the target section element.
-  if (!section) return;                         // Exit if element doesn't exist.
+  const section = document.getElementById(id);
+  if (!section && id !== 'home') return;
 
-  section.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Smooth scroll to element.
+  const nextUrl = id === 'home' ? '/' : `/#${id}`;
+  const currentUrl = `${window.location.pathname}${window.location.hash}`;
+  if (currentUrl !== nextUrl) {
+    window.history.replaceState(null, '', nextUrl);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+  }
+
+  if (id === 'home') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }

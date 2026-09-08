@@ -18,6 +18,7 @@ const projectData = [
     image: '/project-scrs.png',
     category: 'Full Stack Web Application',
     groups: ['Frontend', 'Full Stack'],
+    tone: 'purple',
   },
   {
     id: 4,
@@ -30,6 +31,7 @@ const projectData = [
     image: '/quizApp.png',
     category: 'Full Stack Web Application',
     groups: ['Frontend', 'Full Stack'],
+    tone: 'blue',
   },
   {
     id: 8,
@@ -42,6 +44,7 @@ const projectData = [
     image: '/project-saas.jpg',
     category: 'Full Stack SaaS Application',
     groups: ['Frontend', 'Full Stack'],
+    tone: 'cyan',
   },
   // --- HTML / JavaScript / CSS projects (Group 2) ---
   {
@@ -55,6 +58,7 @@ const projectData = [
     image: '/project-fresh-bite.jpg',
     category: 'Restaurant & Food Landing Page',
     groups: ['Frontend'],
+    tone: 'gold',
   },
   {
     id: 3,
@@ -67,6 +71,7 @@ const projectData = [
     image: '/project-foodzone.jpg',
     category: 'Restaurant & Food Ordering Website',
     groups: ['Frontend'],
+    tone: 'teal',
   },
   {
     id: 7,
@@ -79,6 +84,7 @@ const projectData = [
     image: '/project-tictactoe.jpg',
     category: 'Interactive Game',
     groups: ['Frontend', 'Other'],
+    tone: 'violet',
   },
   {
     id: 5,
@@ -91,6 +97,7 @@ const projectData = [
     image: '/project-todo.jpg',
     category: 'Task Management Application',
     groups: ['Frontend'],
+    tone: 'green',
   },
   {
     id: 6,
@@ -103,6 +110,7 @@ const projectData = [
     image: '/project-ratelist.jpg',
     category: 'Rate Management Application',
     groups: ['Frontend'],
+    tone: 'blue',
   },
 ];
 

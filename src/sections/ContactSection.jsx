@@ -1,12 +1,19 @@
 /**
- * ContactSection — Public contact form + social contact links.
+ * ContactSection — Two-column contact layout matching the Contact reference.
  * Purpose: Collect visitor messages via POST /api/v1/contact (with reCAPTCHA).
- * Used by: HomePage.
+ * Used by: HomePage. Anchor: #contact.
  */
 
 import { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import {
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineEnvelope,
+  HiOutlineUser,
+  HiPaperAirplane,
+} from 'react-icons/hi2';
+import ContactFormWave from '../components/contact/ContactFormWave';
 import { useRecaptcha } from '../hooks/useRecaptcha';
 import { isValidEmail } from '../utils/authValidation';
 import { API_BASE_URL, getMailtoHref, siteConfig } from '../data/site';
@@ -18,24 +25,28 @@ const contactLinks = [
     href: getMailtoHref(),
     label: siteConfig.contact.email,
     Icon: FaEnvelope,
+    tone: 'email',
     external: false,
   },
   {
     href: siteConfig.social.github,
     label: 'GitHub',
     Icon: FaGithub,
+    tone: 'github',
     external: true,
   },
   {
     href: siteConfig.social.linkedin,
     label: 'LinkedIn',
     Icon: FaLinkedin,
+    tone: 'linkedin',
     external: true,
   },
   {
     href: siteConfig.social.whatsapp,
     label: 'WhatsApp',
     Icon: FaWhatsapp,
+    tone: 'whatsapp',
     external: true,
   },
 ];
@@ -104,34 +115,42 @@ export default function ContactSection({ showToast }) {
   };
 
   return (
-    <section id="contact" className="site-section">
-      <div className="site-wrap contact-grid">
+    <section id="contact" className="contact-screen px-4 sm:px-6 lg:px-8">
+      <div className="contact-fx" aria-hidden="true">
+        <div className="contact-ambient" />
+      </div>
+
+      <div className="contact-main relative z-10 mx-auto max-w-7xl">
         <motion.div
+          className="contact-copy"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.35 }}
         >
-          <p className="ui-kicker">Contact</p>
-          <h2 className="ui-heading">
-            Let's build something memorable together.
+          <p className="contact-kicker">CONTACT</p>
+          <h2>
+            Let&apos;s build something
+            <br />
+            <span className="contact-heading-accent">memorable together.</span>
           </h2>
-          <span className="ui-rule" />
-          <p className="ui-lead" style={{ marginLeft: 0, marginRight: 0 }}>
+          <p className="contact-lead">
             Have a project in mind or want to discuss your next website? Send a quick note and
-            I'll get back to you with next steps.
+            I&apos;ll get back to you with next steps.
           </p>
+          <span className="contact-rule" />
 
           <div className="contact-links">
-            {contactLinks.map(({ href, label, Icon, external }) => (
+            {contactLinks.map(({ href, label, Icon, tone, external }) => (
               <a
                 key={label}
                 href={href}
                 target={external ? '_blank' : undefined}
                 rel={external ? 'noreferrer' : undefined}
-                className="contact-link"
+                className={`contact-link is-${tone}`}
               >
-                <Icon /> {label}
+                <Icon />
+                <span>{label}</span>
               </a>
             ))}
           </div>
@@ -143,51 +162,65 @@ export default function ContactSection({ showToast }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.35 }}
-          className="ui-card contact-form"
+          className="contact-form"
           noValidate
         >
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label>
-              Name
+          <ContactFormWave />
+
+          <div className="contact-fields-row">
+            <label className="contact-field">
+              <span className="contact-field-label is-purple">
+                <HiOutlineUser />
+                Name
+              </span>
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Your name"
+                autoComplete="name"
+                aria-invalid={Boolean(errors.name)}
               />
-              {errors.name && <p className="field-error">{errors.name}</p>}
+              {errors.name ? <p className="contact-error">{errors.name}</p> : null}
             </label>
-            <label>
-              Email
+
+            <label className="contact-field">
+              <span className="contact-field-label is-purple">
+                <HiOutlineEnvelope />
+                Email
+              </span>
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="you@example.com"
+                autoComplete="email"
+                aria-invalid={Boolean(errors.email)}
               />
-              {errors.email && <p className="field-error">{errors.email}</p>}
+              {errors.email ? <p className="contact-error">{errors.email}</p> : null}
             </label>
           </div>
 
-          <label className="mt-4">
-            Message
+          <label className="contact-field">
+            <span className="contact-field-label is-purple">
+              <HiOutlineChatBubbleLeftRight />
+              Message
+            </span>
             <textarea
               name="message"
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              rows="6"
+              rows="7"
               placeholder="Tell me about your project..."
+              aria-invalid={Boolean(errors.message)}
             />
-            {errors.message && <p className="field-error">{errors.message}</p>}
+            {errors.message ? <p className="contact-error">{errors.message}</p> : null}
           </label>
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="btn-primary mt-6"
-          >
+          <button type="submit" className="contact-submit" disabled={submitting}>
+            <HiPaperAirplane />
             {submitting ? 'Sending...' : 'Send Message'}
           </button>
         </motion.form>
