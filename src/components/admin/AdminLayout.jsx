@@ -58,10 +58,9 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.1),transparent_40%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.08),transparent_35%)]" />
+    <div className="site-shell min-h-screen text-white">
 
-      <div className="relative mx-auto flex min-h-screen max-w-[1440px]">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px]">
         {/* Desktop sidebar */}
         <aside className="sticky top-0 hidden h-screen w-72 shrink-0 flex-col border-r border-white/10 bg-slate-950/80 backdrop-blur-xl lg:flex">
           <div className="border-b border-white/10 px-6 py-6">

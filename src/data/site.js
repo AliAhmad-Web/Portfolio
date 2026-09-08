@@ -11,7 +11,7 @@ export const siteConfig = {
     fullName: 'Ali Ahmad',
     role: 'Frontend Developer',
     tagline:
-      'React Developer crafting modern, responsive, and high-performance web experiences.',
+      'Crafting intelligent digital solutions, business systems, and AI-powered web applications.',
   },
   contact: {
     email: 'alikhan234ali@gmail.com',
@@ -22,7 +22,32 @@ export const siteConfig = {
     linkedin: 'https://www.linkedin.com/',
     whatsapp: 'https://wa.me/923064382254',
   },
-  /** Public landing-page section IDs (order matches scroll navigation). */
+  /**
+   * Header labels mapped to existing section DOM ids.
+   * Solutions → services, Process → skills, Testimonials → stats.
+   */
+  navItems: [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'services', label: 'Solutions' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'skills', label: 'Process' },
+    { id: 'stats', label: 'Testimonials' },
+    { id: 'contact', label: 'Contact' },
+  ],
+  /**
+   * Footer quick links (display names match the restored footer copy).
+   */
+  footerLinks: [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'services', label: 'Services' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'stats', label: 'Stats' },
+    { id: 'contact', label: 'Contact' },
+  ],
+  /** Public landing-page section IDs in page order (used by useActiveSection). */
   navSections: ['home', 'about', 'skills', 'stats', 'services', 'projects', 'contact'],
 };
 

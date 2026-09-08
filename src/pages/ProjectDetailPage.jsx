@@ -32,12 +32,10 @@ export default function ProjectDetailPage() {
         <meta name="description" content={project.description} />
       </Helmet>
 
-      <div className="min-h-screen bg-slate-950 text-white">
-        <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.08),transparent_36%)]" />
-
-        <div className="relative">
-          <header className="border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
+      <div className="site-shell min-h-screen text-white">
+        <div className="relative z-10">
+          <header className="site-header">
+            <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8 lg:px-10">
               <Link
                 to="/#projects"
                 className="inline-flex items-center gap-2 text-sm text-slate-300 transition-colors duration-300 hover:text-cyan-200"
@@ -47,7 +45,7 @@ export default function ProjectDetailPage() {
               </Link>
               <BrandMark
                 to="/"
-                className="text-lg font-black tracking-[0.2em] text-white transition-colors duration-300 hover:text-cyan-100"
+                className="text-lg font-black tracking-[0.14em] text-white transition-colors duration-300 hover:text-cyan-100"
               />
             </div>
           </header>
@@ -59,7 +57,7 @@ export default function ProjectDetailPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 shadow-[0_20px_50px_rgba(2,6,23,0.55)] sm:rounded-3xl"
+                className="glass-panel mx-auto max-w-4xl overflow-hidden"
               >
                 <img
                   src={project.image}
@@ -112,7 +110,7 @@ export default function ProjectDetailPage() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
-                className="h-fit rounded-3xl border border-white/10 'bg-white/[0.04]' p-6 shadow-[0_16px_40px_rgba(2,6,23,0.35)] backdrop-blur-xl sm:p-7 lg:sticky lg:top-8"
+                className="glass-panel h-fit p-6 sm:p-7 lg:sticky lg:top-8"
               >
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-cyan-300 sm:text-sm">
                   Project links
@@ -126,7 +124,7 @@ export default function ProjectDetailPage() {
                     href={project.live}
                     target="_blank"
                     rel="noreferrer"
-                    className={`${linkButtonBase} bg-cyan-400 text-slate-950 hover:-translate-y-0.5 hover:bg-cyan-300 hover:shadow-[0_10px_24px_rgba(34,211,238,0.25)]`}
+                    className={`${linkButtonBase} btn-primary`}
                   >
                     <FaExternalLinkAlt className="text-xs" />
                     Live Demo
@@ -135,14 +133,14 @@ export default function ProjectDetailPage() {
                     href={project.github}
                     target="_blank"
                     rel="noreferrer"
-                    className={`${linkButtonBase} border border-cyan-400/40 bg-cyan-400/10 font-medium text-cyan-100 hover:-translate-y-0.5 hover:border-cyan-300/60 hover:bg-cyan-400/20`}
+                    className={`${linkButtonBase} btn-ghost`}
                   >
                     <FaGithub />
                     View on GitHub
                   </a>
                   <Link
                     to="/#projects"
-                    className={`${linkButtonBase} border border-white/10 bg-white/5 font-medium text-slate-200 hover:-translate-y-0.5 hover:border-cyan-400/40 hover:text-cyan-100`}
+                    className={`${linkButtonBase} btn-ghost`}
                   >
                     <FaArrowLeft className="text-xs" />
                     Back to Projects

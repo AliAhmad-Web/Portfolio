@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { siteConfig } from '../../data/site';
 
 const defaultClassName =
-  'text-xl font-black tracking-[0.25em] text-white md:text-2xl';
+  'text-xl font-black tracking-[0.14em] text-white md:text-2xl';
 
 export default function BrandMark({
   to,

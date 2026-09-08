@@ -1,48 +1,92 @@
 /**
  * Services data for the portfolio Services section.
- * Purpose: Single source of truth for offered services (title, description, icon).
+ * Purpose: Single source of truth for offered services (title, description, icon, tech line).
  * Used by: ServicesSection.
  */
 
 import {
-  FaReact,
-  FaMobileAlt,
-  FaRocket,
-  FaShoppingCart,
-  FaRedo,
+  FaChartBar,
+  FaCloudUploadAlt,
+  FaDatabase,
+  FaFolderOpen,
+  FaHeadset,
   FaLaptopCode,
+  FaRobot,
+  FaServer,
+  FaShieldAlt,
+  FaCogs,
 } from 'react-icons/fa';
 
 const services = [
   {
-    title: 'Frontend Development',
-    description: 'Building modern and responsive web applications using React.js and JavaScript.',
+    title: 'Professional Websites & Web Apps',
+    description:
+      'I build fast, responsive, and modern websites and web applications that deliver seamless user experiences.',
     icon: <FaLaptopCode />,
+    tags: ['React.js', 'Next.js', 'Tailwind CSS', 'JavaScript', 'TypeScript'],
   },
   {
-    title: 'React.js Development',
-    description: 'Creating fast, scalable, and maintainable React applications.',
-    icon: <FaReact />,
+    title: 'Powerful Business Systems',
+    description:
+      'I develop secure, scalable, and high-performance backend systems and APIs to power your business.',
+    icon: <FaServer />,
+    tags: ['Node.js', 'Express.js', 'REST APIs', 'Prisma ORM', 'JWT', 'PostgreSQL'],
   },
   {
-    title: 'Responsive Web Design',
-    description: 'Ensuring websites look perfect on desktop, tablet, and mobile devices.',
-    icon: <FaMobileAlt />,
+    title: 'Data & Business Management',
+    description:
+      'I design and manage reliable databases and systems to store, organize, and protect your important data.',
+    icon: <FaDatabase />,
+    tags: ['PostgreSQL', 'Supabase', 'MySQL', 'Database Design', 'Migrations'],
   },
   {
-    title: 'Landing Page Development',
-    description: 'Designing high-converting and professional landing pages.',
-    icon: <FaRocket />,
+    title: 'AI-Powered Features',
+    description:
+      'I integrate AI models and APIs to add smart features that improve user experience and business efficiency.',
+    icon: <FaCogs />,
+    tags: ['OpenAI API', 'Gemini', 'Chatbots', 'AI Features', 'AI Tools'],
   },
   {
-    title: 'E-Commerce Development',
-    description: 'Building modern online store interfaces and shopping experiences.',
-    icon: <FaShoppingCart />,
+    title: 'AI Automation & Smart Workflows',
+    description:
+      'I automate repetitive tasks and create intelligent workflows using AI and advanced automation tools to save time and reduce manual work.',
+    icon: <FaRobot />,
+    tags: ['n8n', 'AI Agents', 'Workflows', 'Task Automation', 'Integrations'],
   },
   {
-    title: 'Website Redesign',
-    description: 'Improving existing websites with modern UI/UX and better performance.',
-    icon: <FaRedo />,
+    title: 'Fast & Reliable Deployment',
+    description:
+      'I deploy your applications and services using modern cloud platforms for high availability and performance.',
+    icon: <FaCloudUploadAlt />,
+    tags: ['Vercel', 'Render', 'Railway', 'AWS', 'Docker', 'CI/CD'],
+  },
+  {
+    title: 'Secure Login & Data Protection',
+    description:
+      'I implement secure authentication, authorization, and best security practices to protect your business and users.',
+    icon: <FaShieldAlt />,
+    tags: ['JWT', 'RBAC', 'Argon2', 'Rate Limiting', 'Data Validation'],
+  },
+  {
+    title: 'Digital Files & Document Systems',
+    description:
+      'I create secure file upload, storage, sharing, and management systems with proper access control.',
+    icon: <FaFolderOpen />,
+    tags: ['File Uploads', 'Access Control', 'Secure Storage', 'File Handling'],
+  },
+  {
+    title: 'Business Analytics & Dashboards',
+    description:
+      'I create interactive dashboards and analytics to help you track performance and make data-driven decisions.',
+    icon: <FaChartBar />,
+    tags: ['Charts', 'Analytics', 'Reporting', 'Data Visualization'],
+  },
+  {
+    title: 'Ongoing Support & Maintenance',
+    description:
+      'I provide ongoing maintenance, performance optimization, bug fixing, and technical support to keep your system running smoothly.',
+    icon: <FaHeadset />,
+    tags: ['Bug Fixing', 'Optimization', 'Updates', 'Monitoring', '24/7 Support'],
   },
 ];
 

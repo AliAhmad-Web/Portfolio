@@ -7,7 +7,7 @@ export default function StatCard({ label, value, hint, accent = 'cyan' }) {
   };
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl">
+    <div className="ui-card p-5">
       <p className="text-xs uppercase tracking-[0.28em] text-slate-400">{label}</p>
       <p className="mt-3 text-3xl font-bold text-white">{value}</p>
       {hint ? (

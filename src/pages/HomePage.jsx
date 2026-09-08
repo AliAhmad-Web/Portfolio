@@ -60,7 +60,7 @@ export default function HomePage() {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Helmet>
 
-      <div className="min-h-screen bg-slate-950 text-white antialiased">
+      <div className="site-shell min-h-screen text-white antialiased">
         <Header />
         <HeroSection />
 

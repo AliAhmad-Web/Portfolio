@@ -104,31 +104,32 @@ export default function ContactSection({ showToast }) {
   };
 
   return (
-    <section id="contact" className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+    <section id="contact" className="site-section">
+      <div className="site-wrap contact-grid">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.35 }}
         >
-          <p className="text-sm uppercase tracking-[0.35em] text-cyan-300">Contact</p>
-          <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
+          <p className="ui-kicker">Contact</p>
+          <h2 className="ui-heading">
             Let's build something memorable together.
           </h2>
-          <p className="mt-4 text-slate-300">
+          <span className="ui-rule" />
+          <p className="ui-lead" style={{ marginLeft: 0, marginRight: 0 }}>
             Have a project in mind or want to discuss your next website? Send a quick note and
             I'll get back to you with next steps.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="contact-links">
             {contactLinks.map(({ href, label, Icon, external }) => (
               <a
                 key={label}
                 href={href}
                 target={external ? '_blank' : undefined}
                 rel={external ? 'noreferrer' : undefined}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-slate-100 hover:border-cyan-400 hover:text-cyan-100"
+                className="contact-link"
               >
                 <Icon /> {label}
               </a>
@@ -142,53 +143,50 @@ export default function ContactSection({ showToast }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.35 }}
-          className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-cyan-950/10 backdrop-blur-xl"
+          className="ui-card contact-form"
           noValidate
         >
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="text-sm text-slate-200">
+            <label>
               Name
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400"
                 placeholder="Your name"
               />
-              {errors.name && <p className="mt-1 text-xs text-rose-300">{errors.name}</p>}
+              {errors.name && <p className="field-error">{errors.name}</p>}
             </label>
-            <label className="text-sm text-slate-200">
+            <label>
               Email
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400"
                 placeholder="you@example.com"
               />
-              {errors.email && <p className="mt-1 text-xs text-rose-300">{errors.email}</p>}
+              {errors.email && <p className="field-error">{errors.email}</p>}
             </label>
           </div>
 
-          <label className="mt-4 block text-sm text-slate-200">
+          <label className="mt-4">
             Message
             <textarea
               name="message"
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               rows="6"
-              className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-400"
               placeholder="Tell me about your project..."
             />
-            {errors.message && <p className="mt-1 text-xs text-rose-300">{errors.message}</p>}
+            {errors.message && <p className="field-error">{errors.message}</p>}
           </label>
 
           <button
             type="submit"
             disabled={submitting}
-            className="mt-6 inline-flex rounded-full bg-cyan-400 px-6 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
+            className="btn-primary mt-6"
           >
             {submitting ? 'Sending...' : 'Send Message'}
           </button>

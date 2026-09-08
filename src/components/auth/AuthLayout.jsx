@@ -17,16 +17,13 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
         </title>
       </Helmet>
 
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 text-white">
-        <div className="pointer-events-none absolute inset-0 'bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.14),_transparent_42%),radial-gradient(circle_at_bottom_right,_rgba(56,189,248,0.1),_transparent_36%)]" />
-        <div className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute -right-16 bottom-10 h-64 w-64 rounded-full bg-sky-500/10 blur-3xl" />
+      <div className="site-shell relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12 text-white">
 
-        <div className="relative w-full max-w-md">
+        <div className="relative z-10 w-full max-w-md">
           <div className="mb-8 text-center">
             <BrandMark
               to="/"
-              className="text-xl font-black tracking-[0.25em] text-white transition hover:text-cyan-200"
+              className="text-xl font-black tracking-[0.14em] text-white transition hover:text-cyan-200"
             />
             <h1 className="mt-6 text-3xl font-bold tracking-tight text-white">{title}</h1>
             {subtitle ? (
@@ -34,7 +31,7 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
             ) : null}
           </div>
 
-          <div className="rounded-3xl border border-white/10 'bg-white/[0.04]' p-6 shadow-[0_20px_60px_rgba(2,6,23,0.45)] backdrop-blur-xl sm:p-8">
+          <div className="glass-panel p-6 sm:p-8">
             {children}
           </div>
 

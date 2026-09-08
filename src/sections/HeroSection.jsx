@@ -5,80 +5,158 @@
  */
 
 import { motion } from 'framer-motion';
+import { FiCheck } from 'react-icons/fi';
+import {
+  HiOutlineCloud,
+  HiOutlineCodeBracket,
+  HiOutlineCpuChip,
+  HiOutlineShieldCheck,
+  HiOutlineSparkles,
+  HiOutlineBolt,
+} from 'react-icons/hi2';
 import { scrollToSection } from '../utils/scrollToSection';
 import { siteConfig } from '../data/site';
 import heroImage from '../assets/ailAhmad.png';
 
+const VALUE_POINTS = [
+  { title: 'AI-Driven', subtitle: 'Smart Solutions' },
+  { title: 'End-to-End', subtitle: 'From Idea to Launch' },
+  { title: 'Reliable & Secure', subtitle: 'Built to Scale' },
+  { title: 'Business Focused', subtitle: 'Real-World Results' },
+];
+
+const HERO_METRICS = [
+  { value: '25+', label: 'Satisfied Clients' },
+  { value: '30+', label: 'Projects Delivered' },
+  { value: '100%', label: 'Client Satisfaction' },
+];
+
+const DECOR_NODES = [
+  { Icon: HiOutlineSparkles, style: { top: '6%', left: '12%' } },
+  { Icon: HiOutlineCodeBracket, style: { top: '18%', right: '4%' } },
+  { Icon: HiOutlineCpuChip, style: { top: '48%', right: '-2%' } },
+  { Icon: HiOutlineCloud, style: { bottom: '16%', right: '8%' } },
+  { Icon: HiOutlineShieldCheck, style: { bottom: '8%', left: '10%' } },
+  { Icon: HiOutlineBolt, style: { top: '42%', left: '-2%' } },
+];
+
 export default function HeroSection() {
   return (
-    <section id="home" className="relative overflow-hidden px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(34,211,238,0.10),transparent_40%)]" />
-      <div className="mx-auto flex min-h-[60vh] max-w-7xl items-center">
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 lg:flex-row lg:justify-between">
+    <section id="home" className="site-section hero-screen">
+      <div className="site-wrap">
+        <div className="hero-main">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
-            className="max-w-2xl text-center lg:text-left"
+            className="text-center lg:text-left"
           >
-            <span className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-100">
-              Hi, I'm {siteConfig.brand.fullName}
+            <span className="hero-badge">
+              AI • Automation • Full-Stack Solutions
             </span>
 
-            <h1 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl">
-              {siteConfig.brand.role}
+            <h1 className="hero-title">
+              Crafting Intelligent
+              <br />
+              Digital Solutions with AI
             </h1>
 
-            <p className="mx-auto mt-4 max-w-2xl text-base text-slate-300 lg:mx-0 lg:text-lg">
-              I specialize in crafting fast, responsive, and visually engaging web experiences with
-              React.js, JavaScript, and Tailwind CSS. I enjoy turning ideas into modern digital
-              products through clean code, intuitive user interfaces, and performance-focused
-              development.
+            <p className="hero-tagline">Beyond Code. Real Impact.</p>
+
+            <p className="hero-copy mx-auto lg:mx-0">
+              I build complete, modern, and scalable digital systems that automate processes,
+              enhance productivity, and accelerate growth for businesses and startups.
             </p>
 
-            <p className="mx-auto mt-3 max-w-2xl text-base text-slate-300 lg:mx-0 lg:text-lg">
-              With a strong passion for continuous learning and problem-solving, I build projects
-              that combine functionality, accessibility, and exceptional user experience.
-            </p>
+            <div className="hero-values mx-auto lg:mx-0">
+              {VALUE_POINTS.map((item) => (
+                <div key={item.title} className="hero-value">
+                  <span className="hero-check" aria-hidden="true">
+                    <FiCheck strokeWidth={3} />
+                  </span>
+                  <div>
+                    <p className="t">{item.title}</p>
+                    <p className="s">{item.subtitle}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-            <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
+            <div className="hero-ctas justify-center lg:justify-start">
               <button
                 type="button"
                 onClick={() => scrollToSection('projects')}
-                className="rounded-full bg-cyan-400 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-cyan-900/30 transition hover:-translate-y-0.5 hover:bg-cyan-300"
+                className="btn-primary"
               >
-                View Projects
+                Explore My Work
               </button>
 
               <button
                 type="button"
                 onClick={() => scrollToSection('contact')}
-                className="rounded-full border border-white/10 bg-white/5 px-6 py-3 font-semibold text-slate-100 transition hover:border-cyan-400 hover:text-cyan-200"
+                className="btn-ghost"
               >
-                Hire Me
+                Discuss Your Project
               </button>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="shrink-0"
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="hero-visual"
           >
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-full bg-cyan-400/20 blur-3xl" />
+            <div className="hero-glow" aria-hidden="true" />
+            <div className="hero-frame">
+              <div className="hero-ring-2" aria-hidden="true" />
+              <div className="hero-ring" aria-hidden="true" />
               <img
                 src={heroImage}
                 alt={`${siteConfig.brand.fullName} - ${siteConfig.brand.role}`}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
-                className="relative z-10 h-64 w-64 rounded-full border-4 border-cyan-400/40 object-cover shadow-2xl shadow-cyan-500/20 sm:h-72 sm:w-72 md:h-80 md:w-80"
+                className="hero-photo"
               />
+              {DECOR_NODES.map((node, index) => (
+                <span key={index} className="hero-node" style={node.style} aria-hidden="true">
+                  <node.Icon />
+                </span>
+              ))}
             </div>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.25 }}
+          className="hero-metrics"
+        >
+          <div className="hero-metrics-inner">
+            <div className="flex flex-wrap items-center gap-5">
+              <div className="hero-avatars" aria-hidden="true">
+                <img src={heroImage} alt="" />
+                <span className="a" />
+                <span className="b" />
+                <span className="c" />
+              </div>
+              <div className="hero-metric-row">
+                {HERO_METRICS.map((metric) => (
+                  <div key={metric.label}>
+                    <p className="n">{metric.value}</p>
+                    <p className="l">{metric.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="hero-quote">
+              Turning complex ideas into simple, powerful solutions.{' '}
+              <span className="font-semibold text-white">{siteConfig.brand.fullName}</span>
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
