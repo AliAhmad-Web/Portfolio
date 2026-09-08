@@ -5,7 +5,9 @@
  */
 
 import { motion } from 'framer-motion';
+import { HiOutlineCodeBracket } from 'react-icons/hi2';
 import skills from '../data/skills.jsx';
+import SectionBadge from '../components/SectionBadge';
 
 export default function SkillsSection() {
   return (
@@ -35,7 +37,9 @@ export default function SkillsSection() {
       </svg>
 
       <div className="skills-main relative z-10 mx-auto max-w-7xl text-center">
-        <p className="skills-kicker">SKILLS</p>
+        <div className="section-badge-row">
+          <SectionBadge icon={HiOutlineCodeBracket}>SKILLS</SectionBadge>
+        </div>
         <h2>
           Core tools &amp; technologies I use to build{' '}
           <span className="skills-heading-accent">modern digital solutions.</span>
@@ -44,7 +48,7 @@ export default function SkillsSection() {
           End-to-end skills across frontend, backend, databases, AI, automation, and tools that help
           me build scalable, smart, and efficient solutions.
         </p>
-        <span className="skills-divider" />
+        <span className="stats-divider" aria-hidden="true" />
 
         <div className="skills-grid">
           {skills.map((skill, index) => (

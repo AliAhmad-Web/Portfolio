@@ -6,7 +6,9 @@
 
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { HiOutlineFolder } from 'react-icons/hi2';
 import ProjectCard from '../components/ProjectCard';
+import SectionBadge from '../components/SectionBadge';
 import { projects, projectFilters } from '../data/projects';
 
 const ITEMS_PER_LOAD = 3;
@@ -72,7 +74,9 @@ export default function ProjectsSection() {
 
       <div className="projects-main relative z-10 mx-auto max-w-7xl">
         <div className="text-center">
-          <p className="projects-kicker">PROJECTS</p>
+          <div className="section-badge-row">
+            <SectionBadge icon={HiOutlineFolder}>PROJECTS</SectionBadge>
+          </div>
           <h2>
             Selected work with{' '}
             <span className="projects-heading-accent">real-world impact.</span>
@@ -80,6 +84,7 @@ export default function ProjectsSection() {
           <p className="projects-lead">
             Browse recent projects and use the technology filters to focus on your preferred stack.
           </p>
+          <span className="stats-divider" aria-hidden="true" />
         </div>
 
         <div className="projects-filters">

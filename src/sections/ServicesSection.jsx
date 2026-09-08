@@ -5,7 +5,9 @@
  */
 
 import { motion } from 'framer-motion';
+import { HiOutlineBriefcase } from 'react-icons/hi2';
 import services from '../data/services.jsx';
+import SectionBadge from '../components/SectionBadge';
 
 export default function ServicesSection() {
   return (
@@ -46,13 +48,15 @@ export default function ServicesSection() {
       </svg>
 
       <div className="services-main relative z-10 mx-auto max-w-7xl text-center">
-        <p className="services-kicker">SERVICES</p>
+        <div className="section-badge-row">
+          <SectionBadge icon={HiOutlineBriefcase}>SERVICES</SectionBadge>
+        </div>
         <h2>Services</h2>
         <p className="services-lead">
           I provide end-to-end digital solutions to help businesses and individuals build, automate,
           and scale with modern technology.
         </p>
-        <span className="services-divider" />
+        <span className="stats-divider" aria-hidden="true" />
 
         <div className="services-grid">
           {services.map((service, index) => (

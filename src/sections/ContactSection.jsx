@@ -14,9 +14,11 @@ import {
   HiPaperAirplane,
 } from 'react-icons/hi2';
 import ContactFormWave from '../components/contact/ContactFormWave';
+import SectionBadge from '../components/SectionBadge';
 import { useRecaptcha } from '../hooks/useRecaptcha';
 import { isValidEmail } from '../utils/authValidation';
 import { API_BASE_URL, getMailtoHref, siteConfig } from '../data/site';
+import { notifyPublicStatsUpdated } from '../hooks/useClientSocialProof';
 
 const initialForm = { name: '', email: '', message: '' };
 
@@ -103,6 +105,7 @@ export default function ContactSection({ showToast }) {
 
       setForm(initialForm);
       setErrors({});
+      notifyPublicStatsUpdated();
       showToast('Message sent successfully. I will reply soon!', 'success');
     } catch (error) {
       showToast(
@@ -128,7 +131,7 @@ export default function ContactSection({ showToast }) {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.35 }}
         >
-          <p className="contact-kicker">CONTACT</p>
+          <SectionBadge icon={HiOutlineEnvelope}>CONTACT</SectionBadge>
           <h2>
             Let&apos;s build something
             <br />
@@ -138,7 +141,7 @@ export default function ContactSection({ showToast }) {
             Have a project in mind or want to discuss your next website? Send a quick note and
             I&apos;ll get back to you with next steps.
           </p>
-          <span className="contact-rule" />
+          <span className="stats-divider stats-divider--start" aria-hidden="true" />
 
           <div className="contact-links">
             {contactLinks.map(({ href, label, Icon, tone, external }) => (

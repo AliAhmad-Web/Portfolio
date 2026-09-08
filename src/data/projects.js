@@ -116,6 +116,10 @@ const projectData = [
 
 export const projects = projectData;
 
+export function getProjectsCount() {
+  return projectData.length;
+}
+
 export const projectFilters = [
   'All',
   'Frontend',

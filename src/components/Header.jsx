@@ -4,7 +4,7 @@
  * Used by: HomePage.
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { HiOutlineArrowRight } from 'react-icons/hi2';
@@ -19,12 +19,31 @@ const navItems = siteConfig.navItems;
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const barRef = useRef(null);
   const activeSection = useActiveSection();
   const { user, isAdmin, logout } = useAuth();
 
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return undefined;
+
+    const syncHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-h', `${bar.offsetHeight}px`);
+    };
+
+    syncHeaderHeight();
+    const observer = new ResizeObserver(syncHeaderHeight);
+    observer.observe(bar);
+    window.addEventListener('resize', syncHeaderHeight);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', syncHeaderHeight);
+    };
+  }, []);
+
   const handleNavigate = (id) => {
-    scrollToSection(id);
     setMenuOpen(false);
+    scrollToSection(id);
   };
 
   const authActions = user ? (
@@ -52,8 +71,15 @@ export default function Header() {
   ) : null;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/8 bg-[#020617]/75 backdrop-blur-2xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
+    <header
+      data-site-header
+      className="sticky top-0 z-50 border-b border-white/8 bg-[#020617]/75 backdrop-blur-2xl"
+    >
+      <div
+        ref={barRef}
+        data-site-header-bar
+        className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8"
+      >
         <div className="shrink-0 [&_.text-cyan-400]:text-amber-300">
           <BrandMark
             onClick={() => handleNavigate('home')}
@@ -69,7 +95,7 @@ export default function Header() {
                 key={item.id}
                 type="button"
                 onClick={() => handleNavigate(item.id)}
-                className={`relative px-2.5 py-1.5 text-[13px] font-medium tracking-wide transition xl:px-3 ${
+                className={`relative px-2.5 py-2 text-[13px] font-medium tracking-wide transition xl:px-3 ${
                   isActive
                     ? 'text-amber-100'
                     : 'text-slate-400 hover:text-slate-100'
@@ -90,7 +116,7 @@ export default function Header() {
           <button
             type="button"
             onClick={() => handleNavigate('contact')}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-300/35 bg-white/3 px-3.5 py-1.5 text-[12px] font-semibold text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.08)] transition hover:border-amber-200/60 hover:bg-amber-300/10"
+            className="inline-flex items-center gap-2 rounded-full border border-amber-300/35 bg-white/3 px-3.5 py-2 text-[12px] font-semibold text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.08)] transition hover:border-amber-200/60 hover:bg-amber-300/10"
           >
             Let&apos;s Work Together
             <HiOutlineArrowRight className="text-sm" />

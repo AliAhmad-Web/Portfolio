@@ -12,6 +12,9 @@ import {
   HiOutlineShieldCheck,
   HiOutlineUser,
 } from 'react-icons/hi2';
+import AnimatedCounter from '../components/AnimatedCounter';
+import SectionBadge from '../components/SectionBadge';
+import { useInView } from '../hooks/useInView';
 
 const ABOUT_CARDS = [
   {
@@ -45,8 +48,10 @@ const ABOUT_CARDS = [
 ];
 
 export default function AboutSection() {
+  const [sectionRef, inView] = useInView(0.3);
+
   return (
-    <section id="about" className="about-screen px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="about" className="about-screen px-4 sm:px-6 lg:px-8">
       <div className="about-ambient" aria-hidden="true" />
       <div className="about-network" aria-hidden="true">
         <svg viewBox="0 0 1440 220" preserveAspectRatio="none">
@@ -81,18 +86,13 @@ export default function AboutSection() {
           transition={{ duration: 0.4 }}
           className="about-copy"
         >
-          <span className="about-badge">
-            <HiOutlineUser />
-            ABOUT ME
-          </span>
+          <SectionBadge icon={HiOutlineUser}>ABOUT ME</SectionBadge>
 
           <h2>
             A self-taught developer focused on creating{' '}
             <span className="about-text-gold">intelligent</span>{' '}
             <span className="about-text-violet">digital solutions.</span>
           </h2>
-
-          <span className="about-rule" />
 
           <p>
             I am a self-taught developer who loves turning ideas into modern, scalable, and
@@ -101,6 +101,7 @@ export default function AboutSection() {
             <span className="about-text-accent">AI-powered tools</span> that help businesses grow
             and operate smarter.
           </p>
+          <span className="stats-divider stats-divider--start" aria-hidden="true" />
         </motion.div>
 
         <motion.div
@@ -119,7 +120,9 @@ export default function AboutSection() {
               <span className="about-card-icon">
                 <card.Icon />
               </span>
-              <p className="about-card-stat">{card.number}</p>
+              <p className="about-card-stat">
+                <AnimatedCounter value={card.number} active={inView} />
+              </p>
               <h3>{card.title}</h3>
               <p className="about-card-desc">{card.desc}</p>
             </article>

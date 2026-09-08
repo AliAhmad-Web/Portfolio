@@ -5,6 +5,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
+import { scrollToSection } from '../utils/scrollToSection';
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
@@ -33,7 +34,7 @@ export default function ScrollToTop() {
   }, []);
 
   const scrollToTop = () => {
-    document.getElementById('home')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToSection('home');
   };
 
   return (

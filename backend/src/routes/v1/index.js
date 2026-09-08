@@ -3,6 +3,7 @@ import healthRoutes from './health.routes.js';
 import authRoutes from './auth.routes.js';
 import contactRoutes from './contact.routes.js';
 import adminRoutes from './admin.routes.js';
+import portfolioRoutes from './portfolio.routes.js';
 import { getApiInfo } from '../../controllers/health.controller.js';
 
 const router = Router();
@@ -12,5 +13,6 @@ router.use('/health', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/contact', contactRoutes);
 router.use('/admin', adminRoutes);
+router.use('/portfolio', portfolioRoutes);
 
 export default router;

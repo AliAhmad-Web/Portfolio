@@ -9,8 +9,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { siteConfig } from '../data/site';
-
-const VIEW_MARKER = 120;
+import { getHeaderOffset } from '../utils/scrollToSection';
 
 function hashSection(sectionIds) {
   const id = window.location.hash.replace('#', '');
@@ -18,7 +17,12 @@ function hashSection(sectionIds) {
   return null;
 }
 
+function viewMarker() {
+  return getHeaderOffset() + 8;
+}
+
 function sectionFromScroll(sectionIds) {
+  const marker = viewMarker();
   let current = sectionIds[0];
   let bestTop = -Infinity;
 
@@ -26,7 +30,7 @@ function sectionFromScroll(sectionIds) {
     const section = document.getElementById(id);
     if (!section) continue;
     const top = section.getBoundingClientRect().top;
-    if (top <= VIEW_MARKER && top >= bestTop) {
+    if (top <= marker && top >= bestTop) {
       bestTop = top;
       current = id;
     }
@@ -59,7 +63,7 @@ export function useActiveSection(sectionIds = siteConfig.navSections) {
       if (pending) {
         const section = document.getElementById(pending);
         const top = section?.getBoundingClientRect().top ?? Infinity;
-        if (top > VIEW_MARKER) {
+        if (top > viewMarker()) {
           apply(pending);
           return;
         }

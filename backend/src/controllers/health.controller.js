@@ -40,6 +40,9 @@ export const getApiInfo = asyncHandler(async (_req, res) => {
         contactById: 'GET /api/v1/admin/contacts/:id',
         updateContactStatus: 'PATCH /api/v1/admin/contacts/:id/status',
       },
+      portfolio: {
+        stats: 'GET /api/v1/portfolio/stats',
+      },
     },
   });
 

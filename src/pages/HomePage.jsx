@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import HeroSection from '../sections/HeroSection';
 import { siteConfig } from '../data/site';
+import { scrollToSection } from '../utils/scrollToSection';
 
 const AboutSection = lazy(() => import('../sections/AboutSection'));
 const SkillsSection = lazy(() => import('../sections/SkillsSection'));
@@ -39,7 +40,7 @@ export default function HomePage() {
 
     const id = location.hash.replace('#', '');
     const timer = window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      scrollToSection(id);
     }, 80);
 
     return () => window.clearTimeout(timer);

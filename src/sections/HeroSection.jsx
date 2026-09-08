@@ -16,6 +16,11 @@ import {
 } from 'react-icons/hi2';
 import { scrollToSection } from '../utils/scrollToSection';
 import HeroOrbit from '../components/hero/HeroOrbit';
+import AnimatedCounter from '../components/AnimatedCounter';
+import { useInView } from '../hooks/useInView';
+import { useClientSocialProof } from '../hooks/useClientSocialProof';
+import { CLIENT_AVATAR_SLOTS, PLACEHOLDER_AVATARS } from '../data/clientAvatars';
+import { getProjectsCount } from '../data/projects';
 
 const VALUE_PROPS = [
   { title: 'AI-Driven', subtitle: 'Smarter Solutions', Icon: HiOutlineCpuChip },
@@ -24,15 +29,37 @@ const VALUE_PROPS = [
   { title: 'Business Focused', subtitle: 'Real-World Results', Icon: HiOutlineChartBar },
 ];
 
-const HERO_METRICS = [
-  { value: '25+', label: 'Satisfied Clients', tone: 'gold' },
-  { value: '30+', label: 'Projects Delivered', tone: 'blue' },
-  { value: '100%', label: 'Client Satisfaction', tone: 'green' },
-];
-
 export default function HeroSection() {
+  const [sectionRef, inView] = useInView(0.35);
+  const { satisfiedClients, recentClients } = useClientSocialProof();
+
+  const heroMetrics = [
+    {
+      value: `${satisfiedClients}+`,
+      label: 'Satisfied Clients',
+      tone: 'gold',
+      active: inView,
+    },
+    {
+      value: `${getProjectsCount()}+`,
+      label: 'Projects Delivered',
+      tone: 'blue',
+      active: inView,
+    },
+    {
+      value: '100%',
+      label: 'Client Satisfaction',
+      tone: 'green',
+      active: inView,
+    },
+  ];
+
   return (
-    <section id="home" className="hero-screen relative overflow-hidden px-4 sm:px-6 lg:px-8">
+    <section
+      ref={sectionRef}
+      id="home"
+      className="hero-screen relative overflow-hidden px-4 sm:px-6 lg:px-8"
+    >
       <div className="hero-ambient" aria-hidden="true" />
       <div className="hero-grid" aria-hidden="true" />
       <div className="hero-aurora" aria-hidden="true" />
@@ -66,15 +93,15 @@ export default function HeroSection() {
             for businesses and startups.
           </p>
 
-          <div className="mx-auto mt-4 grid max-w-xl grid-cols-2 gap-x-3 gap-y-3 sm:grid-cols-4 lg:mx-0 lg:max-w-none">
+          <div className="hero-values">
             {VALUE_PROPS.map((item) => (
-              <div key={item.title} className="hero-value">
+              <article key={item.title} className="hero-value">
                 <item.Icon className="hero-value-icon" />
                 <div>
-                  <p className="text-[12px] font-semibold text-white">{item.title}</p>
-                  <p className="mt-0.5 text-[10px] leading-snug text-slate-400">{item.subtitle}</p>
+                  <p className="hero-value-title">{item.title}</p>
+                  <p className="hero-value-sub">{item.subtitle}</p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 
@@ -114,40 +141,39 @@ export default function HeroSection() {
         transition={{ duration: 0.35, delay: 0.15 }}
         className="hero-metrics relative z-10 mx-auto max-w-7xl"
       >
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
-            <div className="hero-proof" aria-hidden="true">
-              <span className="is-a" />
-              <span className="is-b" />
-              <span className="is-c" />
-              <span className="is-d" />
-              <span className="hero-proof-plus">+</span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 sm:gap-7">
-              {HERO_METRICS.map((metric) => (
-                <div key={metric.label} className="text-center sm:text-left">
-                  <p className={`font-sora text-xl font-extrabold sm:text-2xl is-${metric.tone}`}>
-                    {metric.value}
-                  </p>
-                  <p className="mt-0.5 text-[10px] leading-snug text-slate-300 sm:text-[11px]">
-                    {metric.label}
-                  </p>
-                </div>
-              ))}
-            </div>
+        <div className="hero-metrics-row">
+          <div className="hero-proof" aria-hidden="true">
+            {CLIENT_AVATAR_SLOTS.map((slot, index) => (
+              <span key={slot} className={slot}>
+                <img
+                  src={recentClients[index]?.src || PLACEHOLDER_AVATARS[index].src}
+                  alt=""
+                />
+              </span>
+            ))}
+            <span className="hero-proof-plus">+</span>
           </div>
 
-          <div className="flex items-center justify-center gap-4 lg:justify-end">
-            <blockquote className="flex max-w-sm items-start gap-2.5 text-left">
-              <span className="font-script text-2xl leading-none text-amber-300" aria-hidden="true">
+          {heroMetrics.map((metric) => (
+            <div key={metric.label} className="hero-metric">
+              <p className={`hero-metric-value is-${metric.tone}`}>
+                <AnimatedCounter value={metric.value} active={metric.active} />
+              </p>
+              <p className="hero-metric-label">{metric.label}</p>
+            </div>
+          ))}
+
+          <div className="hero-quote">
+            <blockquote>
+              <span className="hero-quote-mark" aria-hidden="true">
                 “
               </span>
-              <p className="pt-1 text-xs leading-relaxed text-slate-300 sm:text-sm">
-                Turning complex ideas into simple, powerful solutions.
+              <p>
+                Turning complex ideas into
+                <br />
+                simple, powerful solutions.
               </p>
             </blockquote>
-            <p className="font-script shrink-0 text-[1.65rem] text-amber-300">Ali Ahmad</p>
           </div>
         </div>
       </motion.div>

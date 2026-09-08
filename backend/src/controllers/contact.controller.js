@@ -2,6 +2,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse, sendResponse } from '../utils/ApiResponse.js';
 import { contactService } from '../services/contact.service.js';
 import { emailService } from '../services/email.service.js';
+import { invalidatePortfolioStatsCache } from '../services/portfolioStats.service.js';
 import { supabaseAnon } from '../config/supabase.js';
 
 export const submitContactForm = asyncHandler(async (req, res) => {
@@ -33,6 +34,8 @@ export const submitContactForm = asyncHandler(async (req, res) => {
       message: 'Failed to save message. Please try again.',
     });
   }
+
+  invalidatePortfolioStatsCache();
 
   // Email must not block or reverse a successful DB save
   const emailResult = await emailService.sendContactNotification({
@@ -87,6 +90,7 @@ export const updateContactStatus = asyncHandler(async (req, res) => {
     req.body.status,
   );
 
+  invalidatePortfolioStatsCache();
   sendResponse(res, ApiResponse.ok('Contact status updated', { contact }));
 });
 

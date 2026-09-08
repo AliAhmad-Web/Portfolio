@@ -178,3 +178,9 @@ export const adminApi = {
     });
   },
 };
+
+export const portfolioStatsApi = {
+  get() {
+    return apiRequest('/portfolio/stats', { auth: false });
+  },
+};

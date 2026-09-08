@@ -5,11 +5,17 @@
  */
 
 import { motion } from 'framer-motion';
+import { HiOutlineChartBar } from 'react-icons/hi2';
 import stats from '../data/stats.jsx';
+import AnimatedCounter from '../components/AnimatedCounter';
+import SectionBadge from '../components/SectionBadge';
+import { useInView } from '../hooks/useInView';
 
 export default function GitHubStatsSection() {
+  const [sectionRef, inView] = useInView(0.3);
+
   return (
-    <section id="stats" className="stats-screen px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="stats" className="stats-screen px-4 sm:px-6 lg:px-8">
       <div className="stats-ambient" aria-hidden="true" />
       <svg
         className="stats-constellation"
@@ -47,7 +53,9 @@ export default function GitHubStatsSection() {
       </svg>
 
       <div className="stats-main relative z-10 mx-auto max-w-7xl text-center">
-        <p className="stats-kicker">GITHUB STATS</p>
+        <div className="section-badge-row">
+          <SectionBadge icon={HiOutlineChartBar}>GITHUB STATS</SectionBadge>
+        </div>
         <h2>
           GitHub Stats &amp;{' '}
           <span className="stats-heading-accent">Development Journey</span>
@@ -70,7 +78,9 @@ export default function GitHubStatsSection() {
               <span className="stats-card-icon">
                 <stat.Icon />
               </span>
-              <p className="stats-card-value">{stat.value}</p>
+              <p className="stats-card-value">
+                <AnimatedCounter value={stat.value} active={inView} />
+              </p>
               <h3>{stat.label}</h3>
               <p className="stats-card-desc">{stat.description}</p>
             </motion.article>
