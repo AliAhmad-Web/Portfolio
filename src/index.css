@@ -357,7 +357,7 @@ body {
   border-radius: 1.1rem;
   border: 1px solid rgba(251, 191, 36, 0.12);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.68), rgba(2, 6, 23, 0.52));
-  padding: 1rem 1.5rem;
+  padding: 0.95rem 1.55rem;
   backdrop-filter: blur(18px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
@@ -393,7 +393,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.35rem;
+  gap: 1.5rem;
 }
 
 .hero-quote blockquote {
@@ -423,7 +423,7 @@ body {
 .hero-quote-sign {
   margin: 0;
   font-family: var(--font-script);
-  font-size: 2.35rem;
+  font-size: 2.45rem;
   line-height: 1;
   color: #fbbf24;
   white-space: nowrap;
@@ -436,7 +436,7 @@ body {
 
 @media (min-width: 640px) {
   .hero-metrics {
-    padding: 1.05rem 1.7rem;
+    padding: 1rem 1.75rem;
   }
 
   .hero-metrics-row {
@@ -454,11 +454,11 @@ body {
   }
 
   .hero-proof {
-    padding-right: 1.35rem;
+    padding-right: 1.45rem;
   }
 
   .hero-metric {
-    padding: 0 1.35rem;
+    padding: 0 1.45rem;
     text-align: left;
   }
 
@@ -473,12 +473,12 @@ body {
   .hero-quote {
     grid-column: 1 / -1;
     justify-content: flex-end;
-    gap: 1.25rem;
-    padding-top: 0.2rem;
+    gap: 1.5rem;
+    padding-top: 0.25rem;
   }
 
   .hero-quote-sign {
-    font-size: 2.35rem;
+    font-size: 2.45rem;
   }
 
   .hero-proof::after,
@@ -509,7 +509,7 @@ body {
 
 @media (min-width: 1024px) {
   .hero-metrics {
-    padding: 0.95rem 1.75rem;
+    padding: 0.95rem 1.85rem;
   }
 
   .hero-metrics-row {
@@ -528,26 +528,26 @@ body {
 
   .hero-proof {
     flex: 0 0 auto;
-    padding-right: 1.6rem;
+    padding-right: 1.7rem;
   }
 
   .hero-metric {
     flex: 1 1 0;
     min-width: 0;
-    padding: 0 1.6rem;
+    padding: 0 1.7rem;
   }
 
   .hero-quote {
     flex: 0 0 auto;
     grid-column: auto;
     justify-content: flex-end;
-    gap: 1.35rem;
-    padding: 0 0 0 1.7rem;
+    gap: 1.55rem;
+    padding: 0 0.15rem 0 1.8rem;
     margin-left: auto;
   }
 
   .hero-quote-sign {
-    font-size: 2.55rem;
+    font-size: 2.7rem;
   }
 
   .hero-quote::before {
