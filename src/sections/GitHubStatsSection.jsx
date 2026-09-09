@@ -10,9 +10,17 @@ import stats from '../data/stats.jsx';
 import AnimatedCounter from '../components/AnimatedCounter';
 import SectionBadge from '../components/SectionBadge';
 import { useInView } from '../hooks/useInView';
+import { useGitHubStats } from '../hooks/useGitHubStats';
+
+function formatStatValue(key, statsValues) {
+  if (key === 'experience') return statsValues.experience;
+  return String(statsValues[key] ?? 0);
+}
 
 export default function GitHubStatsSection() {
   const [sectionRef, inView] = useInView(0.3);
+  const { stats: liveStats, status } = useGitHubStats();
+  const valuesReady = status !== 'loading';
 
   return (
     <section ref={sectionRef} id="stats" className="stats-screen px-4 sm:px-6 lg:px-8">
@@ -65,7 +73,11 @@ export default function GitHubStatsSection() {
         </p>
         <span className="stats-divider" />
 
-        <div className="stats-grid">
+        <div
+          className="stats-grid"
+          aria-busy={status === 'loading'}
+          aria-live="polite"
+        >
           {stats.map((stat, index) => (
             <motion.article
               key={stat.label}
@@ -79,7 +91,10 @@ export default function GitHubStatsSection() {
                 <stat.Icon />
               </span>
               <p className="stats-card-value">
-                <AnimatedCounter value={stat.value} active={inView} />
+                <AnimatedCounter
+                  value={formatStatValue(stat.key, liveStats)}
+                  active={inView && (stat.key === 'experience' || stat.key === 'technologies' || valuesReady)}
+                />
               </p>
               <h3>{stat.label}</h3>
               <p className="stats-card-desc">{stat.description}</p>

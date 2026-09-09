@@ -183,4 +183,20 @@ export const portfolioStatsApi = {
   get() {
     return apiRequest('/portfolio/stats', { auth: false });
   },
+  github() {
+    return apiRequest('/portfolio/github-stats', { auth: false });
+  },
+};
+
+export const reviewsApi = {
+  list() {
+    return apiRequest('/reviews', { auth: false });
+  },
+  submit(payload) {
+    return apiRequest('/reviews', {
+      method: 'POST',
+      body: payload,
+      auth: false,
+    });
+  },
 };

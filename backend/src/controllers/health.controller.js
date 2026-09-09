@@ -42,6 +42,11 @@ export const getApiInfo = asyncHandler(async (_req, res) => {
       },
       portfolio: {
         stats: 'GET /api/v1/portfolio/stats',
+        githubStats: 'GET /api/v1/portfolio/github-stats',
+      },
+      reviews: {
+        list: 'GET /api/v1/reviews',
+        submit: 'POST /api/v1/reviews',
       },
     },
   });

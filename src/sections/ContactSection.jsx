@@ -14,6 +14,7 @@ import {
   HiPaperAirplane,
 } from 'react-icons/hi2';
 import ContactFormWave from '../components/contact/ContactFormWave';
+import CustomerReviews from '../components/contact/CustomerReviews';
 import SectionBadge from '../components/SectionBadge';
 import { useRecaptcha } from '../hooks/useRecaptcha';
 import { isValidEmail } from '../utils/authValidation';
@@ -123,8 +124,9 @@ export default function ContactSection({ showToast }) {
         <div className="contact-ambient" />
       </div>
 
-      <div className="contact-main relative z-10 mx-auto max-w-7xl">
-        <motion.div
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="contact-main">
+          <motion.div
           className="contact-copy"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -227,6 +229,9 @@ export default function ContactSection({ showToast }) {
             {submitting ? 'Sending...' : 'Send Message'}
           </button>
         </motion.form>
+        </div>
+
+        <CustomerReviews showToast={showToast} />
       </div>
     </section>
   );

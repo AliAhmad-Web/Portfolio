@@ -174,7 +174,6 @@ export default function HeroSection() {
                 simple, powerful solutions.
               </p>
             </blockquote>
-            <p className="hero-quote-sign">Ali Ahmad</p>
           </div>
         </div>
       </motion.div>

@@ -4,6 +4,7 @@
  * Route: /projects/:slug
  */
 
+import { useLayoutEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
@@ -18,6 +19,10 @@ const linkButtonBase =
 export default function ProjectDetailPage() {
   const { slug } = useParams();
   const project = findProjectBySlug(slug);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   if (!project) {
     return <Navigate to="/#projects" replace />;

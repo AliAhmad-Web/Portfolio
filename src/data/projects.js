@@ -8,6 +8,35 @@
 const projectData = [
   // --- React-based projects (Group 1) ---
   {
+    id: 9,
+    title: 'EliteFlow Enterprise ERP',
+    description:
+      'A next-generation enterprise ERP / SaaS platform. We built and integrated a custom AI Agent into EliteFlow as a live part of the system — not a planned feature. It is an Enterprise AI Assistant with agentic AI architecture, AI Agent integration with the ERP system, enterprise memory / business context, AI-powered business intelligence and analytics, AI automation architecture, n8n AI workflow integration, multi-provider AI integration, and AI-powered actions and enterprise workflows. Frontend is built with React.js and Next.js; backend uses Node.js and Express.js with PostgreSQL / Supabase and Prisma. Authentication and security include JWT, Argon2 password hashing, RBAC, and multi-tenant architecture. Modules cover Team Management, Employee Management, Attendance, Leave Management, Tasks, Files & Documents, Notifications, Dashboard, and Admin Management. File management includes ACL-based sharing, MIME and magic-byte validation, antivirus scanning, signed storage URLs, version history, and a fail-closed upload pipeline, with encryption audits, tenant isolation, and attachment hardening.',
+    technologies: [
+      'React.js',
+      'Next.js',
+      'Node.js',
+      'Express.js',
+      'PostgreSQL',
+      'Prisma',
+      'Supabase',
+      'AI',
+      'AI Integration',
+      'AI Agent',
+      'Agentic AI',
+      'Enterprise AI',
+      'AI Automation',
+      'AI Assistant',
+      'n8n AI Integration',
+    ],
+    github: 'https://github.com/AliAhmad-Web/eliteflow-enterprise',
+    live: 'https://eliteflow-web.vercel.app/login',
+    image: '/project-eliteflow.png',
+    category: 'Enterprise ERP / SaaS Platform',
+    groups: ['Frontend', 'Backend', 'Database', 'AI / ML', 'Full Stack'],
+    tone: 'purple',
+  },
+  {
     id: 1,
     title: 'Student Course Registration System',
     description:

@@ -88,6 +88,10 @@ export const env = {
     password: process.env.ADMIN_PASSWORD ?? '',
     fullName: process.env.ADMIN_FULL_NAME ?? 'Portfolio Admin',
   },
+  github: {
+    username: process.env.GITHUB_USERNAME || 'AliAhmad-Web',
+    token: process.env.GITHUB_TOKEN || '',
+  },
   isProduction: process.env.NODE_ENV === 'production',
   isDevelopment: process.env.NODE_ENV !== 'production',
 };

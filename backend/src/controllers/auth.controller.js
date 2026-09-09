@@ -21,14 +21,20 @@ function resolveAuthRedirectBase(req) {
       const origin = new URL(originHeader).origin;
       const allowed = new Set([
         'http://localhost:5173',
+        'http://localhost:5174',
         'http://127.0.0.1:5173',
+        'http://127.0.0.1:5174',
         ...String(process.env.CLIENT_URL || '')
           .split(',')
           .map((value) => value.trim())
           .filter(Boolean),
       ]);
 
-      if (allowed.has(origin) || origin.endsWith('.vercel.app')) {
+      const isLocal =
+        origin.startsWith('http://localhost:') ||
+        origin.startsWith('http://127.0.0.1:');
+
+      if (allowed.has(origin) || isLocal || origin.endsWith('.vercel.app')) {
         return origin;
       }
     } catch {

@@ -5,3 +5,5 @@ export { contactService } from './contact.service.js';
 export { recaptchaService } from './recaptcha.service.js';
 export { emailService } from './email.service.js';
 export { portfolioStatsService } from './portfolioStats.service.js';
+export { githubStatsService } from './githubStats.service.js';
+export { reviewsService } from './reviews.service.js';

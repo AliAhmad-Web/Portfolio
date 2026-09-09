@@ -23,6 +23,11 @@ export const siteConfig = {
     whatsapp: 'https://wa.me/923064382254',
   },
   /**
+   * Learning / development start date (GitHub account created).
+   * Experience years are calculated from this date at runtime.
+   */
+  learningStartDate: '2023-01-15',
+  /**
    * Header labels mapped to existing section DOM ids.
    * Solutions → services, Process → skills, Testimonials → stats.
    */
@@ -55,4 +60,14 @@ export const API_BASE_URL = '/api/v1';
 
 export function getMailtoHref() {
   return `mailto:${siteConfig.contact.email}`;
+}
+
+export function getGithubUsername() {
+  try {
+    const { pathname } = new URL(siteConfig.social.github);
+    const username = pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
+    return username || 'AliAhmad-Web';
+  } catch {
+    return 'AliAhmad-Web';
+  }
 }

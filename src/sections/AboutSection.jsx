@@ -15,17 +15,18 @@ import {
 import AnimatedCounter from '../components/AnimatedCounter';
 import SectionBadge from '../components/SectionBadge';
 import { useInView } from '../hooks/useInView';
+import { useGitHubStats } from '../hooks/useGitHubStats';
 
 const ABOUT_CARDS = [
   {
-    number: '1+',
+    key: 'experience',
     title: 'Years Learning Frontend Development',
     desc: 'Dedicated self-study and hands-on practice in React.js, JavaScript, and Tailwind CSS.',
     tone: 'cyan',
     Icon: HiOutlineAcademicCap,
   },
   {
-    number: '15+',
+    key: 'projects',
     title: 'Personal & Practice Projects',
     desc: 'Web apps, landing pages, and interactive tools built through learning and experimentation.',
     tone: 'purple',
@@ -49,6 +50,14 @@ const ABOUT_CARDS = [
 
 export default function AboutSection() {
   const [sectionRef, inView] = useInView(0.3);
+  const { stats, status } = useGitHubStats();
+  const valuesReady = status !== 'loading';
+
+  const cardValue = (card) => {
+    if (card.key === 'experience') return stats.experience;
+    if (card.key === 'projects') return String(stats.projects ?? 0);
+    return card.number;
+  };
 
   return (
     <section ref={sectionRef} id="about" className="about-screen px-4 sm:px-6 lg:px-8">
@@ -121,7 +130,10 @@ export default function AboutSection() {
                 <card.Icon />
               </span>
               <p className="about-card-stat">
-                <AnimatedCounter value={card.number} active={inView} />
+                <AnimatedCounter
+                  value={cardValue(card)}
+                  active={inView && (card.key === 'projects' ? valuesReady : true)}
+                />
               </p>
               <h3>{card.title}</h3>
               <p className="about-card-desc">{card.desc}</p>

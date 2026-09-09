@@ -81,4 +81,15 @@ const skills = [
   },
 ];
 
+export function getUniqueTechnologiesCount(skillList = skills) {
+  const tags = new Set();
+  for (const skill of skillList) {
+    for (const tag of skill.tags ?? []) {
+      const value = String(tag).trim();
+      if (value) tags.add(value);
+    }
+  }
+  return tags.size;
+}
+
 export default skills;

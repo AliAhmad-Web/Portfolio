@@ -19,7 +19,6 @@ const ServicesSection = lazy(() => import('../sections/ServicesSection'));
 const ProjectsSection = lazy(() => import('../sections/ProjectsSection'));
 const ContactSection = lazy(() => import('../sections/ContactSection'));
 const FooterSection = lazy(() => import('../sections/FooterSection'));
-const ScrollToTop = lazy(() => import('../components/ScrollToTop'));
 const Toast = lazy(() => import('../components/Toast'));
 
 const SectionFallback = () => <div className="h-32" />;
@@ -93,10 +92,6 @@ export default function HomePage() {
         <Suspense fallback={null}>
           <FooterSection />
         </Suspense>
-        <Suspense fallback={null}>
-          <ScrollToTop />
-        </Suspense>
-
         {toast && (
           <Suspense fallback={null}>
             <Toast message={toast.message} type={toast.type} onClose={closeToast} />

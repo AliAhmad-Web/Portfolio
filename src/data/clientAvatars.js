@@ -1,7 +1,7 @@
 /**
  * Home proof-row avatars and Satisfied Clients helpers.
  * Purpose: Always fill 4 circular slots; swap in live customer photos when present.
- * Used by: HeroSection and GET /api/v1/portfolio/stats.
+ * Used by: HeroSection, CustomerReviews, and GET /api/v1/portfolio/stats.
  */
 
 export const CLIENT_AVATAR_SLOTS = ['is-a', 'is-b', 'is-c', 'is-d'];
@@ -38,6 +38,22 @@ export function satisfiedClientsCount(approvedCount) {
   const extra = Number(approvedCount);
   const safe = Number.isFinite(extra) && extra > 0 ? Math.floor(extra) : 0;
   return SATISFIED_CLIENTS_BASELINE + safe;
+}
+
+export function reviewAvatarSrc(review) {
+  if (review?.avatarUrl) return review.avatarUrl;
+  const seed = publicAvatarSeed(review?.name || review?.id || 'guest');
+  const index = Number.parseInt(String(seed).slice(-1), 16) % PLACEHOLDER_AVATARS.length;
+  return PLACEHOLDER_AVATARS[index].src;
+}
+
+export function latestReviewAvatars(reviews = []) {
+  return (Array.isArray(reviews) ? reviews : [])
+    .slice(0, CLIENT_AVATAR_DISPLAY_LIMIT)
+    .map((review) => ({
+      id: review.id || publicAvatarSeed(review?.name || 'guest'),
+      src: reviewAvatarSrc(review),
+    }));
 }
 
 export function mergeProofAvatars(latestCustomerImages = []) {
