@@ -4,6 +4,7 @@
  * Used by: server.js (local development / Node hosts).
  */
 
+import './config/network.js';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';

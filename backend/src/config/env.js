@@ -5,11 +5,18 @@
  * Secrets must stay in environment files — never hardcode keys here.
  */
 
+import './network.js';
 import dotenv from 'dotenv';
 
 // Prefer local files in development; platform hosts inject process.env directly.
 dotenv.config({ path: '.env.local' });
 dotenv.config();
+
+function cleanEnv(value) {
+  return String(value ?? '')
+    .trim()
+    .replace(/^['"]+|['"]+$/g, '');
+}
 
 const requiredEnvVars = [
   'NODE_ENV',
@@ -33,18 +40,18 @@ function validateEnv() {
 
 validateEnv();
 
-const clientUrl = process.env.CLIENT_URL?.split(',')[0]?.trim() || 'http://localhost:5173';
+const clientUrl = cleanEnv(process.env.CLIENT_URL).split(',')[0]?.trim() || 'http://localhost:5173';
 
 export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT) || 5000,
   clientUrl,
-  cookieSecret: process.env.COOKIE_SECRET ?? 'change-me-in-production',
+  cookieSecret: cleanEnv(process.env.COOKIE_SECRET) || 'change-me-in-production',
   supabase: {
-    url: process.env.SUPABASE_URL || '',
-    anonKey: process.env.SUPABASE_ANON_KEY || '',
-    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-    jwtSecret: process.env.SUPABASE_JWT_SECRET || '',
+    url: cleanEnv(process.env.SUPABASE_URL),
+    anonKey: cleanEnv(process.env.SUPABASE_ANON_KEY),
+    serviceRoleKey: cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY),
+    jwtSecret: cleanEnv(process.env.SUPABASE_JWT_SECRET),
   },
   jwt: {
     accessTokenCookie: process.env.JWT_ACCESS_COOKIE ?? 'access_token',

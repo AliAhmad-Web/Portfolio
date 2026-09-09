@@ -4,6 +4,7 @@
  * Locally the Vite proxy still targets `backend` on port 5000.
  */
 
+import '../backend/src/config/network.js';
 import app from '../backend/src/app.js';
 
 export default app;

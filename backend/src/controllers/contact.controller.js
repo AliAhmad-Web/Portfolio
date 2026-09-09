@@ -3,7 +3,6 @@ import { ApiResponse, sendResponse } from '../utils/ApiResponse.js';
 import { contactService } from '../services/contact.service.js';
 import { emailService } from '../services/email.service.js';
 import { invalidatePortfolioStatsCache } from '../services/portfolioStats.service.js';
-import { supabaseAnon } from '../config/supabase.js';
 
 export const submitContactForm = asyncHandler(async (req, res) => {
   const { name, email, message } = req.body;
@@ -15,34 +14,20 @@ export const submitContactForm = asyncHandler(async (req, res) => {
     });
   }
 
-  const payload = {
+  const saved = await contactService.createMessage({
     name: name.trim(),
     email: email.trim(),
     message: message.trim(),
-  };
-
-  const { data, error } = await supabaseAnon.rpc('insert_contact_message', {
-    p_name: payload.name,
-    p_email: payload.email,
-    p_message: payload.message,
   });
-
-  if (error) {
-    console.error('Supabase insert error:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to save message. Please try again.',
-    });
-  }
 
   invalidatePortfolioStatsCache();
 
   // Email must not block or reverse a successful DB save
   const emailResult = await emailService.sendContactNotification({
-    name: payload.name,
-    email: payload.email,
-    message: payload.message,
-    submittedAt: data?.created_at || data?.createdAt || new Date().toISOString(),
+    name: saved.name,
+    email: saved.email,
+    message: saved.message,
+    submittedAt: saved.createdAt || new Date().toISOString(),
   });
 
   if (!emailResult.sent && !emailResult.skipped) {
@@ -53,7 +38,7 @@ export const submitContactForm = asyncHandler(async (req, res) => {
   }
 
   const response = ApiResponse.created('Message sent successfully!', {
-    ...data,
+    ...saved,
     emailNotification: {
       sent: emailResult.sent,
       skipped: Boolean(emailResult.skipped),

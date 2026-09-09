@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../config/supabase.js';
+import { supabaseAdmin, supabaseAnon } from '../config/supabase.js';
 import {
   ApiError,
   BadRequestError,
@@ -151,5 +151,45 @@ export const contactService = {
       stats,
       recentContacts: contacts.slice(0, 5).map(formatContact),
     };
+  },
+
+  async createMessage({ name, email, message }) {
+    const payload = {
+      name,
+      email,
+      message,
+      status: 'pending',
+    };
+
+    if (supabaseAdmin) {
+      const { data, error } = await supabaseAdmin
+        .from('contact_messages')
+        .insert(payload)
+        .select('id, name, email, message, status, created_at, updated_at')
+        .single();
+
+      if (!error && data) {
+        return formatContact(data);
+      }
+
+      console.error('[contact] Admin insert failed, trying RPC:', error?.message || error);
+    }
+
+    if (!supabaseAnon) {
+      throw new ApiError(500, 'Failed to save message. Please try again.');
+    }
+
+    const { data, error } = await supabaseAnon.rpc('insert_contact_message', {
+      p_name: payload.name,
+      p_email: payload.email,
+      p_message: payload.message,
+    });
+
+    if (error) {
+      console.error('[contact] RPC insert failed:', error.message || error);
+      throw new ApiError(500, 'Failed to save message. Please try again.');
+    }
+
+    return formatContact(data) || data;
   },
 };

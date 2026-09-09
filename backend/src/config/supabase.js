@@ -6,6 +6,20 @@ const supabaseOptions = {
     autoRefreshToken: false,
     persistSession: false,
   },
+  global: {
+    fetch: async (input, init) => {
+      try {
+        return await fetch(input, init);
+      } catch (error) {
+        const message = error?.cause?.message || error?.message || '';
+        const retryable = /fetch failed|ECONNRESET|ENOTFOUND|ECONNREFUSED|ETIMEDOUT|UND_ERR/i.test(
+          String(message),
+        );
+        if (!retryable) throw error;
+        return fetch(input, init);
+      }
+    },
+  },
 };
 
 const hasSupabaseConfig = env.supabase.url && env.supabase.anonKey;
