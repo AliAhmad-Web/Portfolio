@@ -4,7 +4,7 @@
  * Used by: ContactSection.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import {
   HiChevronLeft,
@@ -99,7 +99,7 @@ function ReviewCard({ review, featured }) {
   return (
     <article className={`contact-review-card is-${service.tone}${featured ? ' is-active' : ''}`}>
       <div className="contact-review-head">
-        <img src={avatarFor(review)} alt="" className="contact-review-avatar" />
+        <img src={avatarFor(review)} alt="" className="contact-review-avatar" loading="lazy" decoding="async" />
         <div className="contact-review-meta">
           <p className="contact-review-name">{review.name}</p>
           <p className="contact-review-location">
@@ -134,6 +134,8 @@ export default function CustomerReviews({ showToast }) {
   const [formOpen, setFormOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [offscreen, setOffscreen] = useState(true);
+  const sliderRef = useRef(null);
 
   const count = reviews.length;
   const [isMobile, setIsMobile] = useState(() =>
@@ -155,12 +157,23 @@ export default function CustomerReviews({ showToast }) {
   }, [reviews]);
 
   useEffect(() => {
-    if (paused || count < 2) return undefined;
+    const node = sliderRef.current;
+    if (!node) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => setOffscreen(!entry.isIntersecting),
+      { rootMargin: '80px 0px', threshold: 0.12 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [reviews.length]);
+
+  useEffect(() => {
+    if (paused || offscreen || count < 2) return undefined;
     const timer = window.setInterval(() => {
       setPage((current) => (current + 1) % count);
     }, 5000);
     return () => window.clearInterval(timer);
-  }, [paused, count]);
+  }, [paused, offscreen, count]);
 
   const visibleReviews = useMemo(() => {
     if (!count) return [];
@@ -240,6 +253,7 @@ export default function CustomerReviews({ showToast }) {
       {reviews.length ? (
         <>
           <div
+            ref={sliderRef}
             className="contact-reviews-slider"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}

@@ -25,6 +25,24 @@ html {
   scroll-padding-top: var(--header-h, 3.5rem);
 }
 
+html[data-motion-paused] .hero-orbit-path-outer,
+html[data-motion-paused] .hero-orbit-path-mid,
+html[data-motion-paused] .hero-orbit-path-inner,
+html[data-motion-paused] .hero-orbit-cards-outer,
+html[data-motion-paused] .hero-orbit-cards-inner,
+html[data-motion-paused] .hero-orbit-glow,
+html[data-motion-paused] .animate-orbit-slow,
+html[data-motion-paused] .animate-orbit-medium,
+html[data-motion-paused] .animate-orbit-reverse,
+html[data-motion-paused] .animate-pulse-glow,
+html[data-motion-paused] .animate-float-node,
+html[data-motion-paused] .stats-constellation,
+html[data-motion-paused] .skills-constellation,
+html[data-motion-paused] .services-constellation,
+html[data-motion-paused] .projects-constellation {
+  animation-play-state: paused !important;
+}
+
 body {
   margin: 0;
   min-width: 320px;
@@ -897,6 +915,17 @@ body {
 /* -------------------------------------------------------------------------- */
 /* About section                                                              */
 /* -------------------------------------------------------------------------- */
+
+.about-screen,
+.skills-screen,
+.stats-screen,
+.services-screen,
+.projects-screen,
+.contact-screen,
+.footer-screen {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
 
 .about-screen {
   position: relative;

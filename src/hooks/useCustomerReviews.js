@@ -6,58 +6,36 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { reviewsApi } from '../lib/api';
-import { MAX_REVIEWS, mergeReviews } from '../data/demoReviews';
+import {
+  getCachedReviews,
+  loadLatestReviews,
+  notifyReviewsUpdated,
+  writeReviewsCache,
+} from '../lib/reviewsLoader';
 
-const CACHE_KEY = 'portfolio:customer-reviews';
-export const REVIEWS_UPDATED_EVENT = 'portfolio:customer-reviews-updated';
-
-export function notifyReviewsUpdated() {
-  window.dispatchEvent(new Event(REVIEWS_UPDATED_EVENT));
-}
-
-export function getCachedReviews() {
-  return readCache();
-}
-
-function readCache() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return mergeReviews(Array.isArray(parsed) ? parsed : []);
-  } catch {
-    return mergeReviews([]);
-  }
-}
-
-function writeCache(reviews) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(reviews.slice(0, MAX_REVIEWS)));
-  } catch {
-    /* ignore quota */
-  }
-}
+export { getCachedReviews, notifyReviewsUpdated, REVIEWS_UPDATED_EVENT } from '../lib/reviewsLoader';
 
 export function useCustomerReviews() {
-  const [reviews, setReviews] = useState(() => readCache());
-  const [status, setStatus] = useState(() => (readCache().length ? 'ready' : 'loading'));
+  const [reviews, setReviews] = useState(() => getCachedReviews());
+  const [status, setStatus] = useState(() => (getCachedReviews().length ? 'ready' : 'loading'));
 
   const applyLatest = useCallback((next) => {
-    const latest = mergeReviews(Array.isArray(next) ? next : []);
+    const latest = writeReviewsCache(next);
     setReviews(latest);
-    writeCache(latest);
     setStatus('ready');
     notifyReviewsUpdated();
     return latest;
   }, []);
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async ({ force = false } = {}) => {
     try {
-      const payload = await reviewsApi.list();
-      applyLatest(payload?.data?.reviews ?? []);
+      const latest = await loadLatestReviews({ force });
+      setReviews(latest);
+      setStatus('ready');
     } catch {
       setStatus((prev) => (prev === 'ready' ? 'ready' : 'error'));
     }
-  }, [applyLatest]);
+  }, []);
 
   useEffect(() => {
     refresh();
@@ -75,8 +53,8 @@ export function useCustomerReviews() {
           return applyLatest([result.data.review, ...reviews]);
         }
       } catch (error) {
-        const status = Number(error?.status);
-        if (status >= 400 && status < 500) {
+        const statusCode = Number(error?.status);
+        if (statusCode >= 400 && statusCode < 500) {
           throw error;
         }
       }

@@ -24,7 +24,9 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(
+    () => Boolean(getStoredAccessToken() || getStoredRefreshToken()),
+  );
 
   const applyAuthResult = useCallback((payload) => {
     const nextUser = payload?.data?.user ?? null;
@@ -49,26 +51,25 @@ export function AuthProvider({ children }) {
   }, [applyAuthResult]);
 
   const loadUser = useCallback(async () => {
+    if (!getStoredAccessToken() && !getStoredRefreshToken()) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
     try {
-      if (!getStoredAccessToken() && !getStoredRefreshToken()) {
-        setUser(null);
+      const result = await authApi.me();
+      setUser(result?.data?.user ?? null);
+    } catch (error) {
+      if (error.status === 401 && getStoredRefreshToken()) {
+        await refreshSession();
         return;
       }
 
-      try {
-        const result = await authApi.me();
-        setUser(result?.data?.user ?? null);
-      } catch (error) {
-        if (error.status === 401 && getStoredRefreshToken()) {
-          await refreshSession();
-          return;
-        }
-
-        clearStoredSession();
-        setUser(null);
-      }
+      clearStoredSession();
+      setUser(null);
     } finally {
       setLoading(false);
     }

@@ -56,12 +56,6 @@ export default function HomePage() {
           content="Modern, responsive React portfolio website with projects, skills, and a working contact form."
         />
         <meta name="theme-color" content="#020617" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
       </Helmet>
 
       <div className="site-shell min-h-screen text-white antialiased">

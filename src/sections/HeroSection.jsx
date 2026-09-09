@@ -148,6 +148,7 @@ export default function HeroSection() {
                 <img
                   src={recentClients[index]?.src || PLACEHOLDER_AVATARS[index].src}
                   alt=""
+                  decoding="async"
                 />
               </span>
             ))}

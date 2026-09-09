@@ -4,17 +4,18 @@
  * Used by: ProjectsSection. Clicking the screenshot opens the detail route; the button opens the live app.
  */
 
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineEye } from 'react-icons/hi2';
 import { getProjectSlug } from '../utils/projectSlug';
 
-export default function ProjectCard({ project }) {
+export default memo(function ProjectCard({ project }) {
   const slug = getProjectSlug(project);
 
   return (
     <article className={`project-card is-${project.tone || 'cyan'}`}>
       <Link to={`/projects/${slug}`} className="project-card-media" aria-label={`${project.title} details`}>
-        <img src={project.image} alt={project.title} loading="lazy" />
+        <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
       </Link>
 
       <div className="project-card-body">
@@ -44,4 +45,4 @@ export default function ProjectCard({ project }) {
       </div>
     </article>
   );
-}
+});

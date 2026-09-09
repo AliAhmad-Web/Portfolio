@@ -67,6 +67,7 @@ export default function ProjectDetailPage() {
                 <img
                   src={project.image}
                   alt={project.title}
+                  decoding="async"
                   className="aspect-video w-full object-cover"
                 />
               </motion.div>
