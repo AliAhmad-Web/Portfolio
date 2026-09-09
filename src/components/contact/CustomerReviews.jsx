@@ -353,7 +353,7 @@ export default function CustomerReviews({ showToast }) {
                 name="review-location"
                 value={form.location}
                 onChange={(event) => setForm({ ...form, location: event.target.value })}
-                placeholder="Lahore, Pakistan"
+                placeholder="Lahore, Punjab, Pakistan 🇵🇰"
                 autoComplete="address-level2"
                 aria-invalid={Boolean(errors.location)}
               />

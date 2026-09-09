@@ -9,7 +9,7 @@ export const MAX_REVIEWS = 8;
 export const EXISTING_REVIEW = {
   id: 'existing-ali-khan',
   name: 'Ali Khan',
-  location: 'Lahore, Pakistan',
+  location: 'Lahore, Punjab, Pakistan 🇵🇰',
   rating: 5,
   comment:
     "Ali built an AI-powered project for my business, and I'm really impressed with the results. The system is smart, fast, and exactly what I needed. Highly recommended!",
@@ -22,7 +22,7 @@ export const DEMO_REVIEWS = [
   {
     id: 'demo-fatima-noor',
     name: 'Fatima Noor',
-    location: 'Lahore, Pakistan',
+    location: 'Multan, Punjab, Pakistan 🇵🇰',
     rating: 5,
     comment:
       'Clean, fast website and a smooth handoff. Communication stayed professional from kickoff through launch.',
@@ -31,9 +31,9 @@ export const DEMO_REVIEWS = [
     createdAt: '2026-08-18T09:20:00.000Z',
   },
   {
-    id: 'demo-james-walker',
-    name: 'James Walker',
-    location: 'London, United Kingdom',
+    id: 'demo-hassan-malik',
+    name: 'Hassan Malik',
+    location: 'Rawalpindi, Punjab, Pakistan 🇵🇰',
     rating: 5,
     comment:
       'The AI workflow he designed now handles tasks we used to do by hand. Clear thinking and solid engineering.',
@@ -44,7 +44,7 @@ export const DEMO_REVIEWS = [
   {
     id: 'demo-amina-siddiqui',
     name: 'Amina Siddiqui',
-    location: 'Karachi, Pakistan',
+    location: 'Karachi, Sindh, Pakistan 🇵🇰',
     rating: 5,
     comment:
       'Full stack delivery was reliable — frontend, API, and dashboard all felt like one product.',
@@ -53,9 +53,9 @@ export const DEMO_REVIEWS = [
     createdAt: '2026-06-14T11:40:00.000Z',
   },
   {
-    id: 'demo-noah-patel',
-    name: 'Noah Patel',
-    location: 'Toronto, Canada',
+    id: 'demo-usman-raza',
+    name: 'Usman Raza',
+    location: 'Faisalabad, Punjab, Pakistan 🇵🇰',
     rating: 4,
     comment:
       'Automation around our lead intake saved the team hours each week. Straightforward to maintain as well.',
@@ -66,7 +66,7 @@ export const DEMO_REVIEWS = [
   {
     id: 'demo-zainab-khan',
     name: 'Zainab Khan',
-    location: 'Islamabad, Pakistan',
+    location: 'Islamabad, Islamabad Capital Territory, Pakistan 🇵🇰',
     rating: 5,
     comment:
       'Modern web app, careful attention to detail, and a result our clients noticed immediately.',
@@ -75,9 +75,9 @@ export const DEMO_REVIEWS = [
     createdAt: '2026-04-02T08:50:00.000Z',
   },
   {
-    id: 'demo-sofia-rossi',
-    name: 'Sofia Rossi',
-    location: 'Milan, Italy',
+    id: 'demo-hira-sheikh',
+    name: 'Hira Sheikh',
+    location: 'Sialkot, Punjab, Pakistan 🇵🇰',
     rating: 5,
     comment:
       'The interface is polished and easy to use. He translated a dense brief into a clear digital product.',
@@ -88,7 +88,7 @@ export const DEMO_REVIEWS = [
   {
     id: 'demo-omar-farooq',
     name: 'Omar Farooq',
-    location: 'Dubai, UAE',
+    location: 'Peshawar, Khyber Pakhtunkhwa, Pakistan 🇵🇰',
     rating: 5,
     comment:
       'Strong digital solution for operations — integrations, admin tools, and a stable launch on schedule.',
@@ -98,7 +98,15 @@ export const DEMO_REVIEWS = [
   },
 ];
 
-const DEMO_ID_SET = new Set(DEMO_REVIEWS.map((review) => review.id));
+const DEMO_ID_SET = new Set([
+  ...DEMO_REVIEWS.map((review) => review.id),
+  'demo-james-walker',
+  'demo-noah-patel',
+  'demo-sofia-rossi',
+]);
+
+const FOREIGN_LOCATION_RE =
+  /\b(united kingdom|\buk\b|london|canada|toronto|italy|milan|dubai|uae|united arab emirates|usa|united states|\bindia\b|new york|california|germany|france|australia|singapore)\b/i;
 
 function reviewKey(review) {
   return `${String(review?.name || '')
@@ -114,12 +122,16 @@ export function isDemoReviewId(id) {
   return DEMO_ID_SET.has(String(id || ''));
 }
 
+function isForeignLocation(location) {
+  return FOREIGN_LOCATION_RE.test(String(location || ''));
+}
+
 export function mergeReviews(list = []) {
   const stored = [];
   const seen = new Set();
 
   for (const review of Array.isArray(list) ? list : []) {
-    if (!review || isDemoReviewId(review.id)) continue;
+    if (!review || isDemoReviewId(review.id) || isForeignLocation(review.location)) continue;
     const key = review.id || reviewKey(review);
     if (seen.has(key) || seen.has(reviewKey(review))) continue;
     seen.add(key);

@@ -9,10 +9,10 @@ export const CLIENT_AVATAR_DISPLAY_LIMIT = CLIENT_AVATAR_SLOTS.length;
 export const SATISFIED_CLIENTS_BASELINE = 8;
 
 export const PLACEHOLDER_AVATARS = [
-  { id: 'placeholder-is-a', src: '/clients/placeholder-a.jpg' },
-  { id: 'placeholder-is-b', src: '/clients/placeholder-b.jpg' },
-  { id: 'placeholder-is-c', src: '/clients/placeholder-c.jpg' },
-  { id: 'placeholder-is-d', src: '/clients/placeholder-d.jpg' },
+  { id: 'placeholder-is-a', src: '/reviews/existing.jpg' },
+  { id: 'placeholder-is-b', src: '/reviews/demo-1.jpg' },
+  { id: 'placeholder-is-c', src: '/reviews/demo-2.jpg' },
+  { id: 'placeholder-is-d', src: '/reviews/demo-3.jpg' },
 ];
 
 export function publicAvatarSeed(value) {
