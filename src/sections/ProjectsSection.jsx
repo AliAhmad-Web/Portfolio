@@ -82,7 +82,8 @@ export default function ProjectsSection() {
             <span className="projects-heading-accent">real-world impact.</span>
           </h2>
           <p className="projects-lead">
-            Browse recent projects and use the technology filters to focus on your preferred stack.
+            Browse selected web apps, AI systems, and frontend projects — then use the technology
+            filters to focus on your preferred stack.
           </p>
           <span className="stats-divider" aria-hidden="true" />
         </div>

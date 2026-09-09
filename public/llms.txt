@@ -1,0 +1,48 @@
+# AliAhmad-Web / Ali Ahmad
+# https://aliahmadportfolio.vercel.app/
+
+> Ali Ahmad is a self-taught full-stack web developer and AI solutions specialist based in Lahore, Pakistan. He builds professional websites, web applications, business systems, AI-powered features, and automation workflows for startups and companies in Pakistan and worldwide.
+
+## Identity
+- Name: Ali Ahmad
+- Brand: AliAhmad-Web
+- Role: Full-Stack Web Developer & AI Solutions Specialist
+- Location: Lahore, Punjab, Pakistan
+- Availability: Local and remote clients
+- Email: alikhan234ali@gmail.com
+- GitHub: https://github.com/AliAhmad-Web
+- WhatsApp: https://wa.me/923064382254
+- Website: https://aliahmadportfolio.vercel.app/
+
+## Problems solved
+- Slow, outdated, or non-responsive business websites
+- Manual operations that should be automated
+- Need for secure web apps, dashboards, and internal tools
+- Adding practical AI features (assistants, workflows, integrations) to real products
+- End-to-end delivery from UI to API, database, auth, and deployment
+
+## Services
+- Professional websites and web apps (React.js, Next.js, Tailwind CSS)
+- Business systems and APIs (Node.js, Express.js, PostgreSQL, Prisma, Supabase)
+- Data and business management
+- AI-powered features (OpenAI, Gemini, chatbots, product integrations)
+- AI automation and smart workflows (n8n, AI agents, integrations)
+- Secure authentication and data protection
+- Digital file and document systems
+- Business analytics and dashboards
+- Cloud deployment (Vercel and similar platforms)
+- Ongoing support and maintenance
+
+## Selected projects
+- EliteFlow Enterprise ERP: https://aliahmadportfolio.vercel.app/projects/eliteflow-enterprise-erp
+- Student Course Registration System: https://aliahmadportfolio.vercel.app/projects/student-course-registration-system
+- Quiz App: https://aliahmadportfolio.vercel.app/projects/quiz-app
+- SaaS Tool App: https://aliahmadportfolio.vercel.app/projects/saas-tool-app
+- Fresh Bite Food Website: https://aliahmadportfolio.vercel.app/projects/fresh-bite-food-website
+- FoodZone Website: https://aliahmadportfolio.vercel.app/projects/foodzone-website
+- Tic Tac Toe Game: https://aliahmadportfolio.vercel.app/projects/tic-tac-toe-game
+- To-Do List App: https://aliahmadportfolio.vercel.app/projects/to-do-list-app
+- Rate List Web App: https://aliahmadportfolio.vercel.app/projects/rate-list-web-app
+
+## Contact
+Start a project via https://aliahmadportfolio.vercel.app/#contact

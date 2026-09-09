@@ -14,13 +14,14 @@ import {
   HiOutlineChartBar,
   HiOutlineSparkles,
 } from 'react-icons/hi2';
-import { scrollToSection } from '../utils/scrollToSection';
 import HeroOrbit from '../components/hero/HeroOrbit';
 import AnimatedCounter from '../components/AnimatedCounter';
 import { useInView } from '../hooks/useInView';
 import { useClientSocialProof } from '../hooks/useClientSocialProof';
 import { CLIENT_AVATAR_SLOTS, PLACEHOLDER_AVATARS } from '../data/clientAvatars';
 import { getProjectsCount } from '../data/projects';
+import SectionLink from '../components/SectionLink';
+import { siteConfig } from '../data/site';
 
 const VALUE_PROPS = [
   { title: 'AI-Driven', subtitle: 'Smarter Solutions', Icon: HiOutlineCpuChip },
@@ -88,9 +89,11 @@ export default function HeroSection() {
           </p>
 
           <p className="hero-copy mx-auto mt-2.5 max-w-xl text-slate-300 lg:mx-0">
-            I build complete, modern, and scalable digital systems that automate processes,
-            enhance productivity, and <span className="font-medium text-amber-300">accelerate growth</span>{' '}
-            for businesses and startups.
+            I&apos;m {siteConfig.brand.fullName}, a full-stack web developer and AI solutions
+            specialist in Lahore, Pakistan. I build complete, modern, and scalable digital systems
+            that automate processes, enhance productivity, and{' '}
+            <span className="font-medium text-amber-300">accelerate growth</span> for businesses and
+            startups.
           </p>
 
           <div className="hero-values">
@@ -106,22 +109,14 @@ export default function HeroSection() {
           </div>
 
           <div className="mt-4 flex flex-col items-center justify-center gap-2.5 sm:flex-row lg:justify-start">
-            <button
-              type="button"
-              onClick={() => scrollToSection('projects')}
-              className="hero-cta-primary"
-            >
+            <SectionLink id="projects" className="hero-cta-primary">
               Explore My Work
               <HiOutlineArrowRight className="text-base" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToSection('contact')}
-              className="hero-cta-secondary"
-            >
+            </SectionLink>
+            <SectionLink id="contact" className="hero-cta-secondary">
               <HiOutlineChatBubbleLeftRight className="text-base" />
               Discuss Your Project
-            </button>
+            </SectionLink>
           </div>
         </motion.div>
 

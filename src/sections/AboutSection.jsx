@@ -14,8 +14,10 @@ import {
 } from 'react-icons/hi2';
 import AnimatedCounter from '../components/AnimatedCounter';
 import SectionBadge from '../components/SectionBadge';
+import SectionLink from '../components/SectionLink';
 import { useInView } from '../hooks/useInView';
 import { useGitHubStats } from '../hooks/useGitHubStats';
+import { siteConfig } from '../data/site';
 
 const ABOUT_CARDS = [
   {
@@ -104,11 +106,17 @@ export default function AboutSection() {
           </h2>
 
           <p>
-            I am a self-taught developer who loves turning ideas into modern, scalable, and
-            user-friendly digital solutions. I focus on building complete web applications,
-            automation systems, and{' '}
+            I am {siteConfig.brand.fullName}, a self-taught developer based in Lahore, Pakistan, who
+            loves turning ideas into modern, scalable, and user-friendly digital solutions. I focus
+            on building complete web applications, automation systems, and{' '}
             <span className="about-text-accent">AI-powered tools</span> that help businesses grow
             and operate smarter.
+          </p>
+          <p className="about-more">
+            Explore{' '}
+            <SectionLink id="services">web, AI, and automation services</SectionLink>, browse{' '}
+            <SectionLink id="projects">selected projects</SectionLink>, or{' '}
+            <SectionLink id="contact">start a conversation</SectionLink>.
           </p>
           <span className="stats-divider stats-divider--start" aria-hidden="true" />
         </motion.div>

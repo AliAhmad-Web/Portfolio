@@ -15,3 +15,7 @@ export function getProjectSlug(project) {
 export function findProjectBySlug(slug) {
   return projects.find((project) => getProjectSlug(project) === slug) ?? null;
 }
+
+export function getRelatedProjects(project, limit = 3) {
+  return projects.filter((item) => item.id !== project.id).slice(0, limit);
+}

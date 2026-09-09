@@ -14,8 +14,15 @@ export default memo(function ProjectCard({ project }) {
 
   return (
     <article className={`project-card is-${project.tone || 'cyan'}`}>
-      <Link to={`/projects/${slug}`} className="project-card-media" aria-label={`${project.title} details`}>
-        <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+      <Link to={`/projects/${slug}`} className="project-card-media" aria-label={`${project.title} project details`}>
+        <img
+          src={project.image}
+          alt={`${project.title} — ${project.category} by Ali Ahmad`}
+          width="1440"
+          height="900"
+          loading="lazy"
+          decoding="async"
+        />
       </Link>
 
       <div className="project-card-body">
@@ -34,7 +41,7 @@ export default memo(function ProjectCard({ project }) {
             <a
               href={project.live}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="project-card-live"
             >
               <HiOutlineEye />

@@ -6,10 +6,11 @@
 
 import { useState, useCallback, lazy, Suspense, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import HeroSection from '../sections/HeroSection';
-import { siteConfig } from '../data/site';
+import SeoHead from '../components/seo/SeoHead';
+import { homeSeo } from '../data/seo';
+import { buildHomeGraph } from '../lib/schema';
 import { scrollToSection } from '../utils/scrollToSection';
 
 const AboutSection = lazy(() => import('../sections/AboutSection'));
@@ -17,11 +18,13 @@ const SkillsSection = lazy(() => import('../sections/SkillsSection'));
 const GitHubStatsSection = lazy(() => import('../sections/GitHubStatsSection'));
 const ServicesSection = lazy(() => import('../sections/ServicesSection'));
 const ProjectsSection = lazy(() => import('../sections/ProjectsSection'));
+const FaqSection = lazy(() => import('../sections/FaqSection'));
 const ContactSection = lazy(() => import('../sections/ContactSection'));
 const FooterSection = lazy(() => import('../sections/FooterSection'));
 const Toast = lazy(() => import('../components/Toast'));
 
 const SectionFallback = () => <div className="h-32" />;
+const homeGraph = buildHomeGraph();
 
 export default function HomePage() {
   const location = useLocation();
@@ -47,22 +50,21 @@ export default function HomePage() {
 
   return (
     <>
-      <Helmet>
-        <title>
-          {siteConfig.brand.fullName} | React Portfolio
-        </title>
-        <meta
-          name="description"
-          content="Modern, responsive React portfolio website with projects, skills, and a working contact form."
-        />
-        <meta name="theme-color" content="#020617" />
-      </Helmet>
+      <SeoHead
+        title={homeSeo.title}
+        description={homeSeo.description}
+        path={homeSeo.path}
+        jsonLd={homeGraph}
+      />
 
       <div className="site-shell min-h-screen text-white antialiased">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <Header />
-        <HeroSection />
 
-        <main>
+        <main id="main-content">
+          <HeroSection />
           <Suspense fallback={<SectionFallback />}>
             <AboutSection />
           </Suspense>
@@ -77,6 +79,9 @@ export default function HomePage() {
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
             <ProjectsSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <FaqSection />
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
             <ContactSection showToast={showToast} />

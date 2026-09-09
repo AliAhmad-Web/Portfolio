@@ -24,21 +24,30 @@ export function useRecaptcha() {
     }
 
     let cancelled = false;
+    const idle = window.requestIdleCallback
+      ? (callback) => window.requestIdleCallback(callback, { timeout: 4000 })
+      : (callback) => window.setTimeout(callback, 3500);
+    const cancelIdle = window.cancelIdleCallback
+      ? window.cancelIdleCallback
+      : window.clearTimeout;
 
-    loadRecaptchaScript(getRecaptchaSiteKey())
-      .catch((err) => {
-        if (!cancelled) {
-          setError(err.message || 'Failed to load reCAPTCHA.');
-        }
-      })
-      .finally(() => {
-        if (!cancelled) {
-          setReady(true);
-        }
-      });
+    const idleId = idle(() => {
+      loadRecaptchaScript(getRecaptchaSiteKey())
+        .catch((err) => {
+          if (!cancelled) {
+            setError(err.message || 'Failed to load reCAPTCHA.');
+          }
+        })
+        .finally(() => {
+          if (!cancelled) {
+            setReady(true);
+          }
+        });
+    });
 
     return () => {
       cancelled = true;
+      cancelIdle(idleId);
     };
   }, [configured]);
 

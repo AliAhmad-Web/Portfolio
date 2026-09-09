@@ -14,7 +14,7 @@ import {
   HiOutlineCloud,
 } from 'react-icons/hi2';
 import heroImage from '../../assets/ailAhmad.png';
-import { siteConfig } from '../../data/site';
+import { seoConfig } from '../../data/seo';
 
 const OUTER_NODES = [
   { label: 'AI Intelligence', Icon: HiOutlineCpuChip, tone: 'gold', angle: -90 },
@@ -115,7 +115,9 @@ export default function HeroOrbit() {
           <div className="hero-orbit-core-frame">
             <img
               src={heroImage}
-              alt={`${siteConfig.brand.fullName}, digital solutions specialist`}
+              alt={seoConfig.image.alt}
+              width={seoConfig.image.width}
+              height={seoConfig.image.height}
               loading="eager"
               fetchPriority="high"
               decoding="async"

@@ -12,11 +12,12 @@ import {
   HiOutlineEnvelope,
   HiOutlineFolder,
   HiOutlineHome,
+  HiOutlineQuestionMarkCircle,
   HiOutlineUser,
 } from 'react-icons/hi2';
-import { scrollToSection } from '../utils/scrollToSection';
 import { siteConfig, getMailtoHref } from '../data/site';
 import BrandMark from '../components/ui/BrandMark';
+import SectionLink from '../components/SectionLink';
 
 const quickLinks = [
   { id: 'home', label: 'Home', Icon: HiOutlineHome },
@@ -25,6 +26,7 @@ const quickLinks = [
   { id: 'stats', label: 'Stats', Icon: HiOutlineChartBar },
   { id: 'services', label: 'Services', Icon: HiOutlineBriefcase },
   { id: 'projects', label: 'Projects', Icon: HiOutlineFolder },
+  { id: 'faq', label: 'FAQ', Icon: HiOutlineQuestionMarkCircle },
   { id: 'contact', label: 'Contact', Icon: HiOutlineEnvelope },
 ];
 
@@ -109,7 +111,7 @@ export default function FooterSection() {
         <div className="footer-top">
           <div className="footer-brand">
             <BrandMark
-              onClick={() => scrollToSection('home')}
+              to="/"
               className="footer-logo"
             />
             <p>{siteConfig.brand.tagline}</p>
@@ -117,27 +119,23 @@ export default function FooterSection() {
           </div>
 
           <div className="footer-quick">
-            <h3>QUICK LINKS</h3>
+            <h2>QUICK LINKS</h2>
             <span className="footer-heading-rule" />
             <nav className="footer-qlinks" aria-label="Footer quick links">
               {quickLinks.map(({ id, label, Icon }, index) => (
                 <div key={id} className="footer-qlink-wrap">
                   {index > 0 ? <span className="footer-qlink-divider" /> : null}
-                  <button
-                    type="button"
-                    className="footer-qlink"
-                    onClick={() => scrollToSection(id)}
-                  >
+                  <SectionLink id={id} className="footer-qlink">
                     <Icon />
                     <span>{label}</span>
-                  </button>
+                  </SectionLink>
                 </div>
               ))}
             </nav>
           </div>
 
           <div className="footer-connect">
-            <h3>CONNECT</h3>
+            <h2>CONNECT</h2>
             <span className="footer-heading-rule" />
             <div className="footer-socials">
               {socialLinks.map(({ href, label, Icon, tone }) => (
@@ -145,7 +143,7 @@ export default function FooterSection() {
                   key={label}
                   href={href}
                   target={href.startsWith('mailto:') ? undefined : '_blank'}
-                  rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                  rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                   className={`footer-social is-${tone}`}
                   aria-label={label}
                 >
@@ -163,12 +161,12 @@ export default function FooterSection() {
           {siteConfig.brand.suffix}. All rights reserved.
         </p>
         <span className="footer-bottom-rule" />
-        <button type="button" className="footer-top-btn" onClick={() => scrollToSection('home')}>
+        <SectionLink id="home" className="footer-top-btn">
           Back to Top
           <span>
             <FaArrowUp />
           </span>
-        </button>
+        </SectionLink>
       </div>
     </footer>
   );

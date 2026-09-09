@@ -53,8 +53,8 @@ export default function ServicesSection() {
         </div>
         <h2>Services</h2>
         <p className="services-lead">
-          I provide end-to-end digital solutions to help businesses and individuals build, automate,
-          and scale with modern technology.
+          I provide end-to-end web development, AI, and automation services to help businesses and
+          individuals in Pakistan and worldwide build, automate, and scale with modern technology.
         </p>
         <span className="stats-divider" aria-hidden="true" />
 

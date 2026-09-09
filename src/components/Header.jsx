@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { HiOutlineArrowRight } from 'react-icons/hi2';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,12 +14,14 @@ import { scrollToSection } from '../utils/scrollToSection';
 import { useAuth } from '../context/AuthContext';
 import { siteConfig } from '../data/site';
 import BrandMark from './ui/BrandMark';
+import SectionLink from './SectionLink';
 
 const navItems = siteConfig.navItems;
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const barRef = useRef(null);
+  const location = useLocation();
   const activeSection = useActiveSection();
   const { user, isAdmin, logout } = useAuth();
 
@@ -82,20 +84,27 @@ export default function Header() {
       >
         <div className="shrink-0 [&_.text-cyan-400]:text-amber-300">
           <BrandMark
-            onClick={() => handleNavigate('home')}
+            to="/"
+            onClick={(event) => {
+              if (location.pathname === '/') {
+                event.preventDefault();
+                handleNavigate('home');
+              }
+            }}
             className="font-sora text-base font-extrabold tracking-[0.18em] text-white md:text-lg"
           />
         </div>
 
-        <nav className="hidden items-center gap-1 lg:flex xl:gap-2">
+        <nav className="hidden items-center gap-1 lg:flex xl:gap-2" aria-label="Primary">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
-              <button
+              <SectionLink
                 key={item.id}
-                type="button"
-                onClick={() => handleNavigate(item.id)}
-                className={`relative px-2.5 py-2 text-[13px] font-medium tracking-wide transition xl:px-3 ${
+                id={item.id}
+                onNavigate={() => setMenuOpen(false)}
+                ariaCurrent={isActive ? 'location' : undefined}
+                className={`relative px-2.5 py-2 text-[13px] font-medium tracking-wide no-underline transition xl:px-3 ${
                   isActive
                     ? 'text-amber-100'
                     : 'text-slate-400 hover:text-slate-100'
@@ -107,20 +116,19 @@ export default function Header() {
                     <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-300 shadow-[0_0_8px_rgba(251,191,36,0.9)]" />
                   </span>
                 ) : null}
-              </button>
+              </SectionLink>
             );
           })}
         </nav>
 
         <div className="hidden items-center gap-2.5 lg:flex">
-          <button
-            type="button"
-            onClick={() => handleNavigate('contact')}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-300/35 bg-white/3 px-3.5 py-2 text-[12px] font-semibold text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.08)] transition hover:border-amber-200/60 hover:bg-amber-300/10"
+          <SectionLink
+            id="contact"
+            className="inline-flex items-center gap-2 rounded-full border border-amber-300/35 bg-white/3 px-3.5 py-2 text-[12px] font-semibold text-amber-100 no-underline shadow-[0_0_18px_rgba(251,191,36,0.08)] transition hover:border-amber-200/60 hover:bg-amber-300/10"
           >
             Let&apos;s Work Together
             <HiOutlineArrowRight className="text-sm" />
-          </button>
+          </SectionLink>
           {authActions}
         </div>
 
@@ -144,27 +152,28 @@ export default function Header() {
             className="border-t border-white/10 bg-[#020617]/95 p-4 lg:hidden"
           >
             {navItems.map((item) => (
-              <button
+              <SectionLink
                 key={item.id}
-                type="button"
-                onClick={() => handleNavigate(item.id)}
-                className={`mb-2 block w-full rounded-2xl px-4 py-3 text-left text-base transition ${
+                id={item.id}
+                onNavigate={() => setMenuOpen(false)}
+                ariaCurrent={activeSection === item.id ? 'location' : undefined}
+                className={`mb-2 block w-full rounded-2xl px-4 py-3 text-left text-base no-underline transition ${
                   activeSection === item.id
                     ? 'bg-amber-300/10 text-amber-100'
                     : 'text-slate-200 hover:bg-white/5'
                 }`}
               >
                 {item.label}
-              </button>
+              </SectionLink>
             ))}
-            <button
-              type="button"
-              onClick={() => handleNavigate('contact')}
-              className="mb-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-amber-300/35 bg-amber-300/8 px-4 py-3 text-sm font-semibold text-amber-100"
+            <SectionLink
+              id="contact"
+              onNavigate={() => setMenuOpen(false)}
+              className="mb-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-amber-300/35 bg-amber-300/8 px-4 py-3 text-sm font-semibold text-amber-100 no-underline"
             >
               Let&apos;s Work Together
               <HiOutlineArrowRight className="text-sm" />
-            </button>
+            </SectionLink>
             {authActions ? <div className="mt-3 flex flex-col gap-2">{authActions}</div> : null}
           </motion.nav>
         )}

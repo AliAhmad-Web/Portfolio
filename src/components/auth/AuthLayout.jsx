@@ -4,18 +4,23 @@
  * Used by: pages under src/pages/auth/.
  */
 
-import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 import BrandMark from '../ui/BrandMark';
+import SeoHead from '../seo/SeoHead';
 import { siteConfig } from '../../data/site';
 
 export default function AuthLayout({ title, subtitle, children, footer }) {
+  const location = useLocation();
+  const description = `${subtitle || title} This account area is private and is not part of the public Ali Ahmad portfolio.`;
+
   return (
     <>
-      <Helmet>
-        <title>
-          {title} | {siteConfig.brand.fullName}
-        </title>
-      </Helmet>
+      <SeoHead
+        title={`${title} | ${siteConfig.brand.fullName}`}
+        description={description}
+        path={location.pathname}
+        robots="noindex, nofollow"
+      />
 
       <div className="site-shell relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12 text-white">
 

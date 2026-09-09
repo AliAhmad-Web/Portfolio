@@ -9,7 +9,7 @@ export const siteConfig = {
     name: 'AliAhmad',
     suffix: '-Web',
     fullName: 'Ali Ahmad',
-    role: 'Frontend Developer',
+    role: 'Full-Stack Web Developer & AI Solutions Specialist',
     tagline:
       'Crafting intelligent digital solutions, business systems, and AI-powered web applications.',
   },
@@ -50,6 +50,7 @@ export const siteConfig = {
     { id: 'stats', label: 'Stats' },
     { id: 'services', label: 'Services' },
     { id: 'projects', label: 'Projects' },
+    { id: 'faq', label: 'FAQ' },
     { id: 'contact', label: 'Contact' },
   ],
   /** Public landing-page section IDs in page order (used by useActiveSection). */

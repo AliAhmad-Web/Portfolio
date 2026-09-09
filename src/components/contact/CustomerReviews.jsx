@@ -99,7 +99,15 @@ function ReviewCard({ review, featured }) {
   return (
     <article className={`contact-review-card is-${service.tone}${featured ? ' is-active' : ''}`}>
       <div className="contact-review-head">
-        <img src={avatarFor(review)} alt="" className="contact-review-avatar" loading="lazy" decoding="async" />
+        <img
+          src={avatarFor(review)}
+          alt={`${review.name} in ${review.location}`}
+          width="40"
+          height="40"
+          className="contact-review-avatar"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="contact-review-meta">
           <p className="contact-review-name">{review.name}</p>
           <p className="contact-review-location">

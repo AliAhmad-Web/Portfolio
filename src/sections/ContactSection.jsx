@@ -140,8 +140,9 @@ export default function ContactSection({ showToast }) {
             <span className="contact-heading-accent">memorable together.</span>
           </h2>
           <p className="contact-lead">
-            Have a project in mind or want to discuss your next website? Send a quick note and
-            I&apos;ll get back to you with next steps.
+            Have a website, AI feature, or automation workflow in mind? I&apos;m based in Lahore,
+            Pakistan and work with local and remote clients. Send a quick note and I&apos;ll get
+            back to you with next steps.
           </p>
           <span className="stats-divider stats-divider--start" aria-hidden="true" />
 
@@ -151,7 +152,7 @@ export default function ContactSection({ showToast }) {
                 key={label}
                 href={href}
                 target={external ? '_blank' : undefined}
-                rel={external ? 'noreferrer' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
                 className={`contact-link is-${tone}`}
               >
                 <Icon />

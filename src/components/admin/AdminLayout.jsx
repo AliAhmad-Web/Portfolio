@@ -17,6 +17,7 @@ import {
 } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import BrandMark from '../ui/BrandMark';
+import SeoHead from '../seo/SeoHead';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: FiGrid, end: true },
@@ -59,6 +60,12 @@ export default function AdminLayout() {
 
   return (
     <div className="site-shell min-h-screen text-white">
+      <SeoHead
+        title="Admin dashboard | Ali Ahmad"
+        description="Private admin dashboard for Ali Ahmad’s portfolio. This area is not indexed."
+        path="/dashboard"
+        robots="noindex, nofollow"
+      />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1440px]">
         {/* Desktop sidebar */}
