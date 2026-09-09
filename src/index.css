@@ -3489,6 +3489,38 @@ body {
   }
 }
 
+@media (max-width: 767px) {
+  .contact-reviews-slider {
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  .contact-reviews-grid {
+    display: flex;
+    width: min(100%, 22.75rem);
+    margin-inline: auto;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contact-reviews-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .contact-reviews-grid .contact-review-card {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+  }
+
+  .contact-reviews-grid .contact-review-card:nth-child(n + 2) {
+    display: none;
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /* Footer                                                                     */
 /* -------------------------------------------------------------------------- */
@@ -3534,9 +3566,24 @@ body {
 }
 
 @media (max-width: 767px) {
+  .footer-shell {
+    padding-left: 1.55rem;
+    padding-right: 1.55rem;
+  }
+
   .footer-circuit {
-    width: 3.1rem;
-    opacity: 0.4;
+    width: 1.9rem;
+    opacity: 0.26;
+  }
+
+  .footer-circuit-left {
+    left: 0;
+    transform: translateX(-50%);
+  }
+
+  .footer-circuit-right {
+    right: 0;
+    transform: translateX(50%);
   }
 }
 

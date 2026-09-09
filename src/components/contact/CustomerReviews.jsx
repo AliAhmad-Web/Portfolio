@@ -136,7 +136,19 @@ export default function CustomerReviews({ showToast }) {
   const [paused, setPaused] = useState(false);
 
   const count = reviews.length;
-  const visibleCount = Math.min(4, count);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)').matches : false,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  const visibleCount = Math.min(isMobile ? 1 : 4, count);
 
   useEffect(() => {
     setPage(0);
