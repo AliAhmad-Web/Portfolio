@@ -1,6 +1,29 @@
 import { createClient } from '@supabase/supabase-js';
 import { env } from './env.js';
 
+const FETCH_TIMEOUT_MS = 4000;
+
+function looksLikePlaceholderHost(hostname) {
+  return /fake|example|placeholder|your-project-id|localhost/i.test(hostname || '');
+}
+
+function supabaseFetch(input, init = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+  if (init.signal) {
+    if (init.signal.aborted) {
+      controller.abort();
+    } else {
+      init.signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
+  }
+
+  return fetch(input, { ...init, signal: controller.signal }).finally(() => {
+    clearTimeout(timeout);
+  });
+}
+
 const supabaseOptions = {
   auth: {
     autoRefreshToken: false,
@@ -9,20 +32,29 @@ const supabaseOptions = {
   global: {
     fetch: async (input, init) => {
       try {
-        return await fetch(input, init);
+        return await supabaseFetch(input, init);
       } catch (error) {
         const message = error?.cause?.message || error?.message || '';
-        const retryable = /fetch failed|ECONNRESET|ENOTFOUND|ECONNREFUSED|ETIMEDOUT|UND_ERR/i.test(
+        const retryable = /ECONNRESET|ECONNREFUSED|ETIMEDOUT|UND_ERR_SOCKET/i.test(
           String(message),
         );
         if (!retryable) throw error;
-        return fetch(input, init);
+        return supabaseFetch(input, init);
       }
     },
   },
 };
 
-const hasSupabaseConfig = env.supabase.url && env.supabase.anonKey;
+let supabaseHostname = '';
+try {
+  supabaseHostname = env.supabase.url ? new URL(env.supabase.url).hostname : '';
+} catch {
+  supabaseHostname = '';
+}
+
+const hasSupabaseConfig = Boolean(env.supabase.url && env.supabase.anonKey);
+export const isSupabaseReachableConfig =
+  hasSupabaseConfig && !looksLikePlaceholderHost(supabaseHostname);
 
 function createSafeClient() {
   if (!hasSupabaseConfig) {
@@ -62,9 +94,10 @@ if (serviceRoleKey && !hasValidServiceRole) {
   );
 }
 
-export const supabaseAdmin = hasValidServiceRole
-  ? createClient(env.supabase.url, serviceRoleKey, supabaseOptions)
-  : null;
+export const supabaseAdmin =
+  hasValidServiceRole && isSupabaseReachableConfig
+    ? createClient(env.supabase.url, serviceRoleKey, supabaseOptions)
+    : null;
 
 export const supabaseAnon = createSafeClient();
 

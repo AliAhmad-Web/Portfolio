@@ -85,13 +85,13 @@ export const env = {
     fromEmail:
       process.env.RESEND_FROM_EMAIL || 'Portfolio <onboarding@resend.dev>',
     toEmail:
-      process.env.RESEND_TO_EMAIL ||
-      process.env.ADMIN_EMAIL ||
+      cleanEnv(process.env.RESEND_TO_EMAIL) ||
+      cleanEnv(process.env.ADMIN_EMAIL) ||
       '',
     enabled: process.env.RESEND_ENABLED !== 'false',
   },
   admin: {
-    email: process.env.ADMIN_EMAIL ?? '',
+    email: cleanEnv(process.env.ADMIN_EMAIL),
     password: process.env.ADMIN_PASSWORD ?? '',
     fullName: process.env.ADMIN_FULL_NAME ?? 'Portfolio Admin',
   },

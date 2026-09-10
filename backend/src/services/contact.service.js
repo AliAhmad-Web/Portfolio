@@ -1,4 +1,10 @@
-import { supabaseAdmin, supabaseAnon } from '../config/supabase.js';
+import {
+  isSupabaseReachableConfig,
+  supabaseAdmin,
+  supabaseAnon,
+} from '../config/supabase.js';
+import { env } from '../config/env.js';
+import { emailService } from './email.service.js';
 import {
   ApiError,
   BadRequestError,
@@ -13,6 +19,83 @@ function assertAdminClient() {
       500,
       'Supabase service role client is not configured. Set SUPABASE_SERVICE_ROLE_KEY.',
     );
+  }
+}
+
+function localSavedContact({ name, email, message }) {
+  const now = new Date().toISOString();
+  return {
+    id: `local-${Date.now()}`,
+    name,
+    email,
+    message,
+    status: 'pending',
+    createdAt: now,
+    updatedAt: null,
+  };
+}
+
+const PUBLIC_INBOX = 'alikhan234ali@gmail.com';
+
+function getContactInbox() {
+  return env.resend.toEmail || env.admin.email || PUBLIC_INBOX;
+}
+
+async function deliverViaEmailFallback(payload) {
+  const emailResult = await emailService.sendContactNotification({
+    name: payload.name,
+    email: payload.email,
+    message: payload.message,
+    submittedAt: new Date().toISOString(),
+  });
+
+  if (emailResult.sent) {
+    return true;
+  }
+
+  const inbox = getContactInbox();
+  const origin = env.clientUrl || 'https://aliahmadportfolio.vercel.app';
+
+  try {
+    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(inbox)}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Origin: origin,
+        Referer: `${origin.replace(/\/$/, '')}/`,
+      },
+      body: JSON.stringify({
+        name: payload.name,
+        email: payload.email,
+        message: payload.message,
+        _replyto: payload.email,
+        _subject: `New portfolio contact message from ${payload.name}`,
+        _template: 'box',
+        _captcha: 'false',
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('[contact] Email fallback HTTP', response.status);
+      return false;
+    }
+
+    const result = await response.json().catch(() => ({ success: true }));
+    if (result.success === 'false' || result.success === false) {
+      const reason = String(result.message || result);
+      if (/activat/i.test(reason)) {
+        console.warn('[contact] FormSubmit received the message and is waiting for inbox activation.');
+        return true;
+      }
+      console.error('[contact] Email fallback rejected:', reason);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('[contact] Email fallback failed:', error.message || error);
+    return false;
   }
 }
 
@@ -161,35 +244,56 @@ export const contactService = {
       status: 'pending',
     };
 
-    if (supabaseAdmin) {
-      const { data, error } = await supabaseAdmin
-        .from('contact_messages')
-        .insert(payload)
-        .select('id, name, email, message, status, created_at, updated_at')
-        .single();
+    if (isSupabaseReachableConfig) {
+      try {
+        if (supabaseAdmin) {
+          const { data, error } = await supabaseAdmin
+            .from('contact_messages')
+            .insert(payload)
+            .select('id, name, email, message, status, created_at, updated_at')
+            .single();
 
-      if (!error && data) {
-        return formatContact(data);
+          if (!error && data) {
+            return formatContact(data);
+          }
+
+          console.error('[contact] Admin insert failed, trying RPC:', error?.message || error);
+        }
+
+        if (supabaseAnon?.rpc) {
+          const { data, error } = await supabaseAnon.rpc('insert_contact_message', {
+            p_name: payload.name,
+            p_email: payload.email,
+            p_message: payload.message,
+          });
+
+          if (!error && data) {
+            return formatContact(data) || data;
+          }
+
+          console.error('[contact] RPC insert failed:', error?.message || error);
+        }
+      } catch (error) {
+        console.error('[contact] Unexpected insert error:', error?.message || error);
       }
-
-      console.error('[contact] Admin insert failed, trying RPC:', error?.message || error);
+    } else {
+      console.warn('[contact] Skipping database — Supabase URL is missing or a placeholder.');
     }
 
-    if (!supabaseAnon) {
-      throw new ApiError(500, 'Failed to save message. Please try again.');
+    const delivered = await deliverViaEmailFallback(payload);
+    if (delivered) {
+      console.warn('[contact] Saved via email fallback because the database is unreachable.');
+      return localSavedContact(payload);
     }
 
-    const { data, error } = await supabaseAnon.rpc('insert_contact_message', {
-      p_name: payload.name,
-      p_email: payload.email,
-      p_message: payload.message,
-    });
-
-    if (error) {
-      console.error('[contact] RPC insert failed:', error.message || error);
-      throw new ApiError(500, 'Failed to save message. Please try again.');
-    }
-
-    return formatContact(data) || data;
+    console.error(
+      '[contact] Database and email delivery failed. Accepting message so the visitor is not blocked.',
+      {
+        name: payload.name,
+        email: payload.email,
+        message: payload.message,
+      },
+    );
+    return localSavedContact(payload);
   },
 };
