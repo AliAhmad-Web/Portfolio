@@ -6,8 +6,9 @@
 
 import { faqs } from '../data/faq';
 import { projects } from '../data/projects';
-import { seoConfig, getSameAs, getSiteUrl, absUrl, homeSeo } from '../data/seo';
+import { seoConfig, getSameAs, getSiteUrl, absUrl, homeSeo, teamSeo } from '../data/seo';
 import { siteConfig } from '../data/site';
+import { teamMembers } from '../data/team';
 import skills from '../data/skills';
 import services from '../data/services';
 import { getProjectSlug } from '../utils/projectSlug';
@@ -187,6 +188,61 @@ export function homeBreadcrumbSchema() {
         position: 1,
         name: 'Home',
         item: absUrl('/'),
+      },
+    ],
+  };
+}
+
+export function buildTeamGraph() {
+  const url = absUrl('/team');
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      personSchema(),
+      websiteSchema(),
+      {
+        '@type': 'WebPage',
+        '@id': `${url}#webpage`,
+        url,
+        name: teamSeo.title,
+        description: teamSeo.description,
+        inLanguage: seoConfig.language,
+        isPartOf: { '@id': websiteId() },
+        about: { '@id': personId() },
+        primaryImageOfPage: absUrl('/team-banner.jpg'),
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: absUrl('/'),
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Team',
+            item: url,
+          },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${url}#team-list`,
+        name: 'Team members',
+        itemListOrder: 'https://schema.org/ItemListOrderAscending',
+        numberOfItems: teamMembers.length,
+        itemListElement: teamMembers.map((member, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: member.name,
+          description: member.role,
+        })),
       },
     ],
   };

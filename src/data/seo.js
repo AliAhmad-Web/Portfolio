@@ -94,6 +94,13 @@ export const homeSeo = {
   path: '/',
 };
 
+export const teamSeo = {
+  title: 'Meet Our Team | Ali Ahmad',
+  description:
+    'Meet the developers, designers, and digital specialists working with Ali Ahmad on websites, web apps, AI features, and automation.',
+  path: '/team',
+};
+
 export const notFoundSeo = {
   title: 'Page not found | Ali Ahmad',
   description:
@@ -109,7 +116,7 @@ export function getSameAs() {
 }
 
 export function getIndexablePaths() {
-  return ['/', ...projects.map((project) => `/projects/${getProjectSlug(project)}`)];
+  return ['/', '/team', ...projects.map((project) => `/projects/${getProjectSlug(project)}`)];
 }
 
 export function getProjectSeo(project) {

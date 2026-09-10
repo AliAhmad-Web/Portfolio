@@ -45,12 +45,13 @@ const supabaseOptions = {
   },
 };
 
-let supabaseHostname = '';
-try {
-  supabaseHostname = env.supabase.url ? new URL(env.supabase.url).hostname : '';
-} catch {
-  supabaseHostname = '';
-}
+const supabaseHostname = env.supabase.url ? (() => {
+  try {
+    return new URL(env.supabase.url).hostname;
+  } catch {
+    return '';
+  }
+})() : '';
 
 const hasSupabaseConfig = Boolean(env.supabase.url && env.supabase.anonKey);
 export const isSupabaseReachableConfig =

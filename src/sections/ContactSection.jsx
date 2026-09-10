@@ -14,7 +14,6 @@ import {
   HiPaperAirplane,
 } from 'react-icons/hi2';
 import ContactFormWave from '../components/contact/ContactFormWave';
-import CustomerReviews from '../components/contact/CustomerReviews';
 import SectionBadge from '../components/SectionBadge';
 import { useRecaptcha } from '../hooks/useRecaptcha';
 import { isValidEmail } from '../utils/authValidation';
@@ -231,8 +230,6 @@ export default function ContactSection({ showToast }) {
           </button>
         </motion.form>
         </div>
-
-        <CustomerReviews showToast={showToast} />
       </div>
     </section>
   );

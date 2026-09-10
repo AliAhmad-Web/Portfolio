@@ -14,6 +14,7 @@ export default function AnimatedCounter({
   value,
   duration = 1600,
   active = true,
+  replay = false,
   className = '',
 }) {
   const { amount, suffix } = parseMetric(value);
@@ -23,12 +24,18 @@ export default function AnimatedCounter({
   const frameRef = useRef(0);
 
   useEffect(() => {
-    if (!active) return undefined;
+    if (!active) {
+      cancelAnimationFrame(frameRef.current);
+      if (replay) {
+        startedRef.current = false;
+      }
+      return undefined;
+    }
 
-    const from = startedRef.current ? countRef.current : 0;
+    const from = replay || !startedRef.current ? 0 : countRef.current;
     const to = amount;
 
-    if (startedRef.current && from === to) return undefined;
+    if (!replay && startedRef.current && from === to) return undefined;
 
     startedRef.current = true;
     cancelAnimationFrame(frameRef.current);
@@ -38,6 +45,9 @@ export default function AnimatedCounter({
       setCount(to);
       return undefined;
     }
+
+    countRef.current = from;
+    setCount(from);
 
     const start = performance.now();
     const tick = (now) => {
@@ -53,7 +63,7 @@ export default function AnimatedCounter({
 
     frameRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frameRef.current);
-  }, [active, amount, duration]);
+  }, [active, amount, duration, replay]);
 
   return (
     <span className={className} aria-label={value}>

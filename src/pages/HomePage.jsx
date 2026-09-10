@@ -20,6 +20,8 @@ const ServicesSection = lazy(() => import('../sections/ServicesSection'));
 const ProjectsSection = lazy(() => import('../sections/ProjectsSection'));
 const FaqSection = lazy(() => import('../sections/FaqSection'));
 const ContactSection = lazy(() => import('../sections/ContactSection'));
+const TeamSection = lazy(() => import('../sections/TeamSection'));
+const ReviewsSection = lazy(() => import('../sections/ReviewsSection'));
 const FooterSection = lazy(() => import('../sections/FooterSection'));
 const Toast = lazy(() => import('../components/Toast'));
 
@@ -85,6 +87,12 @@ export default function HomePage() {
           </Suspense>
           <Suspense fallback={<SectionFallback />}>
             <ContactSection showToast={showToast} />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <TeamSection />
+          </Suspense>
+          <Suspense fallback={<SectionFallback />}>
+            <ReviewsSection showToast={showToast} />
           </Suspense>
         </main>
 
