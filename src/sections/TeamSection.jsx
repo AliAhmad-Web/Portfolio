@@ -5,9 +5,9 @@
  */
 
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { HiOutlineArrowRight, HiOutlineCodeBracket, HiOutlineStar, HiOutlineUserGroup } from 'react-icons/hi2';
 import AnimatedCounter from '../components/AnimatedCounter';
+import OptimizedImage from '../components/ui/OptimizedImage';
 import SectionBadge from '../components/SectionBadge';
 import { getProjectsCount } from '../data/projects';
 import { TEAM_BANNER, getTeamMembersCount, teamHome } from '../data/team';
@@ -49,7 +49,7 @@ export default function TeamSection() {
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="team-banner">
           <div className="team-banner-media" aria-hidden="true">
-            <img
+            <OptimizedImage
               className="team-banner-photo"
               src={TEAM_BANNER.src}
               alt=""
@@ -58,17 +58,12 @@ export default function TeamSection() {
               sizes="(min-width: 1024px) 70vw, 100vw"
               decoding="async"
               loading="lazy"
+              fetchPriority="low"
             />
             <div className="team-banner-overlay" />
           </div>
 
-          <motion.div
-            className="team-banner-copy"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.4 }}
-          >
+          <div className="anim-in team-banner-copy">
             <SectionBadge icon={HiOutlineUserGroup}>{teamHome.badge}</SectionBadge>
 
             <h2 id="team-heading">
@@ -101,11 +96,20 @@ export default function TeamSection() {
               })}
             </ul>
 
-            <Link to={teamHome.ctaTo} className="team-banner-cta">
+            <Link
+              to={teamHome.ctaTo}
+              className="team-banner-cta"
+              onMouseEnter={() => {
+                void import('../pages/TeamPage')
+              }}
+              onFocus={() => {
+                void import('../pages/TeamPage')
+              }}
+            >
               {teamHome.cta}
               <HiOutlineArrowRight aria-hidden="true" />
             </Link>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

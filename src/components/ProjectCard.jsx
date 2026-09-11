@@ -7,6 +7,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineEye } from 'react-icons/hi2';
+import OptimizedImage from './ui/OptimizedImage';
 import { getProjectSlug } from '../utils/projectSlug';
 
 export default memo(function ProjectCard({ project }) {
@@ -14,13 +15,25 @@ export default memo(function ProjectCard({ project }) {
 
   return (
     <article className={`project-card is-${project.tone || 'cyan'}`}>
-      <Link to={`/projects/${slug}`} className="project-card-media" aria-label={`${project.title} project details`}>
-        <img
+      <Link
+        to={`/projects/${slug}`}
+        className="project-card-media"
+        aria-label={`${project.title} project details`}
+        onMouseEnter={() => {
+          void import('../pages/ProjectDetailPage')
+        }}
+        onFocus={() => {
+          void import('../pages/ProjectDetailPage')
+        }}
+      >
+        <OptimizedImage
           src={project.image}
           alt={`${project.title} — ${project.category} by Ali Ahmad`}
           width="1440"
           height="900"
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           loading="lazy"
+          fetchPriority="low"
           decoding="async"
         />
       </Link>

@@ -7,9 +7,9 @@
 import { useLayoutEffect, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
-import { motion } from 'framer-motion';
 import { findProjectBySlug, getProjectSlug, getRelatedProjects } from '../utils/projectSlug';
 import BrandMark from '../components/ui/BrandMark';
+import OptimizedImage from '../components/ui/OptimizedImage';
 import SeoHead from '../components/seo/SeoHead';
 import { getProjectSeo } from '../data/seo';
 import { buildProjectGraph } from '../lib/schema';
@@ -69,32 +69,24 @@ export default function ProjectDetailPage() {
           <main>
             <section className="px-5 pt-8 sm:px-8 sm:pt-10 lg:px-10 lg:pt-12">
               <div className="mx-auto max-w-6xl">
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="glass-panel mx-auto max-w-4xl overflow-hidden"
-                >
-                  <img
+                <div className="anim-in glass-panel mx-auto max-w-4xl overflow-hidden">
+                  <OptimizedImage
                     src={project.image}
                     alt={pageSeo.imageAlt}
                     width="1440"
                     height="900"
                     decoding="async"
+                    loading="eager"
+                    fetchPriority="high"
                     className="aspect-video w-full object-cover"
                   />
-                </motion.div>
+                </div>
               </div>
             </section>
 
             <section className="px-5 py-12 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
               <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.55fr)_minmax(280px,0.7fr)] lg:gap-16 lg:items-start">
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.05 }}
-                  className="min-w-0"
-                >
+                <div className="anim-in-delayed min-w-0">
                   <nav aria-label="Breadcrumb">
                     <ol className="project-breadcrumb">
                       <li>
@@ -136,14 +128,9 @@ export default function ProjectDetailPage() {
                       ))}
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
-                <motion.aside
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                  className="glass-panel h-fit p-6 sm:p-7 lg:sticky lg:top-8"
-                >
+                <aside className="anim-in-delayed glass-panel h-fit p-6 sm:p-7 lg:sticky lg:top-8">
                   <p className="text-xs font-medium uppercase tracking-[0.28em] text-cyan-300 sm:text-sm">
                     Project links
                   </p>
@@ -190,7 +177,7 @@ export default function ProjectDetailPage() {
                       <Link to="/#contact">Discuss a similar project</Link>
                     </nav>
                   ) : null}
-                </motion.aside>
+                </aside>
               </div>
             </section>
           </main>

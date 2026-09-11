@@ -5,7 +5,7 @@
  */
 
 import { useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { LazyMotion, MotionConfig, AnimatePresence, m, domAnimation } from 'framer-motion';
 import { HiOutlineFolder } from 'react-icons/hi2';
 import ProjectCard from '../components/ProjectCard';
 import SectionBadge from '../components/SectionBadge';
@@ -101,22 +101,26 @@ export default function ProjectsSection() {
           ))}
         </div>
 
-        <motion.div layout className="projects-grid">
-          <AnimatePresence mode="popLayout">
-            {visibleProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ProjectCard project={project} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <LazyMotion features={domAnimation} strict>
+          <MotionConfig reducedMotion="user">
+            <m.div layout className="projects-grid">
+              <AnimatePresence mode="popLayout">
+                {visibleProjects.map((project) => (
+                  <m.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ProjectCard project={project} />
+                  </m.div>
+                ))}
+              </AnimatePresence>
+            </m.div>
+          </MotionConfig>
+        </LazyMotion>
 
         {visibleProjects.length === 0 ? (
           <p className="projects-empty">No projects in this category yet.</p>

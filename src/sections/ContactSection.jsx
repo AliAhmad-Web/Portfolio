@@ -5,7 +5,6 @@
  */
 
 import { useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
 import { FaEnvelope, FaGithub, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import {
   HiOutlineChatBubbleLeftRight,
@@ -125,13 +124,7 @@ export default function ContactSection({ showToast }) {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="contact-main">
-          <motion.div
-          className="contact-copy"
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.35 }}
-        >
+          <div className="anim-in contact-copy">
           <SectionBadge icon={HiOutlineEnvelope}>CONTACT</SectionBadge>
           <h2>
             Let&apos;s build something
@@ -159,15 +152,11 @@ export default function ContactSection({ showToast }) {
               </a>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        <motion.form
+        <form
           onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.35 }}
-          className="contact-form"
+          className="anim-in contact-form"
           noValidate
         >
           <ContactFormWave />
@@ -228,7 +217,7 @@ export default function ContactSection({ showToast }) {
             <HiPaperAirplane />
             {submitting ? 'Sending...' : 'Send Message'}
           </button>
-        </motion.form>
+        </form>
         </div>
       </div>
     </section>

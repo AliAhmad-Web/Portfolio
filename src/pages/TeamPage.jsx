@@ -6,7 +6,6 @@
 
 import { useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { FaArrowLeft } from 'react-icons/fa';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import Header from '../components/Header';
@@ -45,12 +44,7 @@ export default function TeamPage() {
             <div className="team-ambient" aria-hidden="true" />
 
             <div className="relative z-10 mx-auto max-w-7xl">
-              <motion.div
-                className="team-page-hero"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-              >
+              <div className="anim-in team-page-hero">
                 <Link to="/#team" className="team-page-back">
                   <FaArrowLeft />
                   Back to portfolio
@@ -64,7 +58,7 @@ export default function TeamPage() {
                 </h1>
                 <p>{teamPage.description}</p>
                 <span className="stats-divider" aria-hidden="true" />
-              </motion.div>
+              </div>
 
               <div className="team-grid">
                 {teamMembers.map((member, index) => (

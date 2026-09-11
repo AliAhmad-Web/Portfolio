@@ -4,7 +4,6 @@
  * Used by: HomePage.
  */
 
-import { motion } from 'framer-motion';
 import {
   HiOutlineArrowRight,
   HiOutlineChatBubbleLeftRight,
@@ -16,6 +15,7 @@ import {
 } from 'react-icons/hi2';
 import HeroOrbit from '../components/hero/HeroOrbit';
 import AnimatedCounter from '../components/AnimatedCounter';
+import OptimizedImage from '../components/ui/OptimizedImage';
 import { useInView } from '../hooks/useInView';
 import { useClientSocialProof } from '../hooks/useClientSocialProof';
 import { CLIENT_AVATAR_SLOTS, PLACEHOLDER_AVATARS } from '../data/clientAvatars';
@@ -66,12 +66,7 @@ export default function HeroSection() {
       <div className="hero-aurora" aria-hidden="true" />
 
       <div className="hero-main relative z-10 mx-auto grid max-w-7xl items-center gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-3 xl:gap-5">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="max-w-2xl text-center lg:max-w-none lg:text-left"
-        >
+        <div className="anim-in max-w-2xl text-center lg:max-w-none lg:text-left">
           <span className="hero-badge">
             <HiOutlineSparkles className="text-amber-300" />
             AI • Automation • Full-Stack Solutions
@@ -118,31 +113,24 @@ export default function HeroSection() {
               Discuss Your Project
             </SectionLink>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.45, delay: 0.1 }}
-          className="relative mx-auto w-full overflow-hidden"
-        >
+        <div className="anim-in-scale relative mx-auto w-full overflow-hidden">
           <HeroOrbit />
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, delay: 0.15 }}
-        className="hero-metrics relative z-10 mx-auto max-w-7xl"
-      >
+      <div className="anim-in-delayed hero-metrics relative z-10 mx-auto max-w-7xl">
         <div className="hero-metrics-row">
           <div className="hero-proof" aria-hidden="true">
             {CLIENT_AVATAR_SLOTS.map((slot, index) => (
               <span key={slot} className={slot}>
-                <img
+                <OptimizedImage
                   src={recentClients[index]?.src || PLACEHOLDER_AVATARS[index].src}
                   alt=""
+                  width="40"
+                  height="40"
+                  loading="eager"
                   decoding="async"
                 />
               </span>
@@ -172,7 +160,7 @@ export default function HeroSection() {
             </blockquote>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

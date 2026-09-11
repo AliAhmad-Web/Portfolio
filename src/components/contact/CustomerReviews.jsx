@@ -20,6 +20,7 @@ import {
   HiPaperAirplane,
 } from 'react-icons/hi2';
 import SectionBadge from '../SectionBadge';
+import OptimizedImage from '../ui/OptimizedImage';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useCustomerReviews } from '../../hooks/useCustomerReviews';
 import { reviewAvatarSrc } from '../../data/clientAvatars';
@@ -99,7 +100,7 @@ function ReviewCard({ review, featured }) {
   return (
     <article className={`contact-review-card is-${service.tone}${featured ? ' is-active' : ''}`}>
       <div className="contact-review-head">
-        <img
+        <OptimizedImage
           src={avatarFor(review)}
           alt={`${review.name} in ${review.location}`}
           width="40"

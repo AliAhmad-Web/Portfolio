@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { HiOutlineArrowRight } from 'react-icons/hi2';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { scrollToSection } from '../utils/scrollToSection';
 import { useAuth } from '../context/AuthContext';
@@ -142,15 +141,8 @@ export default function Header() {
         </button>
       </div>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.nav
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.15 }}
-            className="border-t border-white/10 bg-[#020617]/95 p-4 lg:hidden"
-          >
+      {menuOpen ? (
+          <nav className="header-mobile-nav border-t border-white/10 bg-[#020617]/95 p-4 lg:hidden">
             {navItems.map((item) => (
               <SectionLink
                 key={item.id}
@@ -175,9 +167,8 @@ export default function Header() {
               <HiOutlineArrowRight className="text-sm" />
             </SectionLink>
             {authActions ? <div className="mt-3 flex flex-col gap-2">{authActions}</div> : null}
-          </motion.nav>
-        )}
-      </AnimatePresence>
+          </nav>
+      ) : null}
     </header>
   );
 }

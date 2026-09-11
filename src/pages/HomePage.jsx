@@ -8,6 +8,7 @@ import { useState, useCallback, lazy, Suspense, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import HeroSection from '../sections/HeroSection';
+import IdleMount from '../components/IdleMount';
 import SeoHead from '../components/seo/SeoHead';
 import { homeSeo } from '../data/seo';
 import { buildHomeGraph } from '../lib/schema';
@@ -67,38 +68,40 @@ export default function HomePage() {
 
         <main id="main-content">
           <HeroSection />
-          <Suspense fallback={<SectionFallback />}>
-            <AboutSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <SkillsSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <GitHubStatsSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ServicesSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ProjectsSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <FaqSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ContactSection showToast={showToast} />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <TeamSection />
-          </Suspense>
-          <Suspense fallback={<SectionFallback />}>
-            <ReviewsSection showToast={showToast} />
-          </Suspense>
+          <IdleMount eager={Boolean(location.hash)}>
+            <Suspense fallback={<SectionFallback />}>
+              <AboutSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <SkillsSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <GitHubStatsSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <ServicesSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <ProjectsSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <FaqSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <ContactSection showToast={showToast} />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <TeamSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback />}>
+              <ReviewsSection showToast={showToast} />
+            </Suspense>
+            <Suspense fallback={null}>
+              <FooterSection />
+            </Suspense>
+          </IdleMount>
         </main>
 
-        <Suspense fallback={null}>
-          <FooterSection />
-        </Suspense>
         {toast && (
           <Suspense fallback={null}>
             <Toast message={toast.message} type={toast.type} onClose={closeToast} />

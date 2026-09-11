@@ -4,7 +4,6 @@
  * Used by: HomePage. Data: src/data/skills.jsx.
  */
 
-import { motion } from 'framer-motion';
 import { HiOutlineCodeBracket } from 'react-icons/hi2';
 import skills from '../data/skills.jsx';
 import SectionBadge from '../components/SectionBadge';
@@ -52,13 +51,10 @@ export default function SkillsSection() {
 
         <div className="skills-grid">
           {skills.map((skill, index) => (
-            <motion.article
+            <article
               key={skill.name}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.35, delay: index * 0.04 }}
-              className={`skills-card is-${skill.tone}`}
+              className={`anim-in skills-card is-${skill.tone}`}
+              style={{ animationDelay: `${index * 40}ms` }}
             >
               <span className="skills-card-icon">
                 <skill.Icon />
@@ -73,7 +69,7 @@ export default function SkillsSection() {
                   </span>
                 ))}
               </p>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>

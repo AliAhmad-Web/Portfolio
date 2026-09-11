@@ -67,6 +67,9 @@ export default defineConfig({
     target: 'esnext',
     modulePreload: {
       polyfill: false,
+      resolveDependencies(_filename, deps) {
+        return deps.filter((dep) => !dep.includes('vendor-framer'))
+      },
     },
   },
   optimizeDeps: {
@@ -74,8 +77,6 @@ export default defineConfig({
       'react',
       'react-dom',
       'react-router-dom',
-      'framer-motion',
-      'react-icons',
       'react-helmet-async',
     ],
   },

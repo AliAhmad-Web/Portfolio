@@ -4,7 +4,6 @@
  * Used by: HomePage.
  */
 
-import { motion } from 'framer-motion';
 import {
   HiOutlineAcademicCap,
   HiOutlineClock,
@@ -90,13 +89,7 @@ export default function AboutSection() {
       </div>
 
       <div className="about-main relative z-10 mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-16">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.4 }}
-          className="about-copy"
-        >
+        <div className="anim-in-left about-copy">
           <SectionBadge icon={HiOutlineUser}>ABOUT ME</SectionBadge>
 
           <h2>
@@ -119,15 +112,9 @@ export default function AboutSection() {
             <SectionLink id="contact">start a conversation</SectionLink>.
           </p>
           <span className="stats-divider stats-divider--start" aria-hidden="true" />
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.4, delay: 0.08 }}
-          className="about-cards"
-        >
+        <div className="anim-in-right about-cards">
           {ABOUT_CARDS.map((card, index) => (
             <article
               key={card.title}
@@ -147,7 +134,7 @@ export default function AboutSection() {
               <p className="about-card-desc">{card.desc}</p>
             </article>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

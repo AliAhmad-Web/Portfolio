@@ -13,8 +13,8 @@ import {
   HiOutlineShieldCheck,
   HiOutlineCloud,
 } from 'react-icons/hi2';
-import heroImage from '../../assets/ailAhmad.png';
 import { seoConfig } from '../../data/seo';
+import OptimizedImage from '../ui/OptimizedImage';
 
 const OUTER_NODES = [
   { label: 'AI Intelligence', Icon: HiOutlineCpuChip, tone: 'gold', angle: -90 },
@@ -113,8 +113,8 @@ export default function HeroOrbit() {
           <div className="hero-orbit-core-halo" />
           <div className="hero-orbit-core-ring" />
           <div className="hero-orbit-core-frame">
-            <img
-              src={heroImage}
+            <OptimizedImage
+              src={seoConfig.image.path}
               alt={seoConfig.image.alt}
               width={seoConfig.image.width}
               height={seoConfig.image.height}

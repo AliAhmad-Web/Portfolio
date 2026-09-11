@@ -4,7 +4,6 @@
  * Used by: HomePage. Data: src/data/services.jsx. Anchor: #services (Solutions nav).
  */
 
-import { motion } from 'framer-motion';
 import { HiOutlineBriefcase } from 'react-icons/hi2';
 import services from '../data/services.jsx';
 import SectionBadge from '../components/SectionBadge';
@@ -60,13 +59,10 @@ export default function ServicesSection() {
 
         <div className="services-grid">
           {services.map((service, index) => (
-            <motion.article
+            <article
               key={service.title}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.32, delay: index * 0.03 }}
-              className={`services-card is-${service.tone}`}
+              className={`anim-in services-card is-${service.tone}`}
+              style={{ animationDelay: `${index * 30}ms` }}
             >
               <span className="services-card-icon">
                 <service.Icon />
@@ -81,7 +77,7 @@ export default function ServicesSection() {
                   </span>
                 ))}
               </p>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>

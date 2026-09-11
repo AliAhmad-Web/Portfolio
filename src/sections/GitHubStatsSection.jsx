@@ -4,7 +4,6 @@
  * Used by: HomePage. Data: src/data/stats.jsx.
  */
 
-import { motion } from 'framer-motion';
 import { HiOutlineChartBar } from 'react-icons/hi2';
 import stats from '../data/stats.jsx';
 import AnimatedCounter from '../components/AnimatedCounter';
@@ -79,13 +78,10 @@ export default function GitHubStatsSection() {
           aria-live="polite"
         >
           {stats.map((stat, index) => (
-            <motion.article
+            <article
               key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.35, delay: index * 0.05 }}
-              className={`stats-card is-${stat.tone}`}
+              className={`anim-in stats-card is-${stat.tone}`}
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               <span className="stats-card-icon">
                 <stat.Icon />
@@ -98,7 +94,7 @@ export default function GitHubStatsSection() {
               </p>
               <h3>{stat.label}</h3>
               <p className="stats-card-desc">{stat.description}</p>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>

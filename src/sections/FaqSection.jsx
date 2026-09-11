@@ -4,7 +4,6 @@
  * Used by: HomePage. Anchor: #faq.
  */
 
-import { motion } from 'framer-motion';
 import { HiOutlineQuestionMarkCircle } from 'react-icons/hi2';
 import SectionBadge from '../components/SectionBadge';
 import SectionLink from '../components/SectionLink';
@@ -33,20 +32,17 @@ export default function FaqSection() {
 
         <div className="faq-list">
           {faqs.map((item, index) => (
-            <motion.details
+            <details
               key={item.question}
               name="portfolio-faq"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, delay: index * 0.04 }}
-              className="faq-item"
+              className="anim-in faq-item"
+              style={{ animationDelay: `${index * 40}ms` }}
             >
               <summary>
                 <h3>{item.question}</h3>
               </summary>
               <p>{item.answer}</p>
-            </motion.details>
+            </details>
           ))}
         </div>
 

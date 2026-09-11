@@ -5,6 +5,7 @@
  */
 
 import { FaEnvelope, FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
+import OptimizedImage from '../ui/OptimizedImage';
 import { getTeamInitials } from '../../data/team';
 
 const socialIcons = {
@@ -23,7 +24,16 @@ export default function TeamMemberCard({ member, index = 0 }) {
     >
       <div className="team-card-photo">
         {member.image ? (
-          <img src={member.image} alt={member.name} width="320" height="320" loading="lazy" decoding="async" />
+          <OptimizedImage
+            src={member.image}
+            alt={member.name}
+            width="320"
+            height="320"
+            sizes="(min-width: 1024px) 320px, 80vw"
+            loading={index < 2 ? 'eager' : 'lazy'}
+            fetchPriority={index < 2 ? 'high' : 'low'}
+            decoding="async"
+          />
         ) : (
           <span className="team-card-initials" aria-hidden="true">
             {initials}

@@ -39,7 +39,22 @@ html[data-motion-paused] .animate-float-node,
 html[data-motion-paused] .stats-constellation,
 html[data-motion-paused] .skills-constellation,
 html[data-motion-paused] .services-constellation,
-html[data-motion-paused] .projects-constellation {
+html[data-motion-paused] .projects-constellation,
+[data-motion-paused] .hero-orbit-path-outer,
+[data-motion-paused] .hero-orbit-path-mid,
+[data-motion-paused] .hero-orbit-path-inner,
+[data-motion-paused] .hero-orbit-cards-outer,
+[data-motion-paused] .hero-orbit-cards-inner,
+[data-motion-paused] .hero-orbit-glow,
+[data-motion-paused] .animate-orbit-slow,
+[data-motion-paused] .animate-orbit-medium,
+[data-motion-paused] .animate-orbit-reverse,
+[data-motion-paused] .animate-pulse-glow,
+[data-motion-paused] .animate-float-node,
+[data-motion-paused] .stats-constellation,
+[data-motion-paused] .skills-constellation,
+[data-motion-paused] .services-constellation,
+[data-motion-paused] .projects-constellation {
   animation-play-state: paused !important;
 }
 
@@ -72,6 +87,40 @@ body {
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideInScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeSlideInTight {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.anim-in {
+  animation: fadeSlideIn 0.4s ease both;
+}
+
+.anim-in-left {
+  animation: fadeSlideInLeft 0.4s ease both;
+}
+
+.anim-in-right {
+  animation: fadeSlideInRight 0.4s ease 0.08s both;
+}
+
+.anim-in-scale {
+  animation: fadeSlideInScale 0.45s ease 0.1s both;
+}
+
+.anim-in-delayed {
+  animation: fadeSlideIn 0.35s ease 0.15s both;
+}
+
+.header-mobile-nav {
+  animation: fadeSlideInTight 0.15s ease both;
 }
 
 @keyframes orbitSlow {
@@ -4169,7 +4218,8 @@ body {
   }
 }
 
-html[data-motion-paused] .team-card {
+html[data-motion-paused] .team-card,
+[data-motion-paused] .team-card {
   animation: none;
 }
 
@@ -4582,6 +4632,15 @@ html[data-motion-paused] .team-card {
   }
 
   .contact-reviews-track {
+    animation: none !important;
+  }
+
+  .anim-in,
+  .anim-in-left,
+  .anim-in-right,
+  .anim-in-scale,
+  .anim-in-delayed,
+  .header-mobile-nav {
     animation: none !important;
   }
 }
