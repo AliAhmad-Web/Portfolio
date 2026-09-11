@@ -113,18 +113,27 @@ export const authService = {
   },
 
   async signIn({ email, password }) {
-    let data;
-    let error;
+    const attempt = async () => {
+      try {
+        return await supabaseAnon.auth.signInWithPassword({
+          email,
+          password,
+        });
+      } catch (thrown) {
+        return { data: { user: null, session: null }, error: thrown };
+      }
+    };
 
-    try {
-      const result = await supabaseAnon.auth.signInWithPassword({
-        email,
-        password,
-      });
-      data = result.data;
-      error = result.error;
-    } catch (thrown) {
-      throw mapSupabaseAuthError(thrown);
+    let { data, error } = await attempt();
+    const shouldRetry =
+      Boolean(error) &&
+      (error.status === 0 ||
+        error.name === 'AbortError' ||
+        /fetch failed|aborted/i.test(error.message || ''));
+
+    if (shouldRetry) {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      ({ data, error } = await attempt());
     }
 
     if (error) {

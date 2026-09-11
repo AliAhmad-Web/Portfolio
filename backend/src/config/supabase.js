@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { env } from './env.js';
 
-const FETCH_TIMEOUT_MS = 15000;
+const FETCH_TIMEOUT_MS = 20000;
 
 function looksLikePlaceholderHost(hostname) {
   return /(?:^|\.)example\.supabase\.co$|your-project-id|placeholder|localhost/i.test(
@@ -9,20 +9,37 @@ function looksLikePlaceholderHost(hostname) {
   );
 }
 
-function supabaseFetch(input, init = {}) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
-  if (init.signal) {
-    if (init.signal.aborted) {
-      controller.abort();
-    } else {
-      init.signal.addEventListener('abort', () => controller.abort(), { once: true });
-    }
+function mergeAbortSignals(timeoutSignal, incomingSignal) {
+  if (!incomingSignal || incomingSignal.aborted) {
+    return timeoutSignal;
   }
 
-  return fetch(input, { ...init, signal: controller.signal }).finally(() => {
-    clearTimeout(timeout);
+  if (typeof AbortSignal.any === 'function') {
+    return AbortSignal.any([timeoutSignal, incomingSignal]);
+  }
+
+  const controller = new AbortController();
+  const abort = () => controller.abort();
+  timeoutSignal.addEventListener('abort', abort, { once: true });
+  incomingSignal.addEventListener('abort', abort, { once: true });
+  return controller.signal;
+}
+
+function supabaseFetch(input, init = {}) {
+  const { signal: incomingSignal, ...rest } = init;
+  const timeoutSignal =
+    typeof AbortSignal.timeout === 'function'
+      ? AbortSignal.timeout(FETCH_TIMEOUT_MS)
+      : undefined;
+  const signal = timeoutSignal
+    ? mergeAbortSignals(timeoutSignal, incomingSignal)
+    : incomingSignal && !incomingSignal.aborted
+      ? incomingSignal
+      : undefined;
+
+  return fetch(input, {
+    ...rest,
+    signal,
   });
 }
 
@@ -32,18 +49,22 @@ const supabaseOptions = {
     persistSession: false,
   },
   global: {
-    fetch: async (input, init) => {
+    fetch: async (input, init = {}) => {
       try {
         return await supabaseFetch(input, init);
       } catch (error) {
         const message = error?.cause?.message || error?.message || '';
-        const retryable =
+        const aborted =
           error?.name === 'AbortError' ||
-          /ECONNRESET|ECONNREFUSED|ETIMEDOUT|UND_ERR_SOCKET|aborted|fetch failed/i.test(
-            String(message),
-          );
-        if (!retryable) throw error;
-        return supabaseFetch(input, init);
+          init.signal?.aborted ||
+          /aborted/i.test(String(message));
+        const retryable = /ECONNRESET|ECONNREFUSED|UND_ERR_SOCKET/i.test(
+          String(message),
+        );
+
+        if (aborted || !retryable) throw error;
+
+        return supabaseFetch(input, { ...init, signal: undefined });
       }
     },
   },
@@ -118,7 +139,9 @@ export function createSupabaseUserClient(accessToken) {
   return createClient(env.supabase.url, env.supabase.anonKey, {
     ...supabaseOptions,
     global: {
+      ...supabaseOptions.global,
       headers: {
+        ...(supabaseOptions.global?.headers || {}),
         Authorization: `Bearer ${accessToken}`,
       },
     },
