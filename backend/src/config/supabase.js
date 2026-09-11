@@ -4,7 +4,9 @@ import { env } from './env.js';
 const FETCH_TIMEOUT_MS = 15000;
 
 function looksLikePlaceholderHost(hostname) {
-  return /fake|example|placeholder|your-project-id|localhost/i.test(hostname || '');
+  return /(?:^|\.)example\.supabase\.co$|your-project-id|placeholder|localhost/i.test(
+    hostname || '',
+  );
 }
 
 function supabaseFetch(input, init = {}) {
