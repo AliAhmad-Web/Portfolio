@@ -3947,22 +3947,40 @@ body {
 .team-card.is-green { --accent: #4ade80; }
 
 .team-card-photo {
+  position: relative;
   display: grid;
   place-items: center;
   overflow: hidden;
   aspect-ratio: 1 / 1;
   max-height: 16.5rem;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
   background:
     radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 52%),
     #020617;
 }
 
+.team-card-photo picture {
+  position: absolute;
+  inset: 0;
+  display: block !important;
+  width: 100%;
+  height: 100%;
+}
+
 .team-card-photo img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
   object-fit: cover;
-  object-position: top center;
+  object-position: center 22%;
 }
 
 .team-card-initials {

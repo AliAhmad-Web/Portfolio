@@ -27,8 +27,8 @@ export default function TeamMemberCard({ member, index = 0 }) {
           <OptimizedImage
             src={member.image}
             alt={member.name}
-            width="320"
-            height="320"
+            width="640"
+            height="360"
             sizes="(min-width: 1024px) 320px, 80vw"
             loading={index < 2 ? 'eager' : 'lazy'}
             fetchPriority={index < 2 ? 'high' : 'low'}
