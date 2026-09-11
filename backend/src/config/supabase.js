@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { env } from './env.js';
 
-const FETCH_TIMEOUT_MS = 4000;
+const FETCH_TIMEOUT_MS = 15000;
 
 function looksLikePlaceholderHost(hostname) {
   return /fake|example|placeholder|your-project-id|localhost/i.test(hostname || '');
@@ -35,9 +35,11 @@ const supabaseOptions = {
         return await supabaseFetch(input, init);
       } catch (error) {
         const message = error?.cause?.message || error?.message || '';
-        const retryable = /ECONNRESET|ECONNREFUSED|ETIMEDOUT|UND_ERR_SOCKET/i.test(
-          String(message),
-        );
+        const retryable =
+          error?.name === 'AbortError' ||
+          /ECONNRESET|ECONNREFUSED|ETIMEDOUT|UND_ERR_SOCKET|aborted|fetch failed/i.test(
+            String(message),
+          );
         if (!retryable) throw error;
         return supabaseFetch(input, init);
       }

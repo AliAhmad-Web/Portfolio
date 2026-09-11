@@ -14,7 +14,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
   }
 
   if (!user) {
-    return <Navigate to="/auth/login" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/admin" replace state={{ from: location.pathname }} />;
   }
 
   if (requireAdmin && !isAdmin) {

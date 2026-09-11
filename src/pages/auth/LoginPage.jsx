@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import AuthField from '../../components/auth/AuthField';
@@ -11,7 +11,7 @@ import {
 } from '../../utils/authValidation';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, isAdmin } = useAuth();
   const { getToken } = useRecaptcha();
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,6 +20,11 @@ export default function LoginPage() {
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    navigate(location.state?.from || '/dashboard', { replace: true });
+  }, [isAdmin, navigate, location.state]);
 
   const updateField = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
@@ -63,6 +68,14 @@ export default function LoginPage() {
       setSubmitting(false);
     }
   };
+
+  if (isAdmin) {
+    return (
+      <div className="site-shell flex min-h-screen items-center justify-center bg-[#020617] text-slate-300">
+        Redirecting to dashboard…
+      </div>
+    );
+  }
 
   return (
     <AuthLayout

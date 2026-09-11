@@ -50,7 +50,19 @@ function mapSupabaseAuthError(error) {
     return new ApiError(429, 'Too many requests. Please try again later');
   }
 
-  return new ApiError(error.status ?? 400, message);
+  if (
+    error?.name === 'AbortError' ||
+    normalized.includes('fetch failed') ||
+    normalized.includes('aborted')
+  ) {
+    return new ApiError(503, 'Authentication service is temporarily unavailable');
+  }
+
+  const status = Number(error.status);
+  return new ApiError(
+    Number.isInteger(status) && status >= 400 && status < 600 ? status : 400,
+    message,
+  );
 }
 
 async function buildAuthPayload(user, session) {
@@ -101,10 +113,19 @@ export const authService = {
   },
 
   async signIn({ email, password }) {
-    const { data, error } = await supabaseAnon.auth.signInWithPassword({
-      email,
-      password,
-    });
+    let data;
+    let error;
+
+    try {
+      const result = await supabaseAnon.auth.signInWithPassword({
+        email,
+        password,
+      });
+      data = result.data;
+      error = result.error;
+    } catch (thrown) {
+      throw mapSupabaseAuthError(thrown);
+    }
 
     if (error) {
       throw mapSupabaseAuthError(error);

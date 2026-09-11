@@ -9,11 +9,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import HomePage from './pages/HomePage';
+import LoginPage from './pages/auth/LoginPage';
 
 const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
-const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const SignupPage = lazy(() => import('./pages/auth/SignupPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPasswordPage'));
@@ -36,6 +36,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+            <Route path="/admin" element={<LoginPage />} />
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/signup" element={<SignupPage />} />
             <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />

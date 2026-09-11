@@ -32,7 +32,11 @@ export function errorHandler(error, req, res, next) {
     return;
   }
 
-  const statusCode = error instanceof ApiError ? error.statusCode : 500;
+  const rawStatus = error instanceof ApiError ? error.statusCode : 500;
+  const statusCode =
+    Number.isInteger(rawStatus) && rawStatus >= 400 && rawStatus < 600
+      ? rawStatus
+      : 500;
 
   if (!(error instanceof ApiError) && env.isDevelopment) {
     console.error('[Unhandled Error]', error);

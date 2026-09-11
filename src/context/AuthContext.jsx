@@ -63,9 +63,13 @@ export function AuthProvider({ children }) {
       const result = await authApi.me();
       setUser(result?.data?.user ?? null);
     } catch (error) {
-      if (error.status === 401 && getStoredRefreshToken()) {
-        await refreshSession();
-        return;
+      try {
+        if (error.status === 401 && getStoredRefreshToken()) {
+          await refreshSession();
+          return;
+        }
+      } catch {
+        // Refresh failed — fall through and clear the local session.
       }
 
       clearStoredSession();
